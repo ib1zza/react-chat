@@ -1,0 +1,114 @@
+@mixin mobile {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (max-width: 1024px) {
+        @content;
+    }
+}
+
+
+.sidebar {
+  flex: 1;
+  background-color: #3e3c61;
+
+  .search {
+    border-bottom: 1px solid gray;
+
+    .searchForm {
+      padding: 10px;
+
+      input {
+        background-color: transparent;
+        color: white;
+
+        &::placeholder {
+          color: lightgray;
+        }
+      }
+    }
+
+
+  }
+}
+
+.chat__user {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #2f2d52;
+  }
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .chat__user__info {
+    display: flex;
+    flex-direction: column;
+span {
+    font-weight: bold;
+  font-size: 18px;
+
+}
+    p {
+      font-size: 14px;
+      color: lightgray;
+    }
+  }
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+
+  background-color: #2f2d52;
+  height: 50px;
+  padding: 10px;
+  justify-content: space-between;
+  color: #ddddf7;
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+  .logo {
+    font-weight: bold;
+  }
+  
+  .logout {
+    cursor: pointer;
+    padding: 5px 8px;
+    background-color: #a7bcff;
+    color: #2f2d52;
+    border-radius: 10px;
+  }
+
+
+}
+
+.error {
+  color: red;
+}
