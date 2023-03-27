@@ -6,7 +6,11 @@ import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
 import { useChat } from "src/context/ChatContext";
 
-const Chats = () => {
+interface Props {
+  isOpen: boolean;
+  changeOpen: (isOpen: boolean) => void;
+}
+const Chats: React.FC<Props> = ({ isOpen, changeOpen }) => {
   const { user } = useAuth();
   const { dispatch } = useChat();
   const [chats, setChats] = React.useState<Root>({});
@@ -75,10 +79,12 @@ const Chats = () => {
         >
           <div className={s.chat__user}>
             <img src={chat.userInfo.photoURL} alt={chat.userInfo.displayName} />
-            <div className={s.chat__user__info}>
-              <span>{chat.userInfo.displayName}</span>
-              <p>{chat.lastMessage?.text}</p>
-            </div>
+            {isOpen && (
+              <div className={s.chat__user__info}>
+                <span>{chat.userInfo.displayName}</span>
+                <p>{chat.lastMessage?.text}</p>
+              </div>
+            )}
           </div>
         </div>
       ))}

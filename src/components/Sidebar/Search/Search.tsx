@@ -12,12 +12,15 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "src/firebase";
-import { DocumentData } from "firebase/firestore";
 import { useAuth } from "src/context/AuthContext";
 import { UserInfo } from "firebase/auth";
 import { useChat } from "src/context/ChatContext";
 
-const Search = () => {
+interface Props {
+  isOpen: boolean;
+  changeOpen: (isOpen: boolean) => void;
+}
+const Search: React.FC<Props> = ({ isOpen, changeOpen }) => {
   const { user: currentUser } = useAuth();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [user, setUser] = React.useState<UserInfo | null>(null);

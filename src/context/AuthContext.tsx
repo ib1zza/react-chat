@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { auth } from "src/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { UserInfo } from "firebase/auth";
+import { User } from "firebase/auth";
 
 interface AuthContext {
-  user: UserInfo | null;
+  user: User | null;
 }
 
 const AuthContext = React.createContext<AuthContext>({
@@ -20,7 +20,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = React.useState<UserInfo | null | {}>({});
+  const [user, setUser] = React.useState<User | null | {}>({});
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       console.log("auth user " + user);
@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: user as UserInfo | null }}>
+    <AuthContext.Provider value={{ user: (user as User) || null }}>
       {children}
     </AuthContext.Provider>
   );

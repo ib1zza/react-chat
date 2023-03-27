@@ -1,14 +1,16 @@
 .home {
   background-color: #a7bcff;
+  padding-top: 20px;
+  padding-bottom: 80px;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 
   .container {
-      border-radius: 10px;
-    width: 65%;
-    height: 80%;
+    border-radius: 10px;
+    width: calc(100% - 30px);
+    height: 100%;
     display: flex;
     overflow: hidden;
     border: 1px solid #f0efff;

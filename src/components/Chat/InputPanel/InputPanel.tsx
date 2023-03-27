@@ -5,7 +5,6 @@ import { useChat } from "src/context/ChatContext";
 import { useAuth } from "src/context/AuthContext";
 import {
   doc,
-  setDoc,
   updateDoc,
   arrayUnion,
   Timestamp,
@@ -19,12 +18,16 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 const InputPanel = () => {
   const [input, setInput] = React.useState("");
   const [file, setFile] = React.useState<File | null>(null);
+  const [loading, setLoading] = React.useState(false);
   const { data } = useChat();
   const { user } = useAuth();
 
   const handleSend = async () => {
+    if (!input.trim() && !file) return;
     if (!data?.chatId || !user?.uid || !data.user?.uid) return;
-
+    setInput("");
+    setFile(null);
+    setLoading(true);
     if (file) {
       const storageRef = ref(storage, uuid());
       const uploadImage = uploadBytesResumable(storageRef, file);
@@ -35,17 +38,9 @@ const InputPanel = () => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log("Image upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
         },
         (error) => {
-          // setError(true);
+          setLoading(false);
         },
         () => {
           getDownloadURL(uploadImage.snapshot.ref).then(async (downloadURL) => {
@@ -86,12 +81,12 @@ const InputPanel = () => {
       [data.chatId + ".date"]: serverTimestamp(),
     });
 
-    setInput("");
-    setFile(null);
+    setLoading(false);
   };
   return (
     <div className={s.input}>
       <input
+        className={s.text}
         type="text"
         placeholder="Type your message..."
         value={input}
@@ -106,7 +101,9 @@ const InputPanel = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label>
-        <button onClick={handleSend}>Send</button>
+        <button disabled={loading} onClick={handleSend}>
+          Send
+        </button>
       </div>
     </div>
   );

@@ -1,3 +1,21 @@
+@mixin mobile {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
 .chat {
   flex: 2;
   display: flex;
@@ -84,13 +102,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+
     width: 100%;
     gap: 20px;
     font-size: 18px;
 
-    & > input {
-      flex-grow: 1;
+    & > .text {
+
+      @include mobile {
+        width: calc(100% - 110px);
+      }
+
+      padding: 10px;
+      height: 100%;
+      flex-shrink: 1;
 
       &::placeholder {
         color: lightgray;
@@ -101,8 +126,11 @@
       display: flex;
       align-items: center;
       gap: 10px;
-
+      label {
+        width: 24px;
+      }
       img {
+
         height: 24px;
         cursor: pointer;
       }

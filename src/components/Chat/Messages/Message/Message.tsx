@@ -4,7 +4,7 @@ import add from "assets/img/cam.png";
 import messages, { IMessage } from "../Messages";
 import { useChat } from "src/context/ChatContext";
 import { useAuth } from "src/context/AuthContext";
-
+import { formatRelative } from "date-fns";
 interface Props {
   message: IMessage;
 }
@@ -42,7 +42,9 @@ const Message: React.FC<Props> = ({ message }) => {
               : data.user.displayName) || undefined
           }
         />
-        <span> Just now</span>
+        <span>
+          {formatRelative(new Date(message.date.seconds * 1000), Date.now())}
+        </span>
       </div>
 
       <div className={s.message__content}>
