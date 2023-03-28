@@ -2,19 +2,19 @@ import React from "react";
 import s from "../Sidebar.module.scss";
 import {
   collection,
-  query,
-  where,
-  getDocs,
-  setDoc,
   doc,
   getDoc,
-  updateDoc,
+  getDocs,
+  query,
   serverTimestamp,
+  setDoc,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
 import { UserInfo } from "firebase/auth";
-import { useChat } from "src/context/ChatContext";
+import { ChatAction, useChat } from "src/context/ChatContext";
 
 interface Props {
   isOpen: boolean;
@@ -84,7 +84,7 @@ const Search: React.FC<Props> = ({ isOpen, changeOpen }) => {
         [combinedId + ".date"]: serverTimestamp(),
       });
 
-      dispatch({ type: "CHANGE_USER", payload: user });
+      dispatch({ type: ChatAction.CHANGE_USER, payload: user });
     } catch (error) {
       console.log(error);
       setError(true);
@@ -92,6 +92,7 @@ const Search: React.FC<Props> = ({ isOpen, changeOpen }) => {
 
     setUser(null);
     setSearchQuery("");
+    dispatch({ type: ChatAction.CHANGE_USER, payload: user });
   };
   return (
     <div className={s.search}>

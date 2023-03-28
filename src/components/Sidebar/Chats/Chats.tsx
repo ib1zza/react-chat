@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import s from "../Sidebar.module.scss";
-import Messages from "../../Chat/Messages/Messages";
-import { doc, DocumentData, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
-import { useChat } from "src/context/ChatContext";
+import { ChatAction, useChat } from "src/context/ChatContext";
+import Avatar from "components/Shared/Avatar/Avatar";
 
 interface Props {
   isOpen: boolean;
@@ -61,7 +61,8 @@ const Chats: React.FC<Props> = ({ isOpen, changeOpen }) => {
   console.log(Object.values(chats));
 
   const handleSelect = (selectedUser: UserInfo) => {
-    dispatch({ type: "CHANGE_USER", payload: selectedUser });
+    dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
+    changeOpen(false);
   };
 
   const renderChats: Chat[] = Array.from(Object.values(chats)).sort(
@@ -73,12 +74,17 @@ const Chats: React.FC<Props> = ({ isOpen, changeOpen }) => {
     <>
       {renderChats.map((chat) => (
         <div
-          className={s.chats}
+          className={s.chats + " " + (!isOpen ? s.closed : "")}
           key={chat.userInfo.uid}
           onClick={() => handleSelect(chat.userInfo)}
         >
           <div className={s.chat__user}>
-            <img src={chat.userInfo.photoURL} alt={chat.userInfo.displayName} />
+            <Avatar
+              src={chat.userInfo.photoURL}
+              displayName={chat.userInfo.displayName}
+              className={s.chat__user__avatar}
+            />
+
             {isOpen && (
               <div className={s.chat__user__info}>
                 <span>{chat.userInfo.displayName}</span>

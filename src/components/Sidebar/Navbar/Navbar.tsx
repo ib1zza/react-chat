@@ -3,8 +3,9 @@ import s from "../Sidebar.module.scss";
 import { signOut } from "firebase/auth";
 import { auth } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
-
 import PopupSettings from "components/Sidebar/PopupSettings/PopupSettings";
+
+import Avatar from "components/Shared/Avatar/Avatar";
 
 interface Props {
   isOpen: boolean;
@@ -20,11 +21,13 @@ const Navbar: React.FC<Props> = ({ isOpen, changeOpen }) => {
       <div className={s.navbar}>
         <span className={s.logo}>{isOpen ? "React-chat" : "RChat"}</span>
         <div className={s.user}>
-          <img
+          <Avatar
+            src={user?.photoURL}
+            displayName={user?.displayName}
             onClick={() => setIsPopupOpen(true)}
-            src={user?.photoURL || "#"}
-            alt=""
+            className={s.avatar}
           />
+
           {isOpen && (
             <>
               <span>{user?.displayName}</span>

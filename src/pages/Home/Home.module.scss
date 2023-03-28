@@ -1,18 +1,29 @@
 .home {
   background-color: #a7bcff;
-  padding-top: 20px;
-  padding-bottom: 80px;
+  //padding-top: 20px;
+  //padding-bottom: 80px;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 
   .container {
+    position: relative;
     border-radius: 10px;
-    width: calc(100% - 30px);
+    width: 1000px;
     height: 100%;
     display: flex;
     overflow: hidden;
     border: 1px solid #f0efff;
+    @media screen and (max-width: 1050px) {
+      width: calc(100% - 30px);
+    }
+
+  }
+  @media screen and (max-width: 480px) {
+    .container {
+      height: calc(100% - 100px);
+      margin-bottom: 80px;
+    }
   }
 }

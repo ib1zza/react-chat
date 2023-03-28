@@ -14,7 +14,9 @@ import { db, storage } from "src/firebase";
 import { v4 as uuid } from "uuid";
 
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faFileExcel } from "@fortawesome/free-regular-svg-icons";
 const InputPanel = () => {
   const [input, setInput] = React.useState("");
   const [file, setFile] = React.useState<File | null>(null);
@@ -98,12 +100,23 @@ const InputPanel = () => {
           id="file"
           onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
         />
-        <label htmlFor="file">
-          <img src={Img} alt="" />
-        </label>
-        <button disabled={loading} onClick={handleSend}>
-          Send
-        </button>
+        <div className={s.buttons}>
+          {file ? (
+            <label onClick={() => setTimeout(() => setFile(null), 100)}>
+              <FontAwesomeIcon icon={faFileExcel} />
+            </label>
+          ) : (
+            <label htmlFor="file">
+              <FontAwesomeIcon icon={faFile} />
+            </label>
+          )}
+
+          {(input || file) && (
+            <button disabled={loading} onClick={handleSend}>
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

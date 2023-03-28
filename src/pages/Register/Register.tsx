@@ -79,10 +79,10 @@ const Register = () => {
         <h1 className={s.form__logo}>React-Chat</h1>
         <h1 className={s.form__title}>Register</h1>
         <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="your name" />
-          <input type="email" placeholder="email" />
-          <input type="password" placeholder="password" />
-          <input type="file" className={s.file} id="file" />
+          <input type="text" placeholder="your name" required />
+          <input type="email" placeholder="email" required />
+          <input type="password" placeholder="password" required />
+          <input type="file" className={s.file} id="file" required />
           <label htmlFor="file">
             <img src={Add} alt="" />
             <span>Add an avatar</span>

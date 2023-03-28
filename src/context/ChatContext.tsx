@@ -1,8 +1,11 @@
 import React from "react";
 import { useAuth } from "src/context/AuthContext";
-
+export enum ChatAction {
+  CHANGE_USER = "CHANGE_USER",
+  EXIT_CHAT = "EXIT_CHAT",
+}
 interface ChatContext {
-  dispatch: React.Dispatch<{ type: string; payload: IUserInfo }>;
+  dispatch: React.Dispatch<{ type: ChatAction; payload?: IUserInfo }>;
   data: { chatId: string; user: IUserInfo | null } | null;
 }
 
@@ -37,17 +40,23 @@ export const ChatProvider: React.FC<Props> = ({ children }) => {
 
   const chatReducer = (
     state = initialState,
-    action: { type: string; payload: IUserInfo }
+    action: { type: ChatAction; payload?: IUserInfo }
   ) => {
     if (!currentUser?.uid) return state;
     switch (action.type) {
-      case "CHANGE_USER":
+      case ChatAction.CHANGE_USER:
+        if (!action.payload) return state;
         return {
           user: action.payload,
           chatId:
             currentUser.uid > action.payload.uid
               ? currentUser.uid + action.payload.uid
               : action.payload.uid + currentUser.uid,
+        };
+      case ChatAction.EXIT_CHAT:
+        return {
+          user: null,
+          chatId: "null",
         };
       default:
         return state;

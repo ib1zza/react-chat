@@ -25,7 +25,6 @@ const ProtectedRoute: React.FC<Props> = ({ children, condition }) => {
 
 function App() {
   const { user } = useAuth();
-
   return (
     <div className="App">
       <BrowserRouter>

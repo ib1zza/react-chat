@@ -16,7 +16,7 @@ const Message: React.FC<Props> = ({ message }) => {
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
+      ref.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, [message]);
 
@@ -42,9 +42,6 @@ const Message: React.FC<Props> = ({ message }) => {
               : data.user.displayName) || undefined
           }
         />
-        <span>
-          {formatRelative(new Date(message.date.seconds * 1000), Date.now())}
-        </span>
       </div>
 
       <div className={s.message__content}>
