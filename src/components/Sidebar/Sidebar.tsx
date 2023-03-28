@@ -4,22 +4,28 @@ import Navbar from "./Navbar/Navbar";
 import Search from "./Search/Search";
 import Chats from "./Chats/Chats";
 import { useChat } from "src/context/ChatContext";
+import { motion } from "framer-motion";
 
 const Sidebar = () => {
   const { data } = useChat();
-  // const [isOpen, setIsOpen] = React.useState(true);
   const isOpen = !data?.user;
-  console.log(data?.user);
-  const setIsOpen = (isOpen: boolean) => {
-    // setIsOpen(isOpen);
-  };
 
   return (
-    <div className={s.sidebar + " " + (!isOpen ? s.closed : "")}>
-      <Navbar isOpen={isOpen} changeOpen={setIsOpen} />
-      {isOpen && <Search isOpen={isOpen} changeOpen={setIsOpen} />}
-      <Chats isOpen={isOpen} changeOpen={setIsOpen} />
-    </div>
+    <motion.div
+      // layout="position"
+      transition={{
+        opacity: { ease: "linear" },
+        layout: { duration: 0.9, stiffness: 0 },
+      }}
+      className={s.sidebar + " " + (!isOpen ? s.closed : "")}
+      initial={{ x: 0 }}
+      animate={{ width: !isOpen ? 100 : "auto" }}
+      exit={{ x: 100 }}
+    >
+      <Navbar isOpen={isOpen} />
+      {isOpen && <Search />}
+      <Chats isOpen={isOpen} />
+    </motion.div>
   );
 };
 

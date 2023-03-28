@@ -7,7 +7,7 @@ import Home from "./pages/Home/Home";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppRoutes } from "src/AppRoutes";
 import { useAuth } from "src/context/AuthContext";
-import React, { useEffect } from "react";
+import React from "react";
 
 interface Props {
   children: React.ReactNode;

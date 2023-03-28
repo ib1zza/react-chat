@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import s from "./Register.module.scss";
 import Add from "../../assets/img/addAvatar.png";
 import { auth, db, storage } from "src/firebase";
@@ -11,7 +11,7 @@ import { AppRoutes } from "src/AppRoutes";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [error, setError] = React.useState(false);
+  const [error, setError] = useState(false);
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     // @ts-ignore

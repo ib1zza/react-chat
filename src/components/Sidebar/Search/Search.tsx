@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import s from "../Sidebar.module.scss";
 import {
   collection,
@@ -15,19 +15,20 @@ import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
 import { UserInfo } from "firebase/auth";
 import { ChatAction, useChat } from "src/context/ChatContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { RotatingLines } from "react-loader-spinner";
 
-interface Props {
-  isOpen: boolean;
-  changeOpen: (isOpen: boolean) => void;
-}
-const Search: React.FC<Props> = ({ isOpen, changeOpen }) => {
+const Search: React.FC = () => {
   const { user: currentUser } = useAuth();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [user, setUser] = React.useState<UserInfo | null>(null);
   const [error, setError] = React.useState(false);
   const { dispatch } = useChat();
+  const [loading, setLoading] = useState(false);
 
   const searchUser = async () => {
+    setLoading(true);
     const q = query(
       collection(db, "users"),
       where("displayName", "==", searchQuery)
@@ -36,12 +37,12 @@ const Search: React.FC<Props> = ({ isOpen, changeOpen }) => {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         setUser(doc.data() as UserInfo);
-        console.log(doc.data());
       });
     } catch (error) {
       console.log(error);
       setError(true);
     }
+    setLoading(false);
   };
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -102,8 +103,26 @@ const Search: React.FC<Props> = ({ isOpen, changeOpen }) => {
           placeholder="Search"
           value={searchQuery}
           onKeyDown={handleEnter}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setUser(null);
+          }}
         />
+        {searchQuery && (
+          <button onClick={searchUser}>
+            {loading ? (
+              <RotatingLines
+                strokeColor="grey"
+                strokeWidth="5"
+                animationDuration="0.75"
+                width="25"
+                visible={true}
+              />
+            ) : (
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            )}
+          </button>
+        )}
       </div>
       {error && <div className={s.error}>User not found</div>}
       {user && (

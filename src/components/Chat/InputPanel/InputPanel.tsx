@@ -1,6 +1,6 @@
 import React from "react";
 import s from "../Chat.module.scss";
-import Img from "../../../assets/img/img.png";
+
 import { useChat } from "src/context/ChatContext";
 import { useAuth } from "src/context/AuthContext";
 import {
@@ -12,11 +12,12 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "src/firebase";
 import { v4 as uuid } from "uuid";
-
+import { motion } from "framer-motion";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { faFile, faFileExcel } from "@fortawesome/free-regular-svg-icons";
+import { AnimatePresence } from "framer-motion";
 const InputPanel = () => {
   const [input, setInput] = React.useState("");
   const [file, setFile] = React.useState<File | null>(null);
@@ -24,15 +25,24 @@ const InputPanel = () => {
   const { data } = useChat();
   const { user } = useAuth();
 
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key == "Enter") {
+      handleSend();
+    }
+  };
+
   const handleSend = async () => {
-    if (!input.trim() && !file) return;
-    if (!data?.chatId || !user?.uid || !data.user?.uid) return;
+    let inputData = input;
+    let fileData = file;
     setInput("");
     setFile(null);
     setLoading(true);
-    if (file) {
+    if (!inputData.trim() && !fileData) return;
+    if (!data?.chatId || !user?.uid || !data.user?.uid) return;
+
+    if (fileData) {
       const storageRef = ref(storage, uuid());
-      const uploadImage = uploadBytesResumable(storageRef, file);
+      const uploadImage = uploadBytesResumable(storageRef, fileData);
 
       uploadImage.on(
         "state_changed",
@@ -49,7 +59,7 @@ const InputPanel = () => {
             await updateDoc(doc(db, "chats", data.chatId), {
               messages: arrayUnion({
                 id: uuid(),
-                text: input,
+                text: inputData,
                 senderId: user?.uid,
                 date: Timestamp.now(),
                 image: downloadURL,
@@ -62,7 +72,7 @@ const InputPanel = () => {
       await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
           id: uuid(),
-          text: input,
+          text: inputData,
           senderId: user?.uid,
           date: Timestamp.now(),
         }),
@@ -71,14 +81,14 @@ const InputPanel = () => {
 
     await updateDoc(doc(db, "userChats", user.uid), {
       [data.chatId + ".lastMessage"]: {
-        text: input,
+        text: inputData || "Вложение",
       },
       [data.chatId + ".date"]: serverTimestamp(),
     });
 
     await updateDoc(doc(db, "userChats", data.user.uid), {
       [data.chatId + ".lastMessage"]: {
-        text: input,
+        text: inputData || "Вложение",
       },
       [data.chatId + ".date"]: serverTimestamp(),
     });
@@ -93,6 +103,7 @@ const InputPanel = () => {
         placeholder="Type your message..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleEnter}
       />
       <div className={s.send}>
         <input
@@ -100,7 +111,7 @@ const InputPanel = () => {
           id="file"
           onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
         />
-        <div className={s.buttons}>
+        <motion.div className={s.buttons} layout>
           {file ? (
             <label onClick={() => setTimeout(() => setFile(null), 100)}>
               <FontAwesomeIcon icon={faFileExcel} />
@@ -112,11 +123,18 @@ const InputPanel = () => {
           )}
 
           {(input || file) && (
-            <button disabled={loading} onClick={handleSend}>
+            <motion.button
+              disabled={loading}
+              onClick={handleSend}
+              transition={{ type: "linear" }}
+              initial={{ x: 100 }}
+              animate={{ x: 0 }}
+              exit={{ x: 100 }}
+            >
               <FontAwesomeIcon icon={faPaperPlane} />
-            </button>
+            </motion.button>
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

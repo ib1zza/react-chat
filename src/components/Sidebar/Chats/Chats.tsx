@@ -1,16 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import s from "../Sidebar.module.scss";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
 import { ChatAction, useChat } from "src/context/ChatContext";
-import Avatar from "components/Shared/Avatar/Avatar";
+
+import SingleChat from "components/Sidebar/Chats/SingleChat/SingleChat";
 
 interface Props {
   isOpen: boolean;
-  changeOpen: (isOpen: boolean) => void;
 }
-const Chats: React.FC<Props> = ({ isOpen, changeOpen }) => {
+const Chats: React.FC<Props> = ({ isOpen }) => {
+  const [selectedUser, setSelectedUser] = useState("");
   const { user } = useAuth();
   const { dispatch } = useChat();
   const [chats, setChats] = React.useState<Root>({});
@@ -21,7 +22,6 @@ const Chats: React.FC<Props> = ({ isOpen, changeOpen }) => {
       console.log("Current data: ", doc.data());
       setChats(doc.data() || []);
     });
-
     return () => {
       unsub();
     };
@@ -54,6 +54,7 @@ const Chats: React.FC<Props> = ({ isOpen, changeOpen }) => {
       text: string;
     };
   }
+
   if (Object.values(chats).length === 0) {
     return null;
   }
@@ -61,8 +62,9 @@ const Chats: React.FC<Props> = ({ isOpen, changeOpen }) => {
   console.log(Object.values(chats));
 
   const handleSelect = (selectedUser: UserInfo) => {
+    setSelectedUser(selectedUser.uid);
+    console.log(selectedUser.uid);
     dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
-    changeOpen(false);
   };
 
   const renderChats: Chat[] = Array.from(Object.values(chats)).sort(
@@ -73,26 +75,13 @@ const Chats: React.FC<Props> = ({ isOpen, changeOpen }) => {
   return (
     <>
       {renderChats.map((chat) => (
-        <div
-          className={s.chats + " " + (!isOpen ? s.closed : "")}
-          key={chat.userInfo.uid}
-          onClick={() => handleSelect(chat.userInfo)}
-        >
-          <div className={s.chat__user}>
-            <Avatar
-              src={chat.userInfo.photoURL}
-              displayName={chat.userInfo.displayName}
-              className={s.chat__user__avatar}
-            />
-
-            {isOpen && (
-              <div className={s.chat__user__info}>
-                <span>{chat.userInfo.displayName}</span>
-                <p>{chat.lastMessage?.text}</p>
-              </div>
-            )}
-          </div>
-        </div>
+        <SingleChat
+          isOpen={isOpen}
+          user={chat.userInfo}
+          lastMessage={chat.lastMessage?.text}
+          handleSelect={handleSelect}
+          isSelected={selectedUser === chat.userInfo.uid}
+        />
       ))}
     </>
   );

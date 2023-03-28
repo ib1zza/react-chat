@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { useAuth } from "src/context/AuthContext";
 export enum ChatAction {
   CHANGE_USER = "CHANGE_USER",
@@ -22,7 +22,7 @@ export const useChat = () => {
   return React.useContext(ChatContext);
 };
 
-interface IUserInfo {
+export interface IUserInfo {
   displayName: string | null;
   photoURL: string | null;
   uid: string;
@@ -42,6 +42,7 @@ export const ChatProvider: React.FC<Props> = ({ children }) => {
     state = initialState,
     action: { type: ChatAction; payload?: IUserInfo }
   ) => {
+    console.log("dispatcher gets info", action.payload);
     if (!currentUser?.uid) return state;
     switch (action.type) {
       case ChatAction.CHANGE_USER:
@@ -63,8 +64,9 @@ export const ChatProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const [state, dispatch] = React.useReducer(chatReducer, initialState);
+  const [state, dispatch] = useReducer(chatReducer, initialState);
   console.log(state);
+  console.log("chatProvider changed", state);
 
   return (
     <ChatContext.Provider value={{ data: state, dispatch }}>
