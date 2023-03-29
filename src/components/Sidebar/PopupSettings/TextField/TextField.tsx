@@ -10,8 +10,9 @@ interface Props {
 const TextField: React.FC<Props> = ({ displayName, onUpdate }) => {
   const [name, setName] = useState(displayName);
   const [opened, setOpened] = useState(false);
+
   useEffect(() => {
-    if (!opened) setName(displayName);
+    setName(displayName);
   }, [opened]);
 
   const validate = () => {

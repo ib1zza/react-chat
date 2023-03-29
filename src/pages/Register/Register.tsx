@@ -15,13 +15,18 @@ const Register = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     // @ts-ignore
-    const displayName = e.target[0].value;
+    const displayName = e.target[0].value.toLowerCase();
     // @ts-ignore
     const email = e.target[1].value;
     // @ts-ignore
     const password = e.target[2].value;
     // @ts-ignore
     const file = e.target[3].files[0];
+
+    if (!displayName || !email || !password || !file) {
+      setError(true);
+      return;
+    }
     try {
       const response = await createUserWithEmailAndPassword(
         auth,

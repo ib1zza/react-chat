@@ -7,7 +7,7 @@ import { User } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Avatar from "components/Shared/Avatar/Avatar";
-import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence } from "framer-motion";
 
 import { ThreeDots } from "react-loader-spinner";
@@ -25,8 +25,15 @@ const PopupSettings: React.FC<Props> = forwardRef(
     const [file, setFile] = React.useState<File | null>(null);
     const [isActiveImage, setIsActiveImage] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const [error, setError] = useState("");
     const handleUpdateDisplayname = async (name: string) => {
+      setError("");
+      if (name === user.displayName || !name.trim()) return;
+      if (name.toLowerCase() !== name) {
+        setError("Name must be lowercase");
+        return;
+      }
+
       await updateDocument("users", user.uid, { displayName: name });
       await updateProfile(user, {
         displayName: name,
@@ -147,6 +154,7 @@ const PopupSettings: React.FC<Props> = forwardRef(
               displayName={user.displayName || "where is ur name?"}
               onUpdate={handleUpdateDisplayname}
             />
+            {error && <p>{error}</p>}
           </div>
         </motion.div>
       </motion.div>
