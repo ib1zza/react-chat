@@ -1,7 +1,7 @@
 import React, { ForwardedRef, forwardRef, useEffect, useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "src/firebase";
-import { updateProfile } from "firebase/auth";
+import { auth, storage } from "src/firebase";
+import { signOut, updateProfile } from "firebase/auth";
 import s from "components/Sidebar/Sidebar.module.scss";
 import { User } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -89,7 +89,14 @@ const PopupSettings: React.FC<Props> = forwardRef(
     }, [file]);
 
     return (
-      <motion.div ref={refer} className={s.overlay} onClick={close}>
+      <motion.div
+        ref={refer}
+        className={s.overlay}
+        onClick={close}
+        animate={{ backgroundColor: "rgba(0,0,0,0.8)", opacity: 1 }}
+        exit={{ opacity: 0 }}
+        initial={{ opacity: 0 }}
+      >
         <motion.div
           className={s.popup}
           onClick={(e) => e.stopPropagation()}
@@ -102,6 +109,9 @@ const PopupSettings: React.FC<Props> = forwardRef(
         >
           <button className={s.close} onClick={close}>
             <FontAwesomeIcon icon={faXmark} />
+          </button>
+          <button onClick={() => signOut(auth)} className={s.logout}>
+            Logout
           </button>
 
           <div className={s.popup__profile}>

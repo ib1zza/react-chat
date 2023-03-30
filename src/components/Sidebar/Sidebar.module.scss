@@ -22,6 +22,7 @@
 // Sidebar styles
 
 .sidebar {
+  height: 100%;
   flex: 1;
   background-color: #3e3c61;
 
@@ -71,7 +72,8 @@
     position: static;
     flex: 0;
     width: 90px;
-    flex-basis: 60px;
+    flex-basis: 80px;
+    overflow: hidden;
 
     .navbar {
       flex-direction: column;
@@ -143,6 +145,36 @@
   }
 }
 
+
+.chats__container {
+  height: calc(100% - 150px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+
+}
+::-webkit-scrollbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  //background-color: #fff;
+  width: 5px;
+
+  //display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.44);
+  border-radius: 5px;
+}
+
+@include mobile {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .chats.closed {
   display: flex;
   align-items: center;
@@ -165,6 +197,7 @@
   color: #ddddf7;
 
   .user {
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -179,15 +212,19 @@
     font-weight: bold;
   }
 
-  .logout {
-    cursor: pointer;
-    padding: 5px 8px;
-    background-color: #a7bcff;
-    color: #2f2d52;
-    border-radius: 10px;
-  }
-}
 
+}
+.logout {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  cursor: pointer;
+  padding: 10px 20px;
+  background-color: #ffa7c1;
+  color: #2f2d52;
+  border-radius: 10px;
+  margin-top: 10px;
+}
 
 // Error message styles
 
@@ -267,7 +304,7 @@
 
         .profile__avatar_img {
           width: 100%;
-
+          cursor: pointer;
           &.blurred {
             filter: blur(4px);
           }
@@ -287,7 +324,7 @@
 
           svg {
             flex-shrink: 0;
-
+            cursor: pointer;
           }
         }
 

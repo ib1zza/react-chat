@@ -22,7 +22,7 @@ import { RotatingLines } from "react-loader-spinner";
 const Search: React.FC = () => {
   const { user: currentUser } = useAuth();
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [user, setUser] = React.useState<UserInfo | null>(null);
+  const [searchedUsers, setSearchedUsers] = React.useState<UserInfo[]>([]);
   const [error, setError] = React.useState(false);
   const { dispatch } = useChat();
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,13 @@ const Search: React.FC = () => {
     try {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        setUser(doc.data() as UserInfo);
+        console.log("query res - ", doc.data());
+        if (doc.data() !== null) {
+          setSearchedUsers((prevState) => [
+            ...prevState,
+            doc.data() as UserInfo,
+          ]);
+        }
       });
     } catch (error) {
       console.log(error);
@@ -51,13 +57,13 @@ const Search: React.FC = () => {
     }
   };
 
-  const handleSelect = async () => {
-    if (!currentUser || !user) return;
+  const handleSelect = async (selectedUser: UserInfo) => {
+    if (!currentUser || !searchedUsers) return;
 
     const combinedId =
-      currentUser.uid > user.uid
-        ? currentUser.uid + user.uid
-        : user.uid + currentUser.uid;
+      currentUser.uid > selectedUser.uid
+        ? currentUser.uid + selectedUser.uid
+        : selectedUser.uid + currentUser.uid;
 
     try {
       const res = await getDoc(doc(db, "chats", combinedId));
@@ -70,13 +76,13 @@ const Search: React.FC = () => {
 
       await updateDoc(doc(db, "userChats", currentUser.uid), {
         [combinedId + ".userInfo"]: {
-          uid: user.uid,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
+          uid: selectedUser.uid,
+          displayName: selectedUser.displayName,
+          photoURL: selectedUser.photoURL,
         },
         [combinedId + ".date"]: serverTimestamp(),
       });
-      await updateDoc(doc(db, "userChats", user.uid), {
+      await updateDoc(doc(db, "userChats", selectedUser.uid), {
         [combinedId + ".userInfo"]: {
           uid: currentUser.uid,
           displayName: currentUser.displayName,
@@ -85,15 +91,15 @@ const Search: React.FC = () => {
         [combinedId + ".date"]: serverTimestamp(),
       });
 
-      dispatch({ type: ChatAction.CHANGE_USER, payload: user });
+      dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
     } catch (error) {
       console.log(error);
       setError(true);
     }
 
-    setUser(null);
+    setSearchedUsers([]);
     setSearchQuery("");
-    dispatch({ type: ChatAction.CHANGE_USER, payload: user });
+    dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
   };
   return (
     <div className={s.search}>
@@ -105,7 +111,7 @@ const Search: React.FC = () => {
           onKeyDown={handleEnter}
           onChange={(e) => {
             setSearchQuery(e.target.value);
-            setUser(null);
+            setSearchedUsers([]);
           }}
         />
         {searchQuery && (
@@ -125,14 +131,15 @@ const Search: React.FC = () => {
         )}
       </div>
       {error && <div className={s.error}>User not found</div>}
-      {user && (
-        <div className={s.chat__user} onClick={handleSelect}>
-          <img src={user.photoURL || ""} alt={user.displayName || ""} />
-          <div className={s.chat__user__info}>
-            <span>{user.displayName}</span>
+      {searchedUsers &&
+        searchedUsers.map((el) => (
+          <div className={s.chat__user} onClick={() => handleSelect(el)}>
+            <img src={el.photoURL || ""} alt={el.displayName || ""} />
+            <div className={s.chat__user__info}>
+              <span>{el.displayName}</span>
+            </div>
           </div>
-        </div>
-      )}
+        ))}
     </div>
   );
 };

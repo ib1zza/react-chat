@@ -20,33 +20,23 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
     <>
       <div className={s.navbar}>
         <span className={s.logo}>{isOpen ? "React-chat" : "RChat"}</span>
-        <div className={s.user}>
+        <div className={s.user} onClick={() => setIsPopupOpen(true)}>
           <Avatar
             src={userInfo.photoURL}
             displayName={userInfo.displayName}
-            onClick={() => setIsPopupOpen(true)}
             className={s.avatar}
           />
 
           {isOpen && (
             <>
               <span>{userInfo.displayName}</span>
-              <button onClick={() => signOut(auth)} className={s.logout}>
-                Logout
-              </button>
             </>
           )}
         </div>
       </div>
       <AnimatePresence>
         {isPopupOpen && user && (
-          <PopupSettings
-            animate={{ backgroundColor: "rgba(0,0,0,0.8)", opacity: 1 }}
-            exit={{ opacity: 0 }}
-            initial={{ opacity: 0 }}
-            user={user}
-            close={() => setIsPopupOpen(false)}
-          />
+          <PopupSettings user={user} close={() => setIsPopupOpen(false)} />
         )}
       </AnimatePresence>
     </>

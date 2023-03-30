@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import s from "../Sidebar.module.scss";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "src/firebase";
@@ -6,15 +6,47 @@ import { useAuth } from "src/context/AuthContext";
 import { ChatAction, useChat } from "src/context/ChatContext";
 
 import SingleChat from "components/Sidebar/Chats/SingleChat/SingleChat";
+import { useScrollbar } from "src/hooks/useScrollbar";
+import { useMatchMedia } from "src/hooks/useMatchMedia";
+import { Scrollbars } from "react-custom-scrollbars";
+
+interface ChatsObject {
+  [id: string]: Object;
+}
+
+interface Object {
+  userInfo: UserInfo;
+  date: Date;
+}
+
+interface UserInfo {
+  displayName: string;
+  photoURL: string;
+  uid: string;
+}
+
+interface Date {
+  seconds: number;
+  nanoseconds: number;
+}
+
+interface Chat {
+  date: Date;
+  userInfo: UserInfo;
+  lastMessage?: {
+    text: string;
+  };
+}
 
 interface Props {
   isOpen: boolean;
 }
+
 const Chats: React.FC<Props> = ({ isOpen }) => {
   const [selectedUser, setSelectedUser] = useState("");
   const { user } = useAuth();
   const { dispatch } = useChat();
-  const [chats, setChats] = React.useState<Root>({});
+  const [chats, setChats] = React.useState<ChatsObject>({});
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -26,38 +58,6 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
       unsub();
     };
   }, [user?.uid]);
-
-  interface Root {
-    [id: string]: Object;
-  }
-
-  interface Object {
-    userInfo: UserInfo;
-    date: Date;
-  }
-
-  interface UserInfo {
-    displayName: string;
-    photoURL: string;
-    uid: string;
-  }
-
-  interface Date {
-    seconds: number;
-    nanoseconds: number;
-  }
-
-  interface Chat {
-    date: Date;
-    userInfo: UserInfo;
-    lastMessage?: {
-      text: string;
-    };
-  }
-
-  if (Object.values(chats).length === 0) {
-    return null;
-  }
 
   console.log(Object.values(chats));
 
@@ -72,8 +72,11 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     (a, b) => b?.date?.seconds - a?.date?.seconds
   );
 
+  if (Object.values(chats).length === 0) {
+    return null;
+  }
   return (
-    <>
+    <div className={s.chats__container}>
       {renderChats.map((chat) => (
         <SingleChat
           isOpen={isOpen}
@@ -83,7 +86,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
           isSelected={selectedUser === chat.userInfo.uid}
         />
       ))}
-    </>
+    </div>
   );
 };
 

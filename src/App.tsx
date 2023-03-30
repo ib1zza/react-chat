@@ -1,4 +1,5 @@
 import "./App.css";
+import "overlayscrollbars/overlayscrollbars.css";
 import Register from "./pages/Register/Register";
 import "the-new-css-reset/css/reset.css";
 import Login from "./pages/Login/Login";
