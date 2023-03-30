@@ -10,7 +10,7 @@ import Modal from "components/Shared/Modal/Modal";
 import { AnimatePresence } from "framer-motion";
 
 interface Props {
-  data: { chatId: string; user: IUserInfo };
+  data: { chatId: string; user: IUserInfo | null };
   dispatch: React.Dispatch<{
     type: ChatAction;
     payload?: IUserInfo | undefined;
@@ -18,7 +18,7 @@ interface Props {
 }
 const Chat: React.FC<Props> = ({ data, dispatch }) => {
   const [modal, setModal] = React.useState(false);
-
+  if (!data.user) return null;
   return (
     <>
       <div className={s.chat}>

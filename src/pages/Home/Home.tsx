@@ -6,11 +6,12 @@ import { useChat } from "src/context/ChatContext";
 
 const Home = () => {
   const { data, dispatch } = useChat();
+
   return (
     <div className={s.home}>
       <div className={s.container}>
         <Sidebar />
-        {data?.user && <Chat data={data} dispatch={dispatch} />}
+        {data && <Chat data={data} dispatch={dispatch} />}
       </div>
     </div>
   );

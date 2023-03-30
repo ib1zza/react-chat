@@ -6,9 +6,6 @@ import { useAuth } from "src/context/AuthContext";
 import { ChatAction, useChat } from "src/context/ChatContext";
 
 import SingleChat from "components/Sidebar/Chats/SingleChat/SingleChat";
-import { useScrollbar } from "src/hooks/useScrollbar";
-import { useMatchMedia } from "src/hooks/useMatchMedia";
-import { Scrollbars } from "react-custom-scrollbars";
 
 interface ChatsObject {
   [id: string]: Object;
