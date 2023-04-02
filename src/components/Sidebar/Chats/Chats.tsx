@@ -6,7 +6,8 @@ import { useAuth } from "src/context/AuthContext";
 import { ChatAction, useChat } from "src/context/ChatContext";
 
 import SingleChat from "components/Sidebar/Chats/SingleChat/SingleChat";
-
+import { useNavigate, useParams } from "react-router-dom";
+import { AppRoutes } from "src/AppRoutes";
 interface ChatsObject {
   [id: string]: Object;
 }
@@ -40,10 +41,13 @@ interface Props {
 }
 
 const Chats: React.FC<Props> = ({ isOpen }) => {
+  let navigate = useNavigate();
+  const { chatId } = useParams();
   const [selectedUser, setSelectedUser] = useState("");
   const { user } = useAuth();
   const { dispatch } = useChat();
   const [chats, setChats] = React.useState<ChatsObject>({});
+  console.log("chatId from params: ", chatId);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -55,6 +59,20 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
       unsub();
     };
   }, [user?.uid]);
+
+  useEffect(() => {
+    if (chatId === selectedUser) return;
+    if (!chatId) return;
+    if (Object.keys(chats).length === 0) return;
+    if (!chats[chatId]) {
+      navigate(AppRoutes.Home, { replace: true });
+      console.log("no such chat", Object.keys(chats), chatId);
+      return;
+    }
+
+    console.log(chatId);
+    handleSelect(chats[chatId].userInfo);
+  }, [chatId, chats]);
 
   console.log(Object.values(chats));
 

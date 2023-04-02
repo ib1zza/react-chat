@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "./Chat.module.scss";
 import Messages from "./Messages/Messages";
 import InputPanel from "./InputPanel/InputPanel";
@@ -8,6 +8,8 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "components/Shared/Avatar/Avatar";
 import Modal from "components/Shared/Modal/Modal";
 import { AnimatePresence } from "framer-motion";
+import { AppRoutes } from "src/AppRoutes";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   data: { chatId: string; user: IUserInfo | null };
@@ -18,12 +20,24 @@ interface Props {
 }
 const Chat: React.FC<Props> = ({ data, dispatch }) => {
   const [modal, setModal] = React.useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data.chatId === "null") return;
+    navigate(AppRoutes.Chats + "/" + data.chatId, { replace: true });
+  }, [data.chatId]);
+
   if (!data.user) return null;
+  const exitChat = () => {
+    dispatch({ type: ChatAction.EXIT_CHAT });
+    navigate(AppRoutes.Home, { replace: true });
+  };
+
   return (
     <>
       <div className={s.chat}>
         <div className={s.chat__info}>
-          <button onClick={() => dispatch({ type: ChatAction.EXIT_CHAT })}>
+          <button onClick={exitChat}>
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <div className={s.username}>

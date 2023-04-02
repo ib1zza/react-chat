@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import s from "components/Sidebar/Sidebar.module.scss";
 import Avatar from "components/Shared/Avatar/Avatar";
-import chat from "components/Chat/Chat";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "src/firebase";
 import { Simulate } from "react-dom/test-utils";
-import select = Simulate.select;
 
 interface UserInfo {
   displayName: string;

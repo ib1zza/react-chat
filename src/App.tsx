@@ -14,6 +14,7 @@ interface Props {
   children: React.ReactNode;
   condition: boolean;
 }
+
 const ProtectedRoute: React.FC<Props> = ({ children, condition }) => {
   console.log(condition);
 
@@ -41,6 +42,14 @@ function App() {
           />
           <Route path={AppRoutes.Login} element={<Login />} />
           <Route path={AppRoutes.Register} element={<Register />} />
+          <Route
+            path={AppRoutes.Chats + "/:chatId"}
+            element={
+              <ProtectedRoute condition={!!user}>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>
