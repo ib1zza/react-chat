@@ -5,10 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 interface Props {
   children: React.ReactNode;
-  close: () => void;
+  close?: () => void;
+  noClose?: boolean;
 }
 const Modal: React.FC<Props> = forwardRef(
-  ({ close, children }, refer: ForwardedRef<HTMLDivElement>) => {
+  ({ close, children, noClose }, refer: ForwardedRef<HTMLDivElement>) => {
     return (
       <motion.div
         ref={refer}
@@ -28,9 +29,11 @@ const Modal: React.FC<Props> = forwardRef(
           initial={{ x: -300 }}
           exit={{ x: 300 }}
         >
-          <button className={s.close} onClick={close}>
-            <FontAwesomeIcon icon={faXmark} />
-          </button>
+          {!noClose && (
+            <button className={s.close} onClick={close}>
+              <FontAwesomeIcon icon={faXmark} />
+            </button>
+          )}
           {children}
         </motion.div>
       </motion.div>

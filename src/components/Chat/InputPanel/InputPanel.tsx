@@ -82,6 +82,7 @@ const InputPanel = () => {
     await updateDoc(doc(db, "userChats", user.uid), {
       [data.chatId + ".lastMessage"]: {
         text: inputData || "Вложение",
+        from: user.uid,
       },
       [data.chatId + ".date"]: serverTimestamp(),
     });
@@ -89,6 +90,7 @@ const InputPanel = () => {
     await updateDoc(doc(db, "userChats", data.user.uid), {
       [data.chatId + ".lastMessage"]: {
         text: inputData || "Вложение",
+        from: user.uid,
       },
       [data.chatId + ".date"]: serverTimestamp(),
     });

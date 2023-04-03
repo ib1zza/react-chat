@@ -7,7 +7,7 @@ import { ChatAction, useChat } from "src/context/ChatContext";
 
 import SingleChat from "components/Sidebar/Chats/SingleChat/SingleChat";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppRoutes } from "src/AppRoutes";
+import { AppRoute } from "src/Routes";
 interface ChatsObject {
   [id: string]: Object;
 }
@@ -33,6 +33,7 @@ interface Chat {
   userInfo: UserInfo;
   lastMessage?: {
     text: string;
+    from?: string;
   };
 }
 
@@ -65,7 +66,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     if (!chatId) return;
     if (Object.keys(chats).length === 0) return;
     if (!chats[chatId]) {
-      navigate(AppRoutes.Home, { replace: true });
+      navigate(AppRoute.Home, { replace: true });
       console.log("no such chat", Object.keys(chats), chatId);
       return;
     }
@@ -90,13 +91,16 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
   if (Object.values(chats).length === 0) {
     return null;
   }
+
+  if (!user) return null;
   return (
     <div className={s.chats__container}>
       {renderChats.map((chat) => (
         <SingleChat
+          currentUser={user.uid}
           isOpen={isOpen}
           user={chat.userInfo}
-          lastMessage={chat.lastMessage?.text}
+          lastMessage={chat.lastMessage}
           handleSelect={handleSelect}
           isSelected={selectedUser === chat.userInfo.uid}
         />
