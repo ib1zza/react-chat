@@ -16,7 +16,7 @@ import { useAuth } from "src/context/AuthContext";
 import { updateDocument } from "src/utils/updateDoc";
 import { motion } from "framer-motion";
 import { useAppDispatch } from "src/store/hooks";
-import { editUser } from "src/store/slices/userSlice";
+import { editUser, removeUser } from "src/store/slices/userSlice";
 interface Props {
   user: User;
   close: () => void;
@@ -90,6 +90,12 @@ const PopupSettings: React.FC<Props> = forwardRef(
       console.log(file);
       handleUpdateAvatar();
     }, [file]);
+
+    const signOutHandler = () => {
+      signOut(auth).then(() => {
+        dispatch(removeUser());
+      });
+    };
 
     return (
       <motion.div
