@@ -4,6 +4,7 @@ import { AppRoute } from "src/routes";
 import Login from "src/pages/Login/Login";
 import Register from "src/pages/Register/Register";
 import { Navigate, Route, Routes } from "react-router-dom";
+import FullscreenLoader from "components/Shared/FullscreenLoader/FullscreenLoader";
 
 const protectedRoutes = [
   {
@@ -27,10 +28,13 @@ const publicRoutes = [
   },
 ];
 
-const AppRouter: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
+const AppRouter: React.FC<{ isAuth: boolean; loading: boolean }> = ({
+  isAuth,
+  loading,
+}) => {
   return (
     <Routes>
-      {isAuth ? (
+      {!loading && isAuth ? (
         <>
           {protectedRoutes.map(({ path, element }) => (
             <Route key={path} path={path} element={element} />
@@ -42,8 +46,10 @@ const AppRouter: React.FC<{ isAuth: boolean }> = ({ isAuth }) => {
           {publicRoutes.map(({ path, element }) => (
             <Route key={path} path={path} element={element} />
           ))}
+          <Route path={"*"} element={<Navigate to={AppRoute.Login} />} />
         </>
       )}
+      {loading && <Route path="*" element={<FullscreenLoader />} />}
     </Routes>
   );
 };
