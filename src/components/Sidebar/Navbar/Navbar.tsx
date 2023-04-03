@@ -16,6 +16,7 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { user, userInfo } = useAuth();
 
+  if (!userInfo) return null;
   return (
     <>
       <div className={s.navbar}>

@@ -8,7 +8,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "components/Shared/Avatar/Avatar";
 import Modal from "components/Shared/Modal/Modal";
 import { AnimatePresence } from "framer-motion";
-import { AppRoute } from "src/Routes";
+import { AppRoute } from "src/routes";
 import { useNavigate } from "react-router-dom";
 
 interface Props {

@@ -7,7 +7,7 @@ import { ChatAction, useChat } from "src/context/ChatContext";
 
 import SingleChat from "components/Sidebar/Chats/SingleChat/SingleChat";
 import { useNavigate, useParams } from "react-router-dom";
-import { AppRoute } from "src/Routes";
+import { AppRoute } from "src/routes";
 interface ChatsObject {
   [id: string]: Object;
 }

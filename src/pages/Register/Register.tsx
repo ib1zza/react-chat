@@ -7,7 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Link, useNavigate } from "react-router-dom";
-import { AppRoute } from "src/Routes";
+import { AppRoute } from "src/routes";
 
 const Register = () => {
   const navigate = useNavigate();

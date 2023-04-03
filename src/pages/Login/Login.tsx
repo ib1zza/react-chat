@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { auth } from "src/firebase";
 
-import { AppRoute } from "src/Routes";
+import { AppRoute } from "src/routes";
 
 import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { updateDocument } from "src/utils/updateDoc";
