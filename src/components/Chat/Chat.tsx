@@ -8,7 +8,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "components/Shared/Avatar/Avatar";
 import Modal from "components/Shared/Modal/Modal";
 import { AnimatePresence } from "framer-motion";
-import { AppRoutes } from "src/AppRoutes";
+import { AppRoute } from "src/Routes";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -24,13 +24,13 @@ const Chat: React.FC<Props> = ({ data, dispatch }) => {
 
   useEffect(() => {
     if (data.chatId === "null") return;
-    navigate(AppRoutes.Chats + "/" + data.chatId, { replace: true });
+    navigate(AppRoute.Chats + "/" + data.chatId, { replace: true });
   }, [data.chatId]);
 
   if (!data.user) return null;
   const exitChat = () => {
     dispatch({ type: ChatAction.EXIT_CHAT });
-    navigate(AppRoutes.Home, { replace: true });
+    navigate(AppRoute.Home, { replace: true });
   };
 
   return (

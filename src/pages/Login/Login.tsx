@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { auth } from "src/firebase";
 
-import { AppRoutes } from "src/AppRoutes";
+import { AppRoute } from "src/Routes";
 
 import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { updateDocument } from "src/utils/updateDoc";
@@ -16,7 +16,7 @@ const Login = () => {
   const [error, setError] = React.useState(false);
   const { user } = useAuth();
   if (user) {
-    navigate(AppRoutes.Home, { replace: true });
+    navigate(AppRoute.Home, { replace: true });
   }
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -42,7 +42,7 @@ const Login = () => {
           });
         }
       });
-      navigate(AppRoutes.Home, { replace: true });
+      navigate(AppRoute.Home, { replace: true });
     } catch (error) {
       setError(true);
     }
@@ -61,7 +61,7 @@ const Login = () => {
         </form>
         <p>
           You don't have an account?{" "}
-          <Link to={AppRoutes.Register}>Register</Link>
+          <Link to={AppRoute.Register}>Register</Link>
         </p>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Link, useNavigate } from "react-router-dom";
-import { AppRoutes } from "src/AppRoutes";
+import { AppRoute } from "src/Routes";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ const Register = () => {
           });
         }
       );
-      navigate(AppRoutes.Home);
+      navigate(AppRoute.Home);
     } catch (error) {
       setError(true);
     }
@@ -97,7 +97,7 @@ const Register = () => {
           {error && <p className={s.error__message}>Something went wrong.</p>}
         </form>
         <p>
-          You already have an account? <Link to={AppRoutes.Login}>Log in</Link>
+          You already have an account? <Link to={AppRoute.Login}>Log in</Link>
         </p>
       </div>
     </div>

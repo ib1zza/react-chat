@@ -11,9 +11,13 @@ interface UserInfo {
   uid: string;
 }
 interface Props {
+  currentUser: string;
   isOpen: boolean;
   user: UserInfo;
-  lastMessage?: string;
+  lastMessage?: {
+    text: string;
+    from?: string;
+  };
   handleSelect: (selectedUser: UserInfo) => void;
   isSelected: boolean;
 }
@@ -23,9 +27,11 @@ const SingleChat: React.FC<Props> = ({
   lastMessage,
   isOpen,
   handleSelect,
+  currentUser,
 }) => {
   console.log(isSelected, user.uid);
   const [realUser, setRealUser] = useState<UserInfo>();
+
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "users", user.uid), (doc) => {
       console.log("chat: ", doc.data());
@@ -62,7 +68,15 @@ const SingleChat: React.FC<Props> = ({
         {isOpen && (
           <div className={s.chat__user__info}>
             <span>{realUser.displayName}</span>
-            <p>{lastMessage}</p>
+            {lastMessage && (
+              <p>
+                {(lastMessage?.from
+                  ? lastMessage.from === currentUser
+                    ? "Вы: "
+                    : ""
+                  : "") + lastMessage.text}
+              </p>
+            )}
           </div>
         )}
       </div>

@@ -45,7 +45,7 @@ const userSlice = createSlice({
       state.email = "";
       state.photoURL = "";
       state.isAuth = false;
-      state.loading = true;
+      state.loading = false;
     },
   },
 });
