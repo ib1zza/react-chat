@@ -72,7 +72,7 @@
     position: static;
     flex: 0;
     width: 90px;
-    flex-basis: 80px;
+    flex-basis: 90px;
     overflow: hidden;
 
     .navbar {
@@ -102,6 +102,7 @@
 
 .chat__user {
   width: 100%;
+  min-width: 80px;
   display: flex;
   padding: 10px;
   align-items: center;

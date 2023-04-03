@@ -133,7 +133,11 @@ const Search: React.FC = () => {
       {error && <div className={s.error}>User not found</div>}
       {searchedUsers &&
         searchedUsers.map((el) => (
-          <div className={s.chat__user} onClick={() => handleSelect(el)}>
+          <div
+            key={el.uid}
+            className={s.chat__user}
+            onClick={() => handleSelect(el)}
+          >
             <img src={el.photoURL || ""} alt={el.displayName || ""} />
             <div className={s.chat__user__info}>
               <span>{el.displayName}</span>

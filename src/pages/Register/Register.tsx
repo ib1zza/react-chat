@@ -11,6 +11,7 @@ import { AppRoutes } from "src/AppRoutes";
 
 const Register = () => {
   const navigate = useNavigate();
+
   const [error, setError] = useState(false);
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();

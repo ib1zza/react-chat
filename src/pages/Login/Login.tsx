@@ -8,12 +8,16 @@ import { auth } from "src/firebase";
 import { AppRoutes } from "src/AppRoutes";
 
 import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { setDoc } from "firebase/firestore";
 import { updateDocument } from "src/utils/updateDoc";
+import { useAuth } from "src/context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = React.useState(false);
+  const { user } = useAuth();
+  if (user) {
+    navigate(AppRoutes.Home, { replace: true });
+  }
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
