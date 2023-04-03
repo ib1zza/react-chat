@@ -4,8 +4,7 @@ import s from "../../Chat.module.scss";
 import { IMessage } from "../Messages";
 import { useChat } from "src/context/ChatContext";
 import { useAuth } from "src/context/AuthContext";
-
-import Avatar from "components/Shared/Avatar/Avatar";
+import { formatRelative } from "date-fns";
 interface Props {
   message: IMessage;
 }
@@ -31,6 +30,11 @@ const Message: React.FC<Props> = ({ message }) => {
       }
     >
       <div className={s.message__content}>
+        {message.date && (
+          <div className={s.message__date}>
+            {formatRelative(message.date.seconds * 1000, Date.now())}
+          </div>
+        )}
         {message.text && <p>{message.text}</p>}
         {message.image && <img src={message.image} alt={message.senderId} />}
       </div>

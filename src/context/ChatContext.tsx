@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import { useAuth } from "src/context/AuthContext";
+import { useParams } from "react-router-dom";
 export enum ChatAction {
   CHANGE_USER = "CHANGE_USER",
   EXIT_CHAT = "EXIT_CHAT",
@@ -32,7 +33,8 @@ export interface IUserInfo {
 }
 
 export const ChatProvider: React.FC<Props> = ({ children }) => {
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, userInfo, loading } = useAuth();
+  const { chatId } = useParams();
   const initialState: { chatId: string; user: IUserInfo | null } = {
     chatId: "null",
     user: null,
