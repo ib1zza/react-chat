@@ -15,13 +15,15 @@ import TextField from "components/Sidebar/PopupSettings/TextField/TextField";
 import { useAuth } from "src/context/AuthContext";
 import { updateDocument } from "src/utils/updateDoc";
 import { motion } from "framer-motion";
+import { useAppDispatch } from "src/store/hooks";
+import { editUser } from "src/store/slices/userSlice";
 interface Props {
   user: User;
   close: () => void;
 }
 const PopupSettings: React.FC<Props> = forwardRef(
   ({ user, close }, refer: ForwardedRef<HTMLDivElement | null>) => {
-    const { setUserInfo } = useAuth();
+    const dispatch = useAppDispatch();
     const [file, setFile] = React.useState<File | null>(null);
     const [isActiveImage, setIsActiveImage] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -37,7 +39,7 @@ const PopupSettings: React.FC<Props> = forwardRef(
       await updateDocument("users", user.uid, { displayName: name });
       await updateProfile(user, {
         displayName: name,
-      }).then(() => setUserInfo((prev) => ({ ...prev, displayName: name })));
+      }).then(() => dispatch(editUser({ displayName: name })));
     };
 
     const handleUpdateAvatar = async () => {
@@ -73,10 +75,11 @@ const PopupSettings: React.FC<Props> = forwardRef(
             }).then(() => {
               setLoading(false);
               setIsActiveImage(false);
-              setUserInfo((prevState) => ({
-                ...prevState,
-                photoURL: downloadURL,
-              }));
+              dispatch(
+                editUser({
+                  photoURL: downloadURL,
+                })
+              );
             });
           });
         }
