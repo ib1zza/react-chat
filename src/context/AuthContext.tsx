@@ -3,7 +3,12 @@ import { auth, db } from "src/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { User } from "firebase/auth";
 import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { addUser, removeUser } from "src/store/slices/userSlice";
+import {
+  addUser,
+  removeUser,
+  authUser,
+  unAuthUser,
+} from "src/store/slices/userSlice";
 
 interface AuthContext {
   user: User | null;
@@ -35,9 +40,10 @@ export interface UserInfo {
 }
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = React.useState<User | null>(null);
   const dispatch = useAppDispatch();
-  const storedUser = useAppSelector((state) => state.user);
+  const { authUser: user, displayUser: storedUser } = useAppSelector(
+    (state) => state.user
+  );
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       console.log("auth user ", user);
@@ -51,9 +57,9 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
             uid,
           })
         );
-        setUser(user);
+        dispatch(authUser(user));
       } else {
-        setUser(null);
+        dispatch(unAuthUser());
         dispatch(removeUser());
       }
     });
@@ -65,7 +71,11 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: user, userInfo: storedUser, loading: storedUser.loading }}
+      value={{
+        user,
+        userInfo: storedUser,
+        loading: storedUser.loading,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type User = {
+import { User } from "firebase/auth";
+type DisplayUser = {
   uid: string;
   displayName: string;
   email: string;
@@ -8,48 +8,64 @@ type User = {
 };
 
 type Userkeys = {
-  [key in keyof User]?: User[key];
+  [key in keyof DisplayUser]?: DisplayUser[key];
 };
 
-const initialState: User & { isAuth: boolean; loading: boolean } = {
-  uid: "",
-  isAuth: false,
-  displayName: "",
-  email: "",
-  loading: true,
+interface IState {
+  displayUser: DisplayUser & { isAuth: boolean; loading: boolean };
+  authUser: User | null;
+}
+
+const initialState: IState = {
+  displayUser: {
+    uid: "",
+    isAuth: false,
+    displayName: "",
+    email: "",
+    loading: true,
+  },
+  authUser: null,
 };
 const userSlice = createSlice({
   name: "userSlice",
   initialState,
   reducers: {
-    addUser: (state, action: PayloadAction<User>) => {
-      if (action.payload.photoURL) state.photoURL = action.payload.photoURL;
-      state.displayName = action.payload.displayName;
-      state.email = action.payload.email;
-      state.isAuth = true;
-      state.uid = action.payload.uid;
-      state.loading = false;
+    authUser: (state, action: PayloadAction<User>) => {
+      state.authUser = action.payload;
+    },
+    unAuthUser: (state) => {
+      state.authUser = null;
+    },
+    addUser: (state, action: PayloadAction<DisplayUser>) => {
+      if (action.payload.photoURL)
+        state.displayUser.photoURL = action.payload.photoURL;
+      state.displayUser.displayName = action.payload.displayName;
+      state.displayUser.email = action.payload.email;
+      state.displayUser.isAuth = true;
+      state.displayUser.uid = action.payload.uid;
+      state.displayUser.loading = false;
     },
     editUser: (state, action: PayloadAction<Userkeys>) => {
       for (const key in action.payload) {
         if (Object.prototype.hasOwnProperty.call(action.payload, key)) {
           const value = action.payload[key as keyof Userkeys];
           if (value !== undefined) {
-            state[key as keyof User] = value;
+            state.displayUser[key as keyof DisplayUser] = value;
           }
         }
       }
     },
     removeUser: (state) => {
-      state.displayName = "";
-      state.email = "";
-      state.photoURL = "";
-      state.isAuth = false;
-      state.loading = false;
+      state.displayUser.displayName = "";
+      state.displayUser.email = "";
+      state.displayUser.photoURL = "";
+      state.displayUser.isAuth = false;
+      state.displayUser.loading = false;
     },
   },
 });
 
-export const { removeUser, addUser, editUser } = userSlice.actions;
+export const { removeUser, addUser, editUser, unAuthUser, authUser } =
+  userSlice.actions;
 
 export default userSlice.reducer;
