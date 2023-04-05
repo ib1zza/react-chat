@@ -18,6 +18,7 @@ export interface IMessage {
 const Messages = () => {
   const [messages, setMessages] = React.useState<any[]>([]);
   const { data } = useChat();
+  const endRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!data?.chatId) return;
@@ -33,6 +34,12 @@ const Messages = () => {
     };
   }, [data?.chatId]);
 
+  useEffect(() => {
+    if (endRef.current) {
+      endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, [messages.length]);
+
   console.log(messages);
   return (
     // {messages.map()}
@@ -40,6 +47,7 @@ const Messages = () => {
       {messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
+      <div ref={endRef} />
     </div>
   );
 };
