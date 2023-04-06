@@ -15,6 +15,20 @@ $main-bg-color: #a7bcff;
   gap: 10px;
   padding: 20px 60px;
 
+  .googleLogin {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    font-weight: bold;
+    background: #4285F4;
+    color: white;
+  }
+
 
   background-color: #ffffff;
   border-radius: 10px;

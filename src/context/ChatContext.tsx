@@ -33,8 +33,8 @@ export interface IUserInfo {
 }
 
 export const ChatProvider: React.FC<Props> = ({ children }) => {
-  const { user: currentUser, userInfo, loading } = useAuth();
-  const { chatId } = useParams();
+  const { user: currentUser } = useAuth();
+
   const initialState: { chatId: string; user: IUserInfo | null } = {
     chatId: "null",
     user: null,

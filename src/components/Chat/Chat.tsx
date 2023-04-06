@@ -77,6 +77,7 @@ const Chat: React.FC<Props> = ({ data, dispatch }) => {
             className={s.avatar}
             src={data.user.photoURL}
             onClick={() => setModal(true)}
+            displayName={data.user.displayName}
           />
         </div>
         <Messages />
