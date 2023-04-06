@@ -14,8 +14,9 @@ import { updateDocument } from "src/utils/updateDoc";
 import { deleteField, doc, deleteDoc } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAppSelector } from "src/store/hooks";
+
 interface Props {
-  data: { chatId: string; user: IUserInfo | null };
+  data: { chatId: string; user: IUserInfo };
   dispatch: React.Dispatch<{
     type: ChatAction;
     payload?: IUserInfo | undefined;
@@ -25,38 +26,37 @@ const Chat: React.FC<Props> = ({ data, dispatch }) => {
   const [modal, setModal] = React.useState(false);
   const navigate = useNavigate();
   const { uid } = useAppSelector((state) => state.user.displayUser);
+
   useEffect(() => {
     if (data.chatId === "null") return;
     navigate(AppRoute.Chats + "/" + data.chatId, { replace: true });
   }, [data.chatId]);
 
-  if (!data.user) return null;
   const exitChat = () => {
     dispatch({ type: ChatAction.EXIT_CHAT });
     navigate(AppRoute.Home, { replace: true });
   };
 
   const handleDeleteChat = () => {
-    if (!data.user?.uid || !uid || data.user === null) return;
-
-    if (data.chatId === "null") return;
+    if (!data.user?.uid || !uid || data.user === null || data.chatId === "null")
+      return;
     try {
       let chatId = data.chatId;
       let selUserId = data.user.uid;
-      updateDocument("chats", data.chatId, {
+      updateDocument("chats", chatId, {
         messages: deleteField(),
       })
         .then(() => {
-          deleteDoc(doc(db, "chats", "" + chatId));
+          deleteDoc(doc(db, "chats", chatId));
           updateDocument("userChats", selUserId, {
-            [uid]: deleteField(),
+            [chatId]: deleteField(),
           });
           updateDocument("userChats", uid, {
-            [selUserId]: deleteField(),
+            [chatId]: deleteField(),
           });
         })
         .then(() => {
-          dispatch({ type: ChatAction.EXIT_CHAT });
+          exitChat();
         });
     } catch (error) {
       console.log(error);
@@ -94,7 +94,10 @@ const Chat: React.FC<Props> = ({ data, dispatch }) => {
             <div className={s.modal__header}>
               <span>{data.user.displayName}</span>
             </div>
-            <button onClick={handleDeleteChat}>Delete chat</button>
+
+            <button className={s.detele__chat} onClick={handleDeleteChat}>
+              Delete chat
+            </button>
           </Modal>
         )}
       </AnimatePresence>

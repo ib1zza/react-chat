@@ -219,6 +219,20 @@
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
+
+}
+
+
+.detele__chat {
+  padding: 10px 20px;
+  background-color: #3e3c61;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+
+  &:hover {
+      background-color: #d4215f;
+  }
 }
 .modal__body__avatar {
   width: 300px;

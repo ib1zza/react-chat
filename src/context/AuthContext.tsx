@@ -9,6 +9,8 @@ import {
   authUser,
   unAuthUser,
 } from "src/store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
+import { AppRoute } from "src/routes";
 
 interface AuthContext {
   user: User | null;
@@ -40,6 +42,7 @@ export interface UserInfo {
 }
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { authUser: user, displayUser: storedUser } = useAppSelector(
     (state) => state.user
@@ -58,6 +61,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
           })
         );
         dispatch(authUser(user));
+        navigate(AppRoute.Home, { replace: false });
       } else {
         dispatch(unAuthUser());
         dispatch(removeUser());

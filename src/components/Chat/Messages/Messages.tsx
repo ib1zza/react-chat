@@ -24,7 +24,7 @@ const Messages = () => {
     if (!data?.chatId) return;
     const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
       if (doc.exists()) {
-        setMessages(doc.data().messages);
+        setMessages(doc.data().messages || []);
         console.log(doc.data());
       }
     });

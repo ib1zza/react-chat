@@ -11,7 +11,8 @@ const Home = () => {
     <div className={s.home}>
       <div className={s.container}>
         <Sidebar />
-        {data && <Chat data={data} dispatch={dispatch} />}
+        {/*@ts-ignore*/}
+        {data && data.user && <Chat data={data} dispatch={dispatch} />}
       </div>
     </div>
   );

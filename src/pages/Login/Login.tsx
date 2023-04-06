@@ -42,7 +42,7 @@ const Login = () => {
           });
         }
       });
-      navigate(AppRoute.Home, { replace: true });
+      navigate(AppRoute.Home, { replace: false });
     } catch (error) {
       setError(true);
     }
