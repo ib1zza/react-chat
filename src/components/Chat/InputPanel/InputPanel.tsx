@@ -17,7 +17,6 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { faFile, faFileExcel } from "@fortawesome/free-regular-svg-icons";
-import { AnimatePresence } from "framer-motion";
 const InputPanel = () => {
   const [input, setInput] = React.useState("");
   const [file, setFile] = React.useState<File | null>(null);

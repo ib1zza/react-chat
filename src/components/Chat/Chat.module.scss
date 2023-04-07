@@ -18,7 +18,6 @@
   }
 }
 
-
 // Chat styles
 
 .chat {
@@ -35,10 +34,9 @@
     flex-shrink: 0;
     flex-grow: 0;
     height: 70px;
-    background-color: #5d5b8d;
+    background-color: var(#{--chatInfo-bg-default});
     padding: 10px;
     color: lightgray;
-
 
     button {
       text-align: center;
@@ -59,7 +57,6 @@
         font-size: 24px;
         font-weight: bold;
       }
-
     }
 
     .avatar {
@@ -67,7 +64,6 @@
       flex-basis: 50px;
       height: 50px;
       flex-grow: 0;
-
     }
   }
 
@@ -75,7 +71,7 @@
 
   .messages {
     flex-grow: 1;
-    background-color: #ddddf7;
+    background-color: var(#{--chat-bg-default});
     padding: 10px;
     overflow-y: auto;
 
@@ -105,8 +101,9 @@
         display: flex;
         flex-direction: column-reverse;
         overflow: hidden;
-        border: 1px solid lightgray;
-        background-color: white;
+        border: 1px solid rgba(211, 211, 211, 0.22);
+        background-color: var(#{--message-friend-bg-default});
+        color: var(#{--text-main-default});
 
         p {
           width: 100%;
@@ -121,9 +118,9 @@
         }
 
         .message__date {
-          padding: 5px 10px ;
+          padding: 5px 10px;
           font-size: 12px;
-          color: lightgray;
+          color: #838383;
         }
       }
 
@@ -132,17 +129,14 @@
 
         .message__content {
           align-items: flex-end;
-          background-color: #8da4f1;
+          background-color: var(#{--message-owner-bg-default});
           border-radius: 10px 0 10px 10px;
         }
 
         p {
           background-color: transparent;
-          color: white;
           text-align: right;
         }
-        
-        
       }
     }
   }
@@ -151,7 +145,7 @@
 
   .input {
     height: 50px;
-    background-color: white;
+    background-color: var(#{--chatInput-bg-default});
     flex-grow: 0;
     display: flex;
     align-items: center;
@@ -161,6 +155,7 @@
     font-size: 18px;
 
     & > .text {
+      color: var(#{--text-main-default});
       @include mobile {
         width: calc(100% - 110px);
       }
@@ -190,16 +185,16 @@
         margin-right: 10px;
         width: 24px;
         font-size: 30px;
-        color: #3e3c61;
+        color: var(#{--text-main-default});
         cursor: pointer;
       }
 
       button {
         padding: 10px 15px;
-        color: white;
+        color: var(#{--text-main-default});
         border-radius: 15px;
         margin-right: 10px;
-        background-color: #8da4f1;
+        background-color: var(#{--message-owner-bg-default});
       }
 
       input {
@@ -214,14 +209,11 @@
   font-size: 30px;
 }
 
-
 .modal__body {
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
-
 }
-
 
 .detele__chat {
   padding: 10px 20px;
@@ -231,9 +223,10 @@
   cursor: pointer;
 
   &:hover {
-      background-color: #d4215f;
+    background-color: #d4215f;
   }
 }
+
 .modal__body__avatar {
   width: 300px;
   height: 300px;

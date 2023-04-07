@@ -7,14 +7,17 @@ import { ChatProvider } from "src/context/ChatContext";
 import { Provider } from "react-redux";
 import store from "src/store/store";
 import { BrowserRouter } from "react-router-dom";
+import ThemeProvider from "src/context/ThemeContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
     <BrowserRouter>
       <AuthProvider>
-        <ChatProvider>
-          <App />
-        </ChatProvider>
+        <ThemeProvider>
+          <ChatProvider>
+            <App />
+          </ChatProvider>
+        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   </Provider>

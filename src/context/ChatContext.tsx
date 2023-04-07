@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { memo, useReducer } from "react";
 import { useAuth } from "src/context/AuthContext";
 import { useParams } from "react-router-dom";
 export enum ChatAction {
@@ -32,7 +32,7 @@ export interface IUserInfo {
   };
 }
 
-export const ChatProvider: React.FC<Props> = ({ children }) => {
+export const ChatProvider: React.FC<Props> = memo(({ children }) => {
   const { user: currentUser } = useAuth();
 
   const initialState: { chatId: string; user: IUserInfo | null } = {
@@ -75,4 +75,4 @@ export const ChatProvider: React.FC<Props> = ({ children }) => {
       {children}
     </ChatContext.Provider>
   );
-};
+});
