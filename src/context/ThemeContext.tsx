@@ -31,6 +31,7 @@ const ThemeProvider: React.FC<Props> = ({ children, ...props }) => {
   const [theme, setTheme] = useState<Theme>(
     storage.getItem("react-chat/theme") || Theme.LIGHT
   );
+  console.log("themeprovider rerender", theme);
 
   const toggleTheme = () => {
     const propsTheme = theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;

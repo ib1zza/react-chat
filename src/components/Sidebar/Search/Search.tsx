@@ -35,15 +35,14 @@ const Search: React.FC = () => {
     );
     try {
       const querySnapshot = await getDocs(q);
+      let newArray: UserInfo[] = [];
       querySnapshot.forEach((doc) => {
-        console.log("query res - ", doc.data());
         if (doc.data() !== null) {
-          setSearchedUsers((prevState) => [
-            ...prevState,
-            doc.data() as UserInfo,
-          ]);
+          newArray.push(doc.data() as UserInfo);
         }
       });
+      console.log("searched users: ", newArray);
+      setSearchedUsers(newArray);
     } catch (error) {
       console.log(error);
       setError(true);

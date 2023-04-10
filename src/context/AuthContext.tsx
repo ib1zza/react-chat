@@ -47,6 +47,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   const { authUser: user, displayUser: storedUser } = useAppSelector(
     (state) => state.user
   );
+  console.log("auth provider changed");
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       console.log("auth user ", user);

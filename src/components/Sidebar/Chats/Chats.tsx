@@ -97,6 +97,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     <div className={s.chats__container}>
       {renderChats.map((chat) => (
         <SingleChat
+          key={chat.userInfo.uid}
           currentUser={user.uid}
           isOpen={isOpen}
           user={chat.userInfo}
