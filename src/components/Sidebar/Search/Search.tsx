@@ -18,8 +18,11 @@ import { ChatAction, useChat } from "src/context/ChatContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { RotatingLines } from "react-loader-spinner";
+import { useTranslation } from "react-i18next";
 
 const Search: React.FC = () => {
+  const { t, i18n } = useTranslation();
+
   const { user: currentUser } = useAuth();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchedUsers, setSearchedUsers] = React.useState<UserInfo[]>([]);
@@ -105,7 +108,7 @@ const Search: React.FC = () => {
       <div className={s.searchForm}>
         <input
           type="text"
-          placeholder="Search"
+          placeholder={t("search") as string}
           value={searchQuery}
           onKeyDown={handleEnter}
           onChange={(e) => {

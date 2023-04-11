@@ -4,6 +4,7 @@ import Avatar from "components/Shared/Avatar/Avatar";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "src/firebase";
 import { Simulate } from "react-dom/test-utils";
+import { useTranslation } from "react-i18next";
 
 interface UserInfo {
   displayName: string;
@@ -30,6 +31,7 @@ const SingleChat: React.FC<Props> = ({
   currentUser,
 }) => {
   console.log(isSelected, user.uid);
+  const { t } = useTranslation();
   const [realUser, setRealUser] = useState<UserInfo>();
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const SingleChat: React.FC<Props> = ({
               <p>
                 {(lastMessage?.from
                   ? lastMessage.from === currentUser
-                    ? "Вы: "
+                    ? t("you")
                     : ""
                   : "") + lastMessage.text}
               </p>

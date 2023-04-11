@@ -25,10 +25,9 @@ $main-bg-color: #a7bcff;
     padding: 10px;
     width: 100%;
     font-weight: bold;
-    background: #4285F4;
+    background: #4285f4;
     color: white;
   }
-
 
   background-color: #ffffff;
   border-radius: 10px;
@@ -38,10 +37,10 @@ $main-bg-color: #a7bcff;
     display: flex;
     flex-direction: column;
     gap: 15px;
-  .error__message {
-    color: red;
-    font-size: 14px;
-  }
+    .error__message {
+      color: red;
+      font-size: 14px;
+    }
     input {
       padding: 15px;
       border: none;
@@ -60,7 +59,6 @@ $main-bg-color: #a7bcff;
       border: none;
       cursor: pointer;
       text-align: center;
-
     }
 
     label {
@@ -77,16 +75,21 @@ $main-bg-color: #a7bcff;
 
     .file {
       display: none;
-
     }
-
   }
   p {
     color: #5d5b8d;
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 10px;
-  }
 
+    a {
+      color: #1e1d2e;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 
   .form__logo {
     font-weight: bold;
@@ -97,5 +100,29 @@ $main-bg-color: #a7bcff;
   .form__title {
     color: #5d5b8d;
     font-size: 12px;
+  }
+}
+
+.changeLanguage {
+  display: flex;
+  gap: 10px;
+
+  button {
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    //background-color: var(#{--body-bg-default});
+    background: #8da4f1;
+    color: var(#{--text-main-default});
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &.active {
+      border: 4px solid #3e3c61;
+    }
   }
 }

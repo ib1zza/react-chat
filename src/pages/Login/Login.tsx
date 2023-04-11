@@ -6,7 +6,11 @@ import { useAuth } from "src/context/AuthContext";
 import { loginByEmailPass, loginByGoogle } from "src/utils/Createuser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { useTranslation } from "react-i18next";
+import { langs } from "src/i18n";
+import i18n from "i18next";
 const Login = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [error, setError] = React.useState(false);
   const { user } = useAuth();
@@ -42,21 +46,38 @@ const Login = () => {
     <div className={s.form__container}>
       <div className={s.form__wrapper}>
         <h1 className={s.form__logo}>React-Chat</h1>
-        <h1 className={s.form__title}>Log in</h1>
+        <h1 className={s.form__title}>{t("log in")}</h1>
         <form onSubmit={handleSubmit}>
-          <input type="email" placeholder="email" required />
-          <input type="password" placeholder="password" required />
+          <input type="email" placeholder="Email" required />
+          <input
+            type="password"
+            placeholder={t("password") as string}
+            required
+          />
 
-          <button type="submit">Sign in</button>
+          <button type="submit">{t("sign in")}</button>
           {error && <p className={s.error__message}>Wrong email or password</p>}
         </form>
         <button className={s.googleLogin} onClick={handleGoogle}>
-          <span>Sign in using Google</span> <FontAwesomeIcon icon={faGoogle} />
+          <span>{t("sign in google")}</span> <FontAwesomeIcon icon={faGoogle} />
         </button>
         <p>
-          You don't have an account?{" "}
-          <Link to={AppRoute.Register}>Register</Link>
+          {t("dont have an acc?")}{" "}
+          <Link to={AppRoute.Register}>{t("register")}</Link>
         </p>
+        <div className={s.changeLanguage}>
+          {langs.map((lang) => (
+            <button
+              key={lang}
+              className={
+                s.lang + " " + (i18n.resolvedLanguage == lang ? s.active : "")
+              }
+              onClick={() => i18n.changeLanguage(lang)}
+            >
+              {lang}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

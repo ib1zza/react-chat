@@ -87,12 +87,13 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     // @ts-ignore
     (a, b) => b?.date?.seconds - a?.date?.seconds
   );
+  console.log(renderChats);
 
   if (Object.values(chats).length === 0) {
     return null;
   }
 
-  if (!user) return null;
+  if (!user || !renderChats) return null;
   return (
     <div className={s.chats__container}>
       {renderChats.map((chat) => (

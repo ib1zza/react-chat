@@ -144,7 +144,7 @@
   // Chat input section
 
   .input {
-    height: 50px;
+    height: 60px;
     background-color: var(#{--chatInput-bg-default});
     flex-grow: 0;
     display: flex;
@@ -207,6 +207,7 @@
 .modal__header {
   text-align: center;
   font-size: 30px;
+  color: var(#{--text-main-default});
 }
 
 .modal__body {

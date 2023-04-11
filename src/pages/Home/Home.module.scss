@@ -1,3 +1,9 @@
+body {
+  @media screen and (max-width: 480px) {
+    overflow: hidden;
+  }
+}
+
 .home {
   background-color: transparent;
   //padding-top: 20px;
@@ -6,24 +12,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 
   .container {
     position: relative;
     border-radius: 10px;
     width: 1000px;
-    height: 100%;
+    height: calc(100% - 40px);
     display: flex;
     overflow: hidden;
-    border: 1px solid #f0efff;
-    @media screen and (max-width: 1050px) {
-      width: calc(100% - 30px);
-    }
-
+    //border: 1px solid #f0efff;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
   }
   @media screen and (max-width: 480px) {
     .container {
+      border-radius: 0;
       height: calc(100% - 100px);
-      margin-bottom: 80px;
+      align-self: flex-start;
     }
   }
 }

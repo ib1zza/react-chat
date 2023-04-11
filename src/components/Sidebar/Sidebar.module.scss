@@ -196,6 +196,7 @@
   color: #ddddf7;
 
   .button__theme {
+    cursor: pointer;
     font-size: 25px;
   }
   .user {
@@ -326,6 +327,29 @@
           cursor: pointer;
         }
       }
+    }
+  }
+}
+
+.langs {
+  display: flex;
+  gap: 10px;
+
+  button {
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 8px 20px;
+    border-radius: 10px;
+    background-color: var(#{--chatInput-bg-default});
+
+    color: var(#{--text-main-default});
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &.active {
+      border-bottom: 2px solid red;
     }
   }
 }

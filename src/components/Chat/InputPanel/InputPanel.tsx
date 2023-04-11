@@ -17,7 +17,9 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { faFile, faFileExcel } from "@fortawesome/free-regular-svg-icons";
+import { useTranslation } from "react-i18next";
 const InputPanel = () => {
+  const { t } = useTranslation();
   const [input, setInput] = React.useState("");
   const [file, setFile] = React.useState<File | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -101,7 +103,7 @@ const InputPanel = () => {
       <input
         className={s.text}
         type="text"
-        placeholder="Type your message..."
+        placeholder={t("input") as string}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleEnter}

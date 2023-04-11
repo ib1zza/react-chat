@@ -17,12 +17,15 @@ import { updateDocument } from "src/utils/updateDoc";
 import { motion } from "framer-motion";
 import { useAppDispatch } from "src/store/hooks";
 import { editUser, removeUser } from "src/store/slices/userSlice";
+import { useTranslation } from "react-i18next";
+import { langs } from "src/i18n";
 interface Props {
   user: User;
   close: () => void;
 }
 const PopupSettings: React.FC<Props> = forwardRef(
   ({ user, close }, refer: ForwardedRef<HTMLDivElement | null>) => {
+    const { t, i18n } = useTranslation();
     const dispatch = useAppDispatch();
     const [file, setFile] = React.useState<File | null>(null);
     const [isActiveImage, setIsActiveImage] = useState(false);
@@ -120,7 +123,7 @@ const PopupSettings: React.FC<Props> = forwardRef(
             <FontAwesomeIcon icon={faXmark} />
           </button>
           <button onClick={() => signOut(auth)} className={s.logout}>
-            Logout
+            {t("logout")}
           </button>
 
           <div className={s.popup__profile}>
@@ -153,7 +156,7 @@ const PopupSettings: React.FC<Props> = forwardRef(
                             visible={true}
                           />
                         ) : (
-                          <span>Change avatar</span>
+                          <span>{t("changeAvatar")}</span>
                         )}
                       </label>
                       <input
@@ -174,6 +177,21 @@ const PopupSettings: React.FC<Props> = forwardRef(
               onUpdate={handleUpdateDisplayname}
             />
             {error && <p>{error}</p>}
+            <div className={s.langs}>
+              {langs.map((lang) => (
+                <button
+                  key={lang}
+                  className={
+                    s.lang +
+                    " " +
+                    (i18n.resolvedLanguage == lang ? s.active : "")
+                  }
+                  onClick={() => i18n.changeLanguage(lang)}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
           </div>
         </motion.div>
       </motion.div>

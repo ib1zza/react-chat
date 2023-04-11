@@ -14,6 +14,7 @@ import { updateDocument } from "src/utils/updateDoc";
 import { deleteField, doc, deleteDoc } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAppSelector } from "src/store/hooks";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   data: { chatId: string; user: IUserInfo };
@@ -23,6 +24,7 @@ interface Props {
   }>;
 }
 const Chat: React.FC<Props> = ({ data, dispatch }) => {
+  const { t } = useTranslation();
   const [modal, setModal] = React.useState(false);
   const navigate = useNavigate();
   const { uid } = useAppSelector((state) => state.user.displayUser);
@@ -97,7 +99,7 @@ const Chat: React.FC<Props> = ({ data, dispatch }) => {
             </div>
 
             <button className={s.detele__chat} onClick={handleDeleteChat}>
-              Delete chat
+              {t("deleteChat")}
             </button>
           </Modal>
         )}
