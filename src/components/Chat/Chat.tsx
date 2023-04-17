@@ -15,6 +15,7 @@ import { deleteField, doc, deleteDoc } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAppSelector } from "src/store/hooks";
 import { useTranslation } from "react-i18next";
+import ChatHeader from "components/Chat/ChatHeader/ChatHeader";
 
 interface Props {
   data: { chatId: string; user: IUserInfo };
@@ -23,11 +24,9 @@ interface Props {
     payload?: IUserInfo | undefined;
   }>;
 }
+
 const Chat: React.FC<Props> = ({ data, dispatch }) => {
-  const { t } = useTranslation();
-  const [modal, setModal] = React.useState(false);
   const navigate = useNavigate();
-  const { uid } = useAppSelector((state) => state.user.displayUser);
 
   useEffect(() => {
     if (data.chatId === "null") return;
@@ -39,71 +38,13 @@ const Chat: React.FC<Props> = ({ data, dispatch }) => {
     navigate(AppRoute.Home, { replace: true });
   };
 
-  const handleDeleteChat = () => {
-    if (!data.user?.uid || !uid || data.user === null || data.chatId === "null")
-      return;
-    try {
-      let chatId = data.chatId;
-      let selUserId = data.user.uid;
-      updateDocument("chats", chatId, {
-        messages: deleteField(),
-      })
-        .then(() => {
-          deleteDoc(doc(db, "chats", chatId));
-          updateDocument("userChats", selUserId, {
-            [chatId]: deleteField(),
-          });
-          updateDocument("userChats", uid, {
-            [chatId]: deleteField(),
-          });
-        })
-        .then(() => {
-          exitChat();
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
       <div className={s.chat}>
-        <div className={s.chat__info}>
-          <button onClick={exitChat}>
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <div className={s.username}>
-            <span>{data.user.displayName}</span>
-          </div>
-          <Avatar
-            className={s.avatar}
-            src={data.user.photoURL}
-            onClick={() => setModal(true)}
-            displayName={data.user.displayName}
-          />
-        </div>
+        <ChatHeader user={data.user} exitChat={exitChat} chatId={data.chatId} />
         <Messages />
         <InputPanel />
       </div>
-      <AnimatePresence>
-        {modal && (
-          <Modal close={() => setModal(false)}>
-            <div className={s.modal__body}>
-              <Avatar
-                className={s.modal__body__avatar}
-                src={data.user.photoURL}
-              />
-            </div>
-            <div className={s.modal__header}>
-              <span>{data.user.displayName}</span>
-            </div>
-
-            <button className={s.detele__chat} onClick={handleDeleteChat}>
-              {t("deleteChat")}
-            </button>
-          </Modal>
-        )}
-      </AnimatePresence>
     </>
   );
 };
