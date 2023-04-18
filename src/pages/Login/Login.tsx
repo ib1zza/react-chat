@@ -15,7 +15,8 @@ const Login = () => {
   const [error, setError] = React.useState(false);
   const { user } = useAuth();
   if (user) {
-    navigate(AppRoute.Home, { replace: true });
+    console.log("navigate");
+    navigate(AppRoute.Home, { replace: false });
   }
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();

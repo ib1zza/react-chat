@@ -62,8 +62,10 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
           })
         );
         dispatch(authUser(user));
-        navigate(AppRoute.Home, { replace: false });
+        console.log("navigate");
+        // navigate(AppRoute.Home, { replace: false });
       } else {
+        console.log("unAuthUser");
         dispatch(unAuthUser());
         dispatch(removeUser());
       }

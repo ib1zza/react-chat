@@ -56,6 +56,7 @@ export const ChatProvider: React.FC<Props> = ({ children }) => {
               : action.payload.uid + currentUser.uid,
         };
       case ChatAction.EXIT_CHAT:
+        console.log("exit chat");
         return {
           user: null,
           chatId: "null",

@@ -30,6 +30,7 @@ const Chat: React.FC<Props> = ({ data, dispatch }) => {
 
   useEffect(() => {
     if (data.chatId === "null") return;
+    console.log("navigate to ", data.chatId);
     navigate(AppRoute.Chats + "/" + data.chatId, { replace: true });
   }, [data.chatId]);
 

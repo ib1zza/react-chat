@@ -66,16 +66,15 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     if (!chatId) return;
     if (Object.keys(chats).length === 0) return;
     if (!chats[chatId]) {
-      navigate(AppRoute.Home, { replace: true });
       console.log("no such chat", Object.keys(chats), chatId);
+
+      navigate(AppRoute.Home, { replace: true });
       return;
     }
 
     console.log(chatId);
     handleSelect(chats[chatId].userInfo);
   }, [chatId, chats]);
-
-  console.log(Object.values(chats));
 
   const handleSelect = (selectedUser: UserInfo) => {
     setSelectedUser(selectedUser.uid);
@@ -87,7 +86,6 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     // @ts-ignore
     (a, b) => b?.date?.seconds - a?.date?.seconds
   );
-  console.log(renderChats);
 
   if (Object.values(chats).length === 0) {
     return null;

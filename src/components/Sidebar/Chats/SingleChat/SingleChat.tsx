@@ -30,13 +30,11 @@ const SingleChat: React.FC<Props> = ({
   handleSelect,
   currentUser,
 }) => {
-  console.log(isSelected, user.uid);
   const { t } = useTranslation();
   const [realUser, setRealUser] = useState<UserInfo>();
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "users", user.uid), (doc) => {
-      console.log("chat: ", doc.data());
       setRealUser(doc.data() as UserInfo);
     });
 
