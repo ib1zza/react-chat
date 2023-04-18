@@ -4,6 +4,7 @@ import Message from "./Message/Message";
 import { useChat } from "src/context/ChatContext";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "src/firebase";
+import { useAuth } from "src/context/AuthContext";
 
 export interface IMessage {
   id: string;
@@ -20,15 +21,14 @@ const Messages = () => {
   const { data } = useChat();
   const endRef = React.useRef<HTMLDivElement>(null);
 
+  const { user } = useAuth();
   useEffect(() => {
     if (!data?.chatId) return;
     const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
       if (doc.exists()) {
         setMessages(doc.data().messages || []);
-        console.log(doc.data());
       }
     });
-
     return () => {
       unsub();
     };
@@ -41,11 +41,17 @@ const Messages = () => {
   }, [messages.length]);
 
   console.log(messages);
+
+  if (!data?.user || !user?.uid) return null;
   return (
     // {messages.map()}
     <div className={s.messages}>
       {messages.map((message) => (
-        <Message key={message.id} message={message} />
+        <Message
+          key={message.id}
+          message={message}
+          isOwner={message.senderId === user.uid}
+        />
       ))}
       <div ref={endRef} />
     </div>
