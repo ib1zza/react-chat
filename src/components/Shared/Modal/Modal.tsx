@@ -25,9 +25,9 @@ const Modal: React.FC<Props> = forwardRef(
           transition={{
             ease: "easeInOut",
           }}
-          animate={{ x: 0 }}
-          initial={{ x: -300 }}
-          exit={{ x: 300 }}
+          animate={{ x: 0, scale: 1 }}
+          initial={{ x: -600, scale: 0 }}
+          exit={{ x: 600, scale: 0 }}
         >
           {!noClose && (
             <button className={s.close} onClick={close}>

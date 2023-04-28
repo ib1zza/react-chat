@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { Theme, useTheme } from "src/context/ThemeContext";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from "components/Shared/Modal/Modal";
 
 interface Props {
   isOpen: boolean;
@@ -51,7 +52,9 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
       </div>
       <AnimatePresence>
         {isPopupOpen && user && (
-          <PopupSettings user={user} close={() => setIsPopupOpen(false)} />
+          <Modal close={() => setIsPopupOpen(false)}>
+            <PopupSettings user={user} />
+          </Modal>
         )}
       </AnimatePresence>
     </>
