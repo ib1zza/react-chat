@@ -1,7 +1,7 @@
 import { updateDocument } from "src/utils/updateDoc";
 import { serverTimestamp } from "firebase/firestore";
 
-export default function updateUserChats(
+export function updateUserChats(
   path: string,
   chatId: string,
   from: string,

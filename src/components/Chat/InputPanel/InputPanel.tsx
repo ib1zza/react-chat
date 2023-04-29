@@ -1,18 +1,14 @@
 import React from "react";
 import s from "../Chat.module.scss";
-
 import { useChat } from "src/context/ChatContext";
 import { useAuth } from "src/context/AuthContext";
-import { arrayUnion, Timestamp, serverTimestamp } from "firebase/firestore";
-import { v4 as uuid } from "uuid";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { faFile, faFileExcel } from "@fortawesome/free-regular-svg-icons";
 import { useTranslation } from "react-i18next";
 import { uploadImage } from "src/utils/uploadImage";
-import { updateDocument } from "src/utils/updateDoc";
-import updateUserChats from "src/utils/updateUserChats";
+import { updateUserChats } from "src/utils/updateUserChats";
 import { updateChats } from "src/utils/updateChats";
 
 const InputPanel = () => {

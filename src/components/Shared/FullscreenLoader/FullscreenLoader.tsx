@@ -9,19 +9,17 @@ interface Props {
 
 const FullscreenLoader: React.FC<Props> = ({ message }) => {
   return (
-    <Modal noClose={true}>
-      <div className={s.content}>
-        <Watch
-          height="100"
-          width="100"
-          radius="48"
-          color="#7b96ec"
-          ariaLabel="watch-loading"
-          visible={true}
-        />
-        <span>{message}</span>
-      </div>
-    </Modal>
+    <div className={s.content}>
+      <Watch
+        height="100"
+        width="100"
+        radius="48"
+        color="#7b96ec"
+        ariaLabel="watch-loading"
+        visible={true}
+      />
+      <span>{message}</span>
+    </div>
   );
 };
 

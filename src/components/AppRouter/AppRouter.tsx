@@ -1,19 +1,28 @@
-import React from "react";
-import Home from "src/pages/Home/Home";
+import React, { lazy, Suspense } from "react";
 import { AppRoute } from "src/routes";
 import Login from "src/pages/Login/Login";
 import Register from "src/pages/Register/Register";
 import { Navigate, Route, Routes } from "react-router-dom";
 import FullscreenLoader from "components/Shared/FullscreenLoader/FullscreenLoader";
 
+const Home = lazy(() => import("src/pages/Home/Home"));
+
 const protectedRoutes = [
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <Suspense fallback={<FullscreenLoader />}>
+        <Home />
+      </Suspense>
+    ),
   },
   {
     path: AppRoute.Chats + "/:chatId",
-    element: <Home />,
+    element: (
+      <Suspense fallback={<FullscreenLoader />}>
+        <Home />
+      </Suspense>
+    ),
   },
   {
     path: "*",

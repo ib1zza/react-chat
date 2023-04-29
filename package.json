@@ -25,12 +25,12 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.2.0",
+    "react-intersection-observer": "^9.4.3",
     "react-loader-spinner": "^5.3.4",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.9.0",
     "reset-css": "^5.0.1",
     "sass": "^1.60.0",
-    "the-new-css-reset": "^1.8.4",
     "uninstall": "^0.0.0",
     "uuid": "^9.0.0"
   },

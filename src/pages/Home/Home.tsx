@@ -1,17 +1,19 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import s from "./Home.module.scss";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import Chat from "../../components/Chat/Chat";
 import { useChat } from "src/context/ChatContext";
 
+const Chat = lazy(() => import("../../components/Chat/Chat"));
 const Home = () => {
   const { data, dispatch } = useChat();
   return (
     <div className={s.home}>
       <div className={s.container}>
         <Sidebar />
-        {/* @ts-ignore*/}
-        {data && data.user?.uid && <Chat data={data} dispatch={dispatch} />}
+        <Suspense>
+          {/* @ts-ignore*/}
+          {data && data.user?.uid && <Chat data={data} dispatch={dispatch} />}
+        </Suspense>
       </div>
     </div>
   );

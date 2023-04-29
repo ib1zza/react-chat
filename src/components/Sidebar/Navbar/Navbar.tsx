@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useMemo, useState } from "react";
 import s from "../Sidebar.module.scss";
 import { useAuth } from "src/context/AuthContext";
-import PopupSettings from "components/Sidebar/PopupSettings/PopupSettings";
 
 import Avatar from "components/Shared/Avatar/Avatar";
 import { AnimatePresence } from "framer-motion";
@@ -13,6 +12,10 @@ import Modal from "components/Shared/Modal/Modal";
 interface Props {
   isOpen: boolean;
 }
+
+const PopupSettings = lazy(
+  () => import("components/Sidebar/PopupSettings/PopupSettings")
+);
 
 const Navbar: React.FC<Props> = ({ isOpen }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -43,17 +46,15 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
             className={s.avatar}
           />
 
-          {isOpen && (
-            <>
-              <span>{userInfo.displayName}</span>
-            </>
-          )}
+          {isOpen && <span>{userInfo.displayName}</span>}
         </div>
       </div>
       <AnimatePresence>
         {isPopupOpen && user && (
           <Modal close={() => setIsPopupOpen(false)}>
-            <PopupSettings user={user} />
+            <Suspense>
+              <PopupSettings user={user} />
+            </Suspense>
           </Modal>
         )}
       </AnimatePresence>
