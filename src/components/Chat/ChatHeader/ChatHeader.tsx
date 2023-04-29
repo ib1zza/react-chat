@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import s from "../Chat.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -15,12 +15,9 @@ interface Props {
   exitChat: () => void;
 }
 const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
-  const [modal, setModal] = React.useState(false);
+  const [modal, setModal] = useState(false);
   const { t } = useTranslation();
   const { uid } = useAppSelector((state) => state.user.displayUser);
-  const openModal = () => {
-    setModal(true);
-  };
 
   const handleDelete = async () => {
     try {
@@ -42,7 +39,7 @@ const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
         <Avatar
           className={s.avatar}
           src={user.photoURL}
-          onClick={openModal}
+          onClick={() => setModal(true)}
           displayName={user.displayName || "noname"}
         />
       </div>

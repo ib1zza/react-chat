@@ -3,21 +3,18 @@ import s from "../Chat.module.scss";
 
 import { useChat } from "src/context/ChatContext";
 import { useAuth } from "src/context/AuthContext";
-import {
-  doc,
-  updateDoc,
-  arrayUnion,
-  Timestamp,
-  serverTimestamp,
-} from "firebase/firestore";
-import { db, storage } from "src/firebase";
+import { arrayUnion, Timestamp, serverTimestamp } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import { motion } from "framer-motion";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { faFile, faFileExcel } from "@fortawesome/free-regular-svg-icons";
 import { useTranslation } from "react-i18next";
+import { uploadImage } from "src/utils/uploadImage";
+import { updateDocument } from "src/utils/updateDoc";
+import updateUserChats from "src/utils/updateUserChats";
+import { updateChats } from "src/utils/updateChats";
+
 const InputPanel = () => {
   const { t } = useTranslation();
   const [input, setInput] = React.useState("");
@@ -42,62 +39,27 @@ const InputPanel = () => {
     if (!data?.chatId || !user?.uid || !data.user?.uid) return;
 
     if (fileData) {
-      const storageRef = ref(storage, uuid());
-      const uploadImage = uploadBytesResumable(storageRef, fileData);
-
-      uploadImage.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Image upload is " + progress + "% done");
-        },
-        (error) => {
-          setLoading(false);
-        },
-        () => {
-          getDownloadURL(uploadImage.snapshot.ref).then(async (downloadURL) => {
-            await updateDoc(doc(db, "chats", data.chatId), {
-              messages: arrayUnion({
-                id: uuid(),
-                text: inputData,
-                senderId: user?.uid,
-                date: Timestamp.now(),
-                image: downloadURL,
-              }),
-            });
+      await uploadImage({
+        file: fileData,
+        onError: console.log,
+        onSuccess: (url: string) => {
+          updateChats(data.chatId, {
+            text: inputData,
+            senderId: user.uid,
+            image: url,
           });
-        }
-      );
-    } else {
-      await updateDoc(doc(db, "chats", data.chatId), {
-        messages: arrayUnion({
-          id: uuid(),
-          text: inputData,
-          senderId: user?.uid,
-          date: Timestamp.now(),
-        }),
+        },
       });
+    } else {
+      await updateChats(data.chatId, { text: inputData, senderId: user.uid });
     }
 
-    await updateDoc(doc(db, "userChats", user.uid), {
-      [data.chatId + ".lastMessage"]: {
-        text: inputData || "Вложение",
-        from: user.uid,
-      },
-      [data.chatId + ".date"]: serverTimestamp(),
-    });
-
-    await updateDoc(doc(db, "userChats", data.user.uid), {
-      [data.chatId + ".lastMessage"]: {
-        text: inputData || "Вложение",
-        from: user.uid,
-      },
-      [data.chatId + ".date"]: serverTimestamp(),
-    });
+    await updateUserChats(user.uid, data.chatId, user.uid, inputData);
+    await updateUserChats(data.user.uid, data.chatId, user.uid, inputData);
 
     setLoading(false);
   };
+
   return (
     <div className={s.input}>
       <input

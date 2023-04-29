@@ -3,7 +3,7 @@ import Home from "src/pages/Home/Home";
 import { AppRoute } from "src/routes";
 import Login from "src/pages/Login/Login";
 import Register from "src/pages/Register/Register";
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FullscreenLoader from "components/Shared/FullscreenLoader/FullscreenLoader";
 
 const protectedRoutes = [
@@ -14,6 +14,10 @@ const protectedRoutes = [
   {
     path: AppRoute.Chats + "/:chatId",
     element: <Home />,
+  },
+  {
+    path: "*",
+    element: <Navigate to={AppRoute.Chats + "/:chatId"} />,
   },
 ];
 
@@ -26,6 +30,10 @@ const publicRoutes = [
     path: AppRoute.Register,
     element: <Register />,
   },
+  {
+    path: "*",
+    element: <Navigate to={AppRoute.Login} />,
+  },
 ];
 
 const AppRouter: React.FC<{ isAuth: boolean; loading: boolean }> = ({
@@ -34,24 +42,10 @@ const AppRouter: React.FC<{ isAuth: boolean; loading: boolean }> = ({
 }) => {
   return (
     <Routes>
-      {!loading && isAuth ? (
-        <>
-          {protectedRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
-          <Route
-            path={"*"}
-            element={<Navigate to={AppRoute.Chats + "/:chatId"} />}
-          />
-        </>
-      ) : (
-        <>
-          {publicRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
-          <Route path={"*"} element={<Navigate to={AppRoute.Login} />} />
-        </>
-      )}
+      {!loading &&
+        (isAuth ? protectedRoutes : publicRoutes).map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
       {loading && <Route path="*" element={<FullscreenLoader />} />}
     </Routes>
   );

@@ -2,19 +2,9 @@ import React, { useEffect } from "react";
 import s from "./Chat.module.scss";
 import Messages from "./Messages/Messages";
 import InputPanel from "./InputPanel/InputPanel";
-import { ChatAction, IUserInfo, useChat } from "src/context/ChatContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import Avatar from "components/Shared/Avatar/Avatar";
-import Modal from "components/Shared/Modal/Modal";
-import { AnimatePresence } from "framer-motion";
+import { ChatAction, IUserInfo } from "src/context/ChatContext";
 import { AppRoute } from "src/routes";
 import { useNavigate } from "react-router-dom";
-import { updateDocument } from "src/utils/updateDoc";
-import { deleteField, doc, deleteDoc } from "firebase/firestore";
-import { db } from "src/firebase";
-import { useAppSelector } from "src/store/hooks";
-import { useTranslation } from "react-i18next";
 import ChatHeader from "components/Chat/ChatHeader/ChatHeader";
 
 interface Props {
@@ -40,13 +30,11 @@ const Chat: React.FC<Props> = ({ data, dispatch }) => {
   };
 
   return (
-    <>
-      <div className={s.chat}>
-        <ChatHeader user={data.user} exitChat={exitChat} chatId={data.chatId} />
-        <Messages />
-        <InputPanel />
-      </div>
-    </>
+    <div className={s.chat}>
+      <ChatHeader user={data.user} exitChat={exitChat} chatId={data.chatId} />
+      <Messages />
+      <InputPanel />
+    </div>
   );
 };
 
