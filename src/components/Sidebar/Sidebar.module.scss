@@ -149,10 +149,14 @@
 }
 
 .chats__container {
-  height: calc(100% - 150px);
+  height: calc(100% - 140px);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+}
+
+.chats__container_closed {
+  height: calc(100% - 180px);
 }
 ::-webkit-scrollbar {
   position: absolute;

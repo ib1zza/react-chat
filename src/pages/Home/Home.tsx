@@ -5,10 +5,13 @@ import { useChat } from "src/context/ChatContext";
 
 const Chat = lazy(() => import("../../components/Chat/Chat"));
 const Home = () => {
+  const windowHeight = window.innerHeight;
+  console.log(windowHeight); // высота окна пользователя в пикселях
+
   const { data, dispatch } = useChat();
   return (
     <div className={s.home}>
-      <div className={s.container}>
+      <div className={s.container} style={{ height: windowHeight + "px" }}>
         <Sidebar />
         <Suspense>
           {/* @ts-ignore*/}

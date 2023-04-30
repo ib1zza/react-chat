@@ -93,7 +93,11 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
 
   if (!user || !renderChats) return null;
   return (
-    <div className={s.chats__container}>
+    <div
+      className={
+        s.chats__container + " " + (!isOpen ? s.chats__container_closed : "")
+      }
+    >
       {renderChats.map((chat) => (
         <SingleChat
           key={chat.userInfo.uid}

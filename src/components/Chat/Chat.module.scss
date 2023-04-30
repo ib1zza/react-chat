@@ -152,7 +152,7 @@
     justify-content: space-between;
     width: 100%;
     gap: 20px;
-    font-size: 18px;
+    font-size: 20px;
 
     & > .text {
       color: var(#{--text-main-default});
@@ -161,7 +161,7 @@
       }
 
       flex-basis: 100%;
-      padding: 10px;
+      padding: 18px;
       height: 100%;
       flex-shrink: 1;
 
