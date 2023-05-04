@@ -19,7 +19,7 @@ const InputPanel = () => {
   const { data } = useChat();
   const { user } = useAuth();
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key == "Enter") {
       handleSend();
     }
@@ -58,9 +58,8 @@ const InputPanel = () => {
 
   return (
     <div className={s.input}>
-      <input
+      <textarea
         className={s.text}
-        type="text"
         placeholder={t("input") as string}
         value={input}
         onChange={(e) => setInput(e.target.value)}
