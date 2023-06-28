@@ -7,18 +7,24 @@ const Chat = lazy(() => import("../../components/Chat/Chat"));
 const Home = () => {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
+  const isMobile = windowWidth <= 768;
 
   const { data, dispatch } = useChat();
-  const isOpen = !data?.user;
-  const isMobile = windowWidth <= 768;
+  const isSidebarOpened = !data?.user;
 
   return (
     <div className={s.home}>
       <div className={s.container} style={{ height: windowHeight + "px" }}>
-        {((isMobile && isOpen) || !isMobile) && <Sidebar isOpen={isOpen} />}
+        <Sidebar isOpen={isSidebarOpened} />
+
         <Suspense>
-          {/* @ts-ignore*/}
-          {data && data.user?.uid && <Chat data={data} dispatch={dispatch} />}
+          {data && data.user?.uid && (
+            <Chat
+              // @ts-ignore
+              data={data}
+              dispatch={dispatch}
+            />
+          )}
         </Suspense>
       </div>
     </div>

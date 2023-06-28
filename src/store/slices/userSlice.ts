@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "firebase/auth";
-type DisplayUser = {
+
+interface DisplayUser {
   uid: string;
   displayName: string;
   email: string;
   photoURL?: string;
-};
+}
 
 type Userkeys = {
   [key in keyof DisplayUser]?: DisplayUser[key];
@@ -26,6 +27,7 @@ const initialState: IState = {
   },
   authUser: null,
 };
+
 const userSlice = createSlice({
   name: "userSlice",
   initialState,

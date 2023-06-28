@@ -22,8 +22,13 @@
 
 .chat {
   flex: 2;
+
+
+  transition: width 0.3s ease;
+
   display: flex;
   flex-direction: column;
+
 
   // Chat info section
 

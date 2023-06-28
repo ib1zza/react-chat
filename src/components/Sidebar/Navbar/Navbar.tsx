@@ -30,7 +30,7 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
   return (
     <>
       <div className={s.navbar}>
-        <span className={s.logo}>{isOpen ? "React-chat" : "RChat"}</span>
+        <span className={s.logo}>{"React chat"}</span>
         <button className={s.button__theme} onClick={handleTheme}>
           {theme === Theme.LIGHT ? (
             <FontAwesomeIcon icon={faSun} />

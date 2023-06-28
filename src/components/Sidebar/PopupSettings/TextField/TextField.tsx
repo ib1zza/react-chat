@@ -7,7 +7,8 @@ interface Props {
   displayName: string;
   onUpdate: (name: string) => void;
 }
-const TextField: React.FC<Props> = ({ displayName, onUpdate }) => {
+
+const TextField = ({ displayName, onUpdate }: Props) => {
   const [name, setName] = useState(displayName);
   const [opened, setOpened] = useState(false);
 

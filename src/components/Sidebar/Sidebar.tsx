@@ -8,12 +8,35 @@ import { useChat } from "src/context/ChatContext";
 interface Props {
   isOpen: boolean;
 }
+
 const Sidebar: React.FC<Props> = ({ isOpen }) => {
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+  const isMobile = windowWidth <= 768;
+
   return (
-    <div className={s.sidebar + " " + (!isOpen ? s.closed : "")}>
-      <Navbar isOpen={isOpen} />
-      {isOpen && <Search />}
-      <Chats isOpen={isOpen} />
+    <div
+      className={
+        s.sidebar +
+        " " +
+        (!isOpen ? s.closed : "") +
+        " " +
+        (isMobile ? s.mobile : "")
+      }
+    >
+      <div
+        className={
+          s.sidebar_overlay_content +
+          " " +
+          (!isOpen ? s.closed : "") +
+          " " +
+          (isMobile ? s.mobile : "")
+        }
+      >
+        <Navbar isOpen={isOpen} />
+        {isOpen && <Search />}
+        <Chats isOpen={isOpen} />
+      </div>
     </div>
   );
 };
