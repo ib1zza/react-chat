@@ -33,9 +33,14 @@
   }
 
   .search {
-    border-bottom: 1px solid gray;
-    height: 60px;
 
+    border-bottom: 1px solid gray;
+    min-height: 60px;
+  .results {
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+  }
     .searchForm {
       display: flex;
       align-items: center;
@@ -85,15 +90,6 @@
       }
     }
   }
-  //@include mobile {
-  //  position: absolute;
-  //  top: 0;
-  //  right: 0;
-  //  left: 0;
-  //  bottom: 0;
-  //  width: 100%;
-  //}
-
   &.closed {
     transition: width 0.3s ease;
 
@@ -144,6 +140,8 @@
   &:hover {
     background-color: #2f2d52;
   }
+
+
 
   &__avatar {
     width: 60px;
