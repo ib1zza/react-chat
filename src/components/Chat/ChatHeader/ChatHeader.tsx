@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import s from "../Chat.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "src/store/hooks";
 import { IUserInfo } from "src/context/ChatContext";
 import { deleteChat } from "src/utils/DeleteChat";
+import ChatHeaderMainInfo from "components/Chat/ChatHeader/ChatHeaderMainInfo";
+import { use } from "i18next";
 interface Props {
   user: IUserInfo;
   chatId: string;
@@ -27,23 +29,18 @@ const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
     }
   };
 
+  const onUserClick = useCallback(() => {
+    setModal(true);
+  }, []);
+
   return (
     <>
-      <div className={s.chat__info}>
-        <button onClick={exitChat}>
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </button>
-        <div className={s.username}>
-          <span>{user.displayName || "noname"}</span>
-        </div>
-        <Avatar
-          className={s.avatar}
-          src={user.photoURL}
-          onClick={() => setModal(true)}
-          displayName={user.displayName || "noname"}
-        />
-      </div>
-
+      <ChatHeaderMainInfo
+        exitChat={exitChat}
+        onUserClick={onUserClick}
+        displayName={user.displayName}
+        photoURL={user.photoURL}
+      />
       <AnimatePresence>
         {modal && (
           <Modal close={() => setModal(false)}>

@@ -14,7 +14,6 @@ const Register = () => {
   const [error, setError] = useState(false);
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
     // @ts-ignore
     const displayName = e.target[0].value.toLowerCase().trim();
     // @ts-ignore
@@ -28,6 +27,7 @@ const Register = () => {
       setError(true);
       return;
     }
+    setError(false);
 
     try {
       await createUserEmailPass(email, password, displayName, file).then(() =>

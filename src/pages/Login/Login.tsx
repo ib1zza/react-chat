@@ -25,8 +25,10 @@ const Login = () => {
     const email = e.target[0].value;
     // @ts-ignore
     const password = e.target[1].value;
+    setError(false);
+
     try {
-      loginByEmailPass(email, password).then(() =>
+      await loginByEmailPass(email, password).then(() =>
         navigate(AppRoute.Home, { replace: false })
       );
     } catch (error) {
@@ -35,6 +37,8 @@ const Login = () => {
   };
 
   const handleGoogle = async () => {
+    setError(false);
+
     try {
       loginByGoogle().then(() => navigate(AppRoute.Home, { replace: false }));
     } catch (error) {
@@ -55,9 +59,9 @@ const Login = () => {
             placeholder={t("password") as string}
             required
           />
+          {error && <p className={s.error__message}>Wrong email or password</p>}
 
           <button type="submit">{t("sign in")}</button>
-          {error && <p className={s.error__message}>Wrong email or password</p>}
         </form>
         <button className={s.googleLogin} onClick={handleGoogle}>
           <span>{t("sign in google")}</span> <FontAwesomeIcon icon={faGoogle} />

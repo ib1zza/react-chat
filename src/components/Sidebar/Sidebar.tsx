@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import s from "./Sidebar.module.scss";
 import Navbar from "./Navbar/Navbar";
 import Search from "./Search/Search";
@@ -9,9 +9,8 @@ interface Props {
   isOpen: boolean;
 }
 
-const Sidebar: React.FC<Props> = ({ isOpen }) => {
+const Sidebar: React.FC<Props> = memo(({ isOpen }) => {
   const windowWidth = window.innerWidth;
-  const windowHeight = window.innerHeight;
   const isMobile = windowWidth <= 768;
 
   return (
@@ -39,6 +38,6 @@ const Sidebar: React.FC<Props> = ({ isOpen }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Sidebar;

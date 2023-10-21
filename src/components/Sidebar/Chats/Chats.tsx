@@ -44,7 +44,7 @@ interface Props {
 const Chats: React.FC<Props> = ({ isOpen }) => {
   let navigate = useNavigate();
   const { chatId } = useParams();
-  const [selectedUser, setSelectedUser] = useState("");
+  const [selectedUserID, setSelectedUserID] = useState("");
   const { user } = useAuth();
   const { dispatch } = useChat();
   const [chats, setChats] = React.useState<ChatsObject>({});
@@ -62,7 +62,9 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
   }, [user?.uid]);
 
   useEffect(() => {
-    if (chatId === selectedUser) return;
+    console.log(chatId);
+
+    if (chatId === selectedUserID) return;
     if (!chatId) return;
     if (Object.keys(chats).length === 0) return;
     if (!chats[chatId]) {
@@ -77,15 +79,21 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
   }, [chatId, chats]);
 
   const handleSelect = (selectedUser: UserInfo) => {
-    setSelectedUser(selectedUser.uid);
+    console.log(selectedUser, selectedUserID);
+    if (selectedUser.uid === selectedUserID) return;
+    setSelectedUserID(selectedUser.uid);
     console.log(selectedUser.uid);
     dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
   };
 
   const renderChats: Chat[] = Array.from(Object.values(chats)).sort(
-    // @ts-ignore
     (a, b) => b?.date?.seconds - a?.date?.seconds
   );
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedUserID("");
+    }
+  }, [isOpen]);
 
   if (Object.values(chats).length === 0) {
     return null;
@@ -106,7 +114,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
           user={chat.userInfo}
           lastMessage={chat.lastMessage}
           handleSelect={handleSelect}
-          isSelected={selectedUser === chat.userInfo.uid}
+          isSelected={selectedUserID === chat.userInfo.uid}
         />
       ))}
     </div>

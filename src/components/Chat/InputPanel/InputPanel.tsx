@@ -82,7 +82,7 @@ const InputPanel = () => {
             </label>
           )}
 
-          {(input || file) && (
+          {(input.trim() || file) && (
             <motion.button
               disabled={loading}
               onClick={handleSend}
