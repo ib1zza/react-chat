@@ -49,15 +49,10 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
           {isOpen && <span>{userInfo.displayName}</span>}
         </div>
       </div>
-      <AnimatePresence>
-        {isPopupOpen && user && (
-          <Modal close={() => setIsPopupOpen(false)}>
-            <Suspense>
-              <PopupSettings user={user} />
-            </Suspense>
-          </Modal>
-        )}
-      </AnimatePresence>
+
+      <Modal isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
+        <Suspense>{user && <PopupSettings user={user} />}</Suspense>
+      </Modal>
     </>
   );
 };

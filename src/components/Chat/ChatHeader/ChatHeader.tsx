@@ -41,22 +41,19 @@ const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
         displayName={user.displayName}
         photoURL={user.photoURL}
       />
-      <AnimatePresence>
-        {modal && (
-          <Modal close={() => setModal(false)}>
-            <div className={s.modal__body}>
-              <Avatar className={s.modal__body__avatar} src={user.photoURL} />
-            </div>
-            <div className={s.modal__header}>
-              <span>{user.displayName}</span>
-            </div>
 
-            <button className={s.detele__chat} onClick={handleDelete}>
-              {t("deleteChat")}
-            </button>
-          </Modal>
-        )}
-      </AnimatePresence>
+      <Modal isOpen={modal} onClose={() => setModal(false)}>
+        <div className={s.modal__body}>
+          <Avatar className={s.modal__body__avatar} src={user.photoURL} />
+        </div>
+        <div className={s.modal__header}>
+          <span>{user.displayName}</span>
+        </div>
+
+        <button className={s.detele__chat} onClick={handleDelete}>
+          {t("deleteChat")}
+        </button>
+      </Modal>
     </>
   );
 };
