@@ -7,7 +7,7 @@ import {
   addUser,
   removeUser,
   authUser,
-  unAuthUser,
+  unAuthUser, getUserData,
 } from "src/store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { AppRoute } from "src/routes";
@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { authUser: user, displayUser: storedUser } = useAppSelector(
-    (state) => state.user
+      getUserData
   );
 
   console.log("auth provider changed");
@@ -58,7 +58,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
           addUser({
             displayName,
             email,
-            photoURL: photoURL || undefined,
+            photoURL: photoURL || "",
             uid,
           })
         );

@@ -1,25 +1,24 @@
 import React, { useCallback, useState } from "react";
 import s from "../Chat.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "components/Shared/Avatar/Avatar";
-import { AnimatePresence } from "framer-motion";
 import Modal from "components/Shared/Modal/Modal";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "src/store/hooks";
 import { IUserInfo } from "src/context/ChatContext";
 import { deleteChat } from "src/utils/DeleteChat";
 import ChatHeaderMainInfo from "components/Chat/ChatHeader/ChatHeaderMainInfo";
-import { use } from "i18next";
+import {getDisplayUser} from "src/store/slices/userSlice";
+
 interface Props {
   user: IUserInfo;
   chatId: string;
   exitChat: () => void;
 }
+
 const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
   const [modal, setModal] = useState(false);
   const { t } = useTranslation();
-  const { uid } = useAppSelector((state) => state.user.displayUser);
+  const { uid } = useAppSelector(getDisplayUser);
 
   const handleDelete = async () => {
     try {
