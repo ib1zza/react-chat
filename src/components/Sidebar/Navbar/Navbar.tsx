@@ -8,6 +8,7 @@ import { Theme, useTheme } from "src/context/ThemeContext";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "components/Shared/Modal/Modal";
+import clsx from "clsx";
 
 interface Props {
   isOpen: boolean;
@@ -29,8 +30,8 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
   if (!userInfo) return null;
   return (
     <>
-      <div className={s.navbar}>
-        <span className={s.logo}>{"React chat"}</span>
+      <div className={clsx(s.navbar, !isOpen && s.closed)}>
+        <span className={s.logo}>{"RChat"}</span>
         <button className={s.button__theme} onClick={handleTheme}>
           {theme === Theme.LIGHT ? (
             <FontAwesomeIcon icon={faSun} />
