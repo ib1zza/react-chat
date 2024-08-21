@@ -52,7 +52,7 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
       </div>
 
       <Modal isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
-        <Suspense>{user && <PopupSettings user={user} />}</Suspense>
+        <Suspense>{user && <PopupSettings user={user} isPopupOpen={isPopupOpen} />}</Suspense>
       </Modal>
     </>
   );

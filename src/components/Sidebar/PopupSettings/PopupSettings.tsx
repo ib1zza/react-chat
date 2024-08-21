@@ -16,8 +16,9 @@ import { useTranslation } from "react-i18next";
 import { langs } from "src/i18n";
 interface Props {
   user: User;
+  isPopupOpen: boolean;
 }
-const PopupSettings: React.FC<Props> = ({ user }) => {
+const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {
   const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
   const [file, setFile] = React.useState<File | null>(null);
@@ -37,6 +38,15 @@ const PopupSettings: React.FC<Props> = ({ user }) => {
       displayName: name,
     }).then(() => dispatch(editUser({ displayName: name })));
   };
+
+  useEffect(() => {
+    if (!isPopupOpen) {
+      setFile(null);
+      setIsActiveImage(false);
+      setLoading(false);
+      setError("");
+    }
+  },[isPopupOpen])
 
   const handleUpdateAvatar = async () => {
     if (!user.displayName || !file) return;
@@ -104,6 +114,7 @@ const PopupSettings: React.FC<Props> = ({ user }) => {
           <div className={s.profile__avatar}>
             <Avatar
               src={user.photoURL}
+              displayName={user.displayName}
               className={
                 s.profile__avatar_img + " " + (isActiveImage ? s.blurred : "")
               }

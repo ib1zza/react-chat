@@ -41,9 +41,9 @@ const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
         photoURL={user.photoURL}
       />
 
-      <Modal isOpen={modal} onClose={() => setModal(false)}>
+      <Modal isOpen={modal} onClose={() => setModal(false)} >
         <div className={s.modal__body}>
-          <Avatar className={s.modal__body__avatar} src={user.photoURL} />
+          <Avatar className={s.modal__body__avatar} src={user.photoURL} displayName={user.displayName}  />
         </div>
         <div className={s.modal__header}>
           <span>{user.displayName}</span>

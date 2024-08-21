@@ -28,7 +28,7 @@ const Avatar: React.FC<Props> = memo(
                 {...props}
             >
                 {inView && src ? (
-                    <img src={src} alt=""/>
+                    <img src={src} alt={displayName || "avatar"}/>
                 ) : (
                     <>{displayName ? (
                         <span>{displayName.charAt(0).toUpperCase()}</span>
