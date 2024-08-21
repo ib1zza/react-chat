@@ -54,7 +54,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     if (!user?.uid) return;
     const unsub = onSnapshot(doc(db, "userChats", user.uid), (doc) => {
       console.log("Current data: ", doc.data());
-      setChats(doc.data() || []);
+      setChats((doc.data() || {}));
     });
     return () => {
       unsub();
@@ -107,6 +107,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
       }
     >
       {renderChats.map((chat) => (
+          chat.userInfo &&
         <SingleChat
           key={chat.userInfo.uid}
           currentUser={user.uid}

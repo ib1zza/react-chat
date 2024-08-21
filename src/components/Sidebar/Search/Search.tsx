@@ -71,26 +71,34 @@ const Search: React.FC = () => {
       const res = await getDoc(doc(db, "chats", combinedId));
 
       if (!res.exists()) {
+        console.log('creating chat: ', combinedId);
+
         await setDoc(doc(db, "chats", combinedId), {
           messages: [],
         });
+      } else {
+        console.log('entering chat: ', combinedId);
       }
 
-      await updateDoc(doc(db, "userChats", currentUser.uid), {
-        [combinedId + ".userInfo"]: {
-          uid: selectedUser.uid,
-          displayName: selectedUser.displayName,
-          photoURL: selectedUser.photoURL,
+      await setDoc(doc(db, "userChats", currentUser.uid), {
+        [combinedId]: {
+          userInfo: {
+            uid: selectedUser.uid,
+            displayName: selectedUser.displayName,
+            photoURL: selectedUser.photoURL || "",
+          },
+          date: serverTimestamp(),
         },
-        [combinedId + ".date"]: serverTimestamp(),
       });
-      await updateDoc(doc(db, "userChats", selectedUser.uid), {
-        [combinedId + ".userInfo"]: {
-          uid: currentUser.uid,
-          displayName: currentUser.displayName,
-          photoURL: currentUser.photoURL,
+      await setDoc(doc(db, "userChats", selectedUser.uid), {
+        [combinedId]: {
+          userInfo: {
+            uid: currentUser.uid,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL || "",
+          },
+          date: serverTimestamp(),
         },
-        [combinedId + ".date"]: serverTimestamp(),
       });
 
       dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
