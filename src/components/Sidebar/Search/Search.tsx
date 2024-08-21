@@ -79,27 +79,61 @@ const Search: React.FC = () => {
       } else {
         console.log('entering chat: ', combinedId);
       }
+      const userChats = await getDoc(doc(db, "userChats", currentUser.uid));
 
-      await setDoc(doc(db, "userChats", currentUser.uid), {
-        [combinedId]: {
-          userInfo: {
-            uid: selectedUser.uid,
-            displayName: selectedUser.displayName,
-            photoURL: selectedUser.photoURL || "",
+      if (!userChats.exists()) {
+        await setDoc(doc(db, "userChats", currentUser.uid), {
+          [combinedId]: {
+            userInfo: {
+              uid: selectedUser.uid,
+              displayName: selectedUser.displayName,
+              photoURL: selectedUser.photoURL || "",
+            },
+            date: serverTimestamp(),
           },
-          date: serverTimestamp(),
-        },
-      });
-      await setDoc(doc(db, "userChats", selectedUser.uid), {
-        [combinedId]: {
-          userInfo: {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL || "",
+        });
+      } else {
+        await updateDoc(doc(db, "userChats", currentUser.uid), {
+          [combinedId]: {
+            userInfo: {
+              uid: selectedUser.uid,
+              displayName: selectedUser.displayName,
+              photoURL: selectedUser.photoURL || "",
+            },
+            date: serverTimestamp(),
           },
-          date: serverTimestamp(),
-        },
-      });
+        });
+      }
+
+      const selectedUserChats = await getDoc(doc(db, "userChats", selectedUser.uid));
+
+      if (!selectedUserChats.exists()) {
+        await setDoc(doc(db, "userChats", selectedUser.uid), {
+          [combinedId]: {
+            userInfo: {
+              uid: currentUser.uid,
+              displayName: currentUser.displayName,
+              photoURL: currentUser.photoURL || "",
+            },
+            date: serverTimestamp(),
+          },
+        });
+      } else {
+        await updateDoc(doc(db, "userChats", selectedUser.uid), {
+          [combinedId]: {
+            userInfo: {
+              uid: currentUser.uid,
+              displayName: currentUser.displayName,
+              photoURL: currentUser.photoURL || "",
+            },
+            date: serverTimestamp(),
+          },
+        });
+      }
+
+
+
+
 
       dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
     } catch (error) {
