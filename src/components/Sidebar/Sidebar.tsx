@@ -3,7 +3,6 @@ import s from "./Sidebar.module.scss";
 import Navbar from "./Navbar/Navbar";
 import Search from "./Search/Search";
 import Chats from "./Chats/Chats";
-import { useChat } from "src/context/ChatContext";
 
 interface Props {
   isOpen: boolean;

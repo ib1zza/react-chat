@@ -8,7 +8,7 @@ export interface DisplayUser {
     photoURL: string;
 }
 
-type Userkeys = Partial<DisplayUser>
+type DisplayUserKeys = Partial<DisplayUser>
 
 export interface IUserSchema {
     displayUser: DisplayUser & { isAuth: boolean; loading: boolean };
@@ -49,10 +49,10 @@ const userSlice = createSlice({
             state.displayUser.uid = action.payload.uid;
             state.displayUser.loading = false;
         },
-        editUser: (state, action: PayloadAction<Userkeys>) => {
+        editUser: (state, action: PayloadAction<DisplayUserKeys>) => {
             for (const key in action.payload) {
                 if (Object.prototype.hasOwnProperty.call(action.payload, key)) {
-                    const value = action.payload[key as keyof Userkeys];
+                    const value = action.payload[key as keyof DisplayUserKeys];
                     if (value !== undefined) {
                         state.displayUser[key as keyof DisplayUser] = value;
                     }

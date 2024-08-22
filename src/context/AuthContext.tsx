@@ -8,7 +8,7 @@ import {
   removeUser,
   authUser,
   unAuthUser, getUserData,
-} from "src/store/slices/userSlice";
+} from "src/store/slices/userSlice/userSlice";
 import { useNavigate } from "react-router-dom";
 import { AppRoute } from "src/types/routes";
 
@@ -42,7 +42,6 @@ export interface UserInfo {
 }
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { authUser: user, displayUser: storedUser } = useAppSelector(
       getUserData
@@ -51,7 +50,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   console.log("auth provider changed");
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
-      console.log("auth user ", user);
+      console.log("auth user ", user?.uid);
       if (user?.uid && user?.email && user?.displayName) {
         const { displayName, email, photoURL, uid } = user;
         dispatch(
@@ -63,8 +62,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
           })
         );
         dispatch(authUser(user));
-        console.log("navigate");
-        // navigate(AppRoute.Home, { replace: false });
       } else {
         console.log("unAuthUser");
         dispatch(unAuthUser());

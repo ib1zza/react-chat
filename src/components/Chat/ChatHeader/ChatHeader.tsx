@@ -4,10 +4,10 @@ import Avatar from "components/Shared/Avatar/Avatar";
 import Modal from "components/Shared/Modal/Modal";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "src/store/hooks";
-import { IUserInfo } from "src/context/ChatContext";
 import { deleteChat } from "src/API/DeleteChat";
 import ChatHeaderMainInfo from "components/Chat/ChatHeader/ChatHeaderMainInfo";
-import {getDisplayUser} from "src/store/slices/userSlice";
+import {getDisplayUser} from "src/store/slices/userSlice/userSlice";
+import {IUserInfo} from "src/types";
 
 interface Props {
   user: IUserInfo;

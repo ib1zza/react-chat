@@ -3,11 +3,12 @@ import s from "../Sidebar.module.scss";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
-import { ChatAction, useChat } from "src/context/ChatContext";
 
 import SingleChat from "components/Sidebar/Chats/SingleChat/SingleChat";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppRoute } from "src/types/routes";
+import {useAppDispatch} from "src/store/hooks";
+import {selectChat} from "src/store/slices/chatSlice/chatSlice";
 interface ChatsObject {
   [id: string]: Object;
 }
@@ -46,7 +47,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
   const { chatId } = useParams();
   const [selectedUserID, setSelectedUserID] = useState("");
   const { user } = useAuth();
-  const { dispatch } = useChat();
+  const dispatch  = useAppDispatch();
   const [chats, setChats] = React.useState<ChatsObject>({});
   console.log("chatId from params: ", chatId);
 
@@ -83,7 +84,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     if (selectedUser.uid === selectedUserID) return;
     setSelectedUserID(selectedUser.uid);
     console.log(selectedUser.uid);
-    dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
+    dispatch(selectChat(selectedUser));
   };
 
   const renderChats: Chat[] = Array.from(Object.values(chats)).sort(

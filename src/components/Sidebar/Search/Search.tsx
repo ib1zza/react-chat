@@ -14,12 +14,13 @@ import {
 import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
 import { UserInfo } from "firebase/auth";
-import { ChatAction, useChat } from "src/context/ChatContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { RotatingLines } from "react-loader-spinner";
 import { useTranslation } from "react-i18next";
 import Avatar from "components/Shared/Avatar/Avatar";
+import {useAppDispatch} from "src/store/hooks";
+import {selectChat} from "src/store/slices/chatSlice/chatSlice";
 
 const Search: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -28,7 +29,7 @@ const Search: React.FC = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchedUsers, setSearchedUsers] = React.useState<UserInfo[]>([]);
   const [error, setError] = React.useState(false);
-  const { dispatch } = useChat();
+  const dispatch  = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
   const searchUser = async () => {
@@ -136,7 +137,7 @@ const Search: React.FC = () => {
 
 
 
-      dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
+      dispatch(selectChat(selectedUser));
     } catch (error) {
       console.log(error);
       setError(true);
@@ -144,7 +145,7 @@ const Search: React.FC = () => {
 
     setSearchedUsers([]);
     setSearchQuery("");
-    dispatch({ type: ChatAction.CHANGE_USER, payload: selectedUser });
+    dispatch(selectChat(selectedUser));
   };
   return (
     <div className={s.search}>

@@ -11,7 +11,7 @@ import TextField from "components/Sidebar/PopupSettings/TextField/TextField";
 import { updateDocument } from "src/API/updateDoc";
 import { motion } from "framer-motion";
 import { useAppDispatch } from "src/store/hooks";
-import { editUser, removeUser } from "src/store/slices/userSlice";
+import { editUser, removeUser } from "src/store/slices/userSlice/userSlice";
 import { useTranslation } from "react-i18next";
 import { langs } from "src/i18n";
 interface Props {

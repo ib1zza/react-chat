@@ -1,6 +1,5 @@
 import React from "react";
 import s from "../Chat.module.scss";
-import { useChat } from "src/context/ChatContext";
 import { useAuth } from "src/context/AuthContext";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,13 +9,15 @@ import { useTranslation } from "react-i18next";
 import { uploadImage } from "src/API/uploadImage";
 import { updateUserChats } from "src/API/updateUserChats";
 import { updateChats } from "src/API/updateChats";
+import {useAppSelector} from "src/store/hooks";
+import {selectChatData} from "src/store/slices/chatSlice/chatSlice";
 
 const InputPanel = () => {
   const { t } = useTranslation();
   const [input, setInput] = React.useState("");
   const [file, setFile] = React.useState<File | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const { data } = useChat();
+  const data  = useAppSelector(selectChatData);
   const { user } = useAuth();
 
   const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

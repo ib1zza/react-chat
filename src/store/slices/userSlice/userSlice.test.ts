@@ -9,7 +9,7 @@ import userSlice, {
     initialState, DisplayUser, IUserSchema
 } from "./userSlice";
 import {User} from "firebase/auth";
-import {RootState} from "../store";
+import {RootState} from "../../store";
 
 
 
