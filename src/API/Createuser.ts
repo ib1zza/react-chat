@@ -9,8 +9,8 @@ import {
 import { auth, db, storage } from "src/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { updateDocument } from "src/utils/updateDoc";
-import { AppRoute } from "src/routes";
+import { updateDocument } from "src/API/updateDoc";
+import { AppRoute } from "src/types/routes";
 
 export const createUserEmailPass = async (
   email: string,

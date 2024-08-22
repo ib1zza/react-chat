@@ -1,4 +1,4 @@
-import { updateDocument } from "src/utils/updateDoc";
+import { updateDocument } from "src/API/updateDoc";
 import { arrayUnion, Timestamp } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 

@@ -1,4 +1,4 @@
-import { updateDocument } from "src/utils/updateDoc";
+import { updateDocument } from "src/API/updateDoc";
 import { deleteDoc, deleteField, doc } from "firebase/firestore";
 import { db } from "src/firebase";
 

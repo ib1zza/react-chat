@@ -3,7 +3,7 @@ import s from "./Chat.module.scss";
 import Messages from "./Messages/Messages";
 import InputPanel from "./InputPanel/InputPanel";
 import { ChatAction, IUserInfo } from "src/context/ChatContext";
-import { AppRoute } from "src/routes";
+import { AppRoute } from "src/types/routes";
 import { useNavigate } from "react-router-dom";
 import ChatHeader from "components/Chat/ChatHeader/ChatHeader";
 

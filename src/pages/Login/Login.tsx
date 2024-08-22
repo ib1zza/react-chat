@@ -1,9 +1,9 @@
 import React from "react";
 import s from "../Register/Register.module.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { AppRoute } from "src/routes";
+import { AppRoute } from "src/types/routes";
 import { useAuth } from "src/context/AuthContext";
-import { loginByEmailPass, loginByGoogle } from "src/utils/Createuser";
+import { loginByEmailPass, loginByGoogle } from "src/API/Createuser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useTranslation } from "react-i18next";

@@ -10,7 +10,7 @@ import {
   unAuthUser, getUserData,
 } from "src/store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
-import { AppRoute } from "src/routes";
+import { AppRoute } from "src/types/routes";
 
 interface AuthContext {
   user: User | null;

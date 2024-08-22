@@ -7,9 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { faFile, faFileExcel } from "@fortawesome/free-regular-svg-icons";
 import { useTranslation } from "react-i18next";
-import { uploadImage } from "src/utils/uploadImage";
-import { updateUserChats } from "src/utils/updateUserChats";
-import { updateChats } from "src/utils/updateChats";
+import { uploadImage } from "src/API/uploadImage";
+import { updateUserChats } from "src/API/updateUserChats";
+import { updateChats } from "src/API/updateChats";
 
 const InputPanel = () => {
   const { t } = useTranslation();

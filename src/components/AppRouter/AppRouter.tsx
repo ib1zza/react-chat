@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { AppRoute } from "src/routes";
+import { AppRoute } from "src/types/routes";
 import Login from "src/pages/Login/Login";
 import Register from "src/pages/Register/Register";
 import { Navigate, Route, Routes } from "react-router-dom";

@@ -1,6 +1,6 @@
 import React, { useState, createContext, useEffect } from "react";
-import { changeCssRootVariables } from "../model/ChangeCSSRootVars";
-import { storage } from "../model/storage";
+import { changeCssRootVariables } from "src/utils/helpers/ChangeCSSRootVars";
+import { storage } from "src/utils/helpers/storage";
 
 interface IThemeContext {
   theme: string;

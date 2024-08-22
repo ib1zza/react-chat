@@ -8,7 +8,7 @@ import Avatar from "components/Shared/Avatar/Avatar";
 import { AnimatePresence } from "framer-motion";
 import { ThreeDots } from "react-loader-spinner";
 import TextField from "components/Sidebar/PopupSettings/TextField/TextField";
-import { updateDocument } from "src/utils/updateDoc";
+import { updateDocument } from "src/API/updateDoc";
 import { motion } from "framer-motion";
 import { useAppDispatch } from "src/store/hooks";
 import { editUser, removeUser } from "src/store/slices/userSlice";

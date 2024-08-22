@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { RotatingLines } from "react-loader-spinner";
 import { useTranslation } from "react-i18next";
+import Avatar from "components/Shared/Avatar/Avatar";
 
 const Search: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -183,7 +184,7 @@ const Search: React.FC = () => {
               className={s.chat__user + " " + s.top}
               onClick={() => handleSelect(el)}
             >
-              <img src={el.photoURL || ""} alt={el.displayName || ""} />
+              <Avatar src={el.photoURL} className={s.chat__user__avatar} displayName={el.displayName} />
               <div className={s.chat__user__info}>
                 <span>{el.displayName}</span>
               </div>

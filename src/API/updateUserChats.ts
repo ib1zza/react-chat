@@ -1,4 +1,4 @@
-import { updateDocument } from "src/utils/updateDoc";
+import { updateDocument } from "src/API/updateDoc";
 import { serverTimestamp } from "firebase/firestore";
 
 export function updateUserChats(
