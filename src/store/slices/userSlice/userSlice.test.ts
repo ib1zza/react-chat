@@ -55,7 +55,7 @@ describe('userSlice tests', () => {
 
     describe('selectors', () => {
         it('getUserData', () => {
-            const state: RootState = {
+            const state = {
                 user: initialState,
             }
 
@@ -63,7 +63,7 @@ describe('userSlice tests', () => {
         });
 
         it('getDisplayUser', () => {
-            const state: RootState = {
+            const state = {
                 user: initialState,
             }
 
