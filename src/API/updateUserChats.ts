@@ -5,7 +5,7 @@ export function updateUserChats(
   path: string,
   chatId: string,
   senderId: string,
-  inputData: string | undefined
+  inputData: string | undefined,
 ) {
   return updateDocument("userChats", path, {
     [chatId + ".lastMessage"]: {

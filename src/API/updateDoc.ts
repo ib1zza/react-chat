@@ -4,7 +4,7 @@ import { db } from "src/firebase";
 export async function updateDocument(
   path: string,
   pathSegments: string,
-  updateData: { [x: string]: any }
+  updateData: { [x: string]: any },
 ) {
   const ref = doc(db, path, pathSegments);
 

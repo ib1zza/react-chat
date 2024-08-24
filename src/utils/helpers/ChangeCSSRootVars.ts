@@ -19,7 +19,7 @@ export function changeCssRootVariables(theme: Theme) {
   components.forEach((component) => {
     root.style.setProperty(
       `--${component}-default`,
-      `var(--${component}-${theme})`
+      `var(--${component}-${theme})`,
     );
   });
 }

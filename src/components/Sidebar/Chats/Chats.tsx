@@ -7,8 +7,8 @@ import { useAuth } from "src/context/AuthContext";
 import SingleChat from "components/Sidebar/Chats/SingleChat/SingleChat";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppRoute } from "src/types/routes";
-import {useAppDispatch} from "src/store/hooks";
-import {selectChat} from "src/store/slices/chatSlice/chatSlice";
+import { useAppDispatch } from "src/store/hooks";
+import { selectChat } from "src/store/slices/chatSlice/chatSlice";
 interface ChatsObject {
   [id: string]: Object;
 }
@@ -47,7 +47,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
   const { chatId } = useParams();
   const [selectedUserID, setSelectedUserID] = useState("");
   const { user } = useAuth();
-  const dispatch  = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [chats, setChats] = React.useState<ChatsObject>({});
   console.log("chatId from params: ", chatId);
 
@@ -55,7 +55,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
     if (!user?.uid) return;
     const unsub = onSnapshot(doc(db, "userChats", user.uid), (doc) => {
       console.log("Current data: ", doc.data());
-      setChats((doc.data() || {}));
+      setChats(doc.data() || {});
     });
     return () => {
       unsub();
@@ -88,7 +88,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
   };
 
   const renderChats: Chat[] = Array.from(Object.values(chats)).sort(
-    (a, b) => b?.date?.seconds - a?.date?.seconds
+    (a, b) => b?.date?.seconds - a?.date?.seconds,
   );
   useEffect(() => {
     if (isOpen) {
@@ -107,18 +107,20 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
         s.chats__container + " " + (!isOpen ? s.chats__container_closed : "")
       }
     >
-      {renderChats.map((chat) => (
-          chat.userInfo &&
-        <SingleChat
-          key={chat.userInfo.uid}
-          currentUser={user.uid}
-          isOpen={isOpen}
-          user={chat.userInfo}
-          lastMessage={chat.lastMessage}
-          handleSelect={handleSelect}
-          isSelected={selectedUserID === chat.userInfo.uid}
-        />
-      ))}
+      {renderChats.map(
+        (chat) =>
+          chat.userInfo && (
+            <SingleChat
+              key={chat.userInfo.uid}
+              currentUser={user.uid}
+              isOpen={isOpen}
+              user={chat.userInfo}
+              lastMessage={chat.lastMessage}
+              handleSelect={handleSelect}
+              isSelected={selectedUserID === chat.userInfo.uid}
+            />
+          ),
+      )}
     </div>
   );
 };

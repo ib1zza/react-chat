@@ -4,8 +4,8 @@ import Message from "./Message/Message";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
-import {useAppSelector} from "src/store/hooks";
-import {selectChatData} from "src/store/slices/chatSlice/chatSlice";
+import { useAppSelector } from "src/store/hooks";
+import { selectChatData } from "src/store/slices/chatSlice/chatSlice";
 
 export interface IMessage {
   id: string;
@@ -19,7 +19,7 @@ export interface IMessage {
 }
 const Messages = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const  data = useAppSelector(selectChatData);
+  const data = useAppSelector(selectChatData);
   const endRef = useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();

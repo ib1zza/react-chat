@@ -7,7 +7,8 @@ import {
   addUser,
   removeUser,
   authUser,
-  unAuthUser, getUserData,
+  unAuthUser,
+  getUserData,
 } from "src/store/slices/userSlice/userSlice";
 import { useNavigate } from "react-router-dom";
 import { AppRoute } from "src/types/routes";
@@ -43,9 +44,8 @@ export interface UserInfo {
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const { authUser: user, displayUser: storedUser } = useAppSelector(
-      getUserData
-  );
+  const { authUser: user, displayUser: storedUser } =
+    useAppSelector(getUserData);
 
   console.log("auth provider changed");
   useEffect(() => {
@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
             email,
             photoURL: photoURL || "",
             uid,
-          })
+          }),
         );
         dispatch(authUser(user));
       } else {

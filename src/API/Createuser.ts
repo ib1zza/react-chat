@@ -16,7 +16,7 @@ export const createUserEmailPass = async (
   email: string,
   password: string,
   displayName: string,
-  file?: any
+  file?: any,
 ): Promise<string | undefined> => {
   if (!displayName || !email || !password) {
     return Promise.reject("Заполните все поля");
@@ -26,7 +26,7 @@ export const createUserEmailPass = async (
     const response = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
 
     if (file) {
@@ -67,7 +67,7 @@ export const createUserEmailPass = async (
             });
             await setDoc(doc(db, "userChats", response.user.uid), {});
           });
-        }
+        },
       );
     } else {
       await updateProfile(response.user, {
@@ -103,7 +103,7 @@ export const loginByGoogle = async () => {
         });
       }
       return result;
-    }
+    },
   );
 
   if (!userCredential.user.uid) return;
@@ -137,6 +137,6 @@ export const loginByEmailPass = async (email: string, password: string) => {
           displayName: value.user.displayName.toLowerCase(),
         });
       }
-    }
+    },
   );
 };

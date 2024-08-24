@@ -13,9 +13,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <BrowserRouter>
       <AuthProvider>
         <ThemeProvider>
-            <App />
+          <App />
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
-  </Provider>
+  </Provider>,
 );

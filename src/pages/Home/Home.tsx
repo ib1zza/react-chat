@@ -1,15 +1,15 @@
 import React, { lazy, Suspense } from "react";
 import s from "./Home.module.scss";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import {useSelector} from "react-redux";
-import {selectChatData} from "src/store/slices/chatSlice/chatSlice";
+import { useSelector } from "react-redux";
+import { selectChatData } from "src/store/slices/chatSlice/chatSlice";
 
 const Chat = lazy(() => import("../../components/Chat/Chat"));
 const Home = () => {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
   const isMobile = windowWidth <= 768;
-  const data = useSelector(selectChatData)
+  const data = useSelector(selectChatData);
 
   const isSidebarOpened = !data?.user;
 

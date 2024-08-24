@@ -1,4 +1,4 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 import s from "./Sidebar.module.scss";
 import Navbar from "./Navbar/Navbar";
 import Search from "./Search/Search";

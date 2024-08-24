@@ -6,8 +6,8 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "src/store/hooks";
 import { deleteChat } from "src/API/DeleteChat";
 import ChatHeaderMainInfo from "components/Chat/ChatHeader/ChatHeaderMainInfo";
-import {getDisplayUser} from "src/store/slices/userSlice/userSlice";
-import {IUserInfo} from "src/types";
+import { getDisplayUser } from "src/store/slices/userSlice/userSlice";
+import { IUserInfo } from "src/types";
 
 interface Props {
   user: IUserInfo;
@@ -41,9 +41,13 @@ const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
         photoURL={user.photoURL}
       />
 
-      <Modal isOpen={modal} onClose={() => setModal(false)} >
+      <Modal isOpen={modal} onClose={() => setModal(false)}>
         <div className={s.modal__body}>
-          <Avatar className={s.modal__body__avatar} src={user.photoURL} displayName={user.displayName}  />
+          <Avatar
+            className={s.modal__body__avatar}
+            src={user.photoURL}
+            displayName={user.displayName}
+          />
         </div>
         <div className={s.modal__header}>
           <span>{user.displayName}</span>

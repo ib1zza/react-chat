@@ -28,7 +28,7 @@ const Modal: React.FC<Props> = ({ isOpen, onClose, children, noClose }) => {
         onClose();
       }
     },
-    [onClose]
+    [onClose],
   );
 
   useEffect(() => {

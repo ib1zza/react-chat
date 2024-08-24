@@ -15,7 +15,7 @@ interface Props {
 }
 
 const PopupSettings = lazy(
-  () => import("components/Sidebar/PopupSettings/PopupSettings")
+  () => import("components/Sidebar/PopupSettings/PopupSettings"),
 );
 
 const Navbar: React.FC<Props> = ({ isOpen }) => {
@@ -52,7 +52,9 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
       </div>
 
       <Modal isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
-        <Suspense>{user && <PopupSettings user={user} isPopupOpen={isPopupOpen} />}</Suspense>
+        <Suspense>
+          {user && <PopupSettings user={user} isPopupOpen={isPopupOpen} />}
+        </Suspense>
       </Modal>
     </>
   );

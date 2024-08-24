@@ -4,7 +4,7 @@ import chatSlice from "./slices/chatSlice/chatSlice";
 const store = configureStore({
   reducer: {
     user: userSlice,
-    chat: chatSlice
+    chat: chatSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

@@ -46,7 +46,7 @@ const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {
       setLoading(false);
       setError("");
     }
-  },[isPopupOpen])
+  }, [isPopupOpen]);
 
   const handleUpdateAvatar = async () => {
     if (!user.displayName || !file) return;
@@ -84,11 +84,11 @@ const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {
             dispatch(
               editUser({
                 photoURL: downloadURL,
-              })
+              }),
             );
           });
         });
-      }
+      },
     );
   };
 

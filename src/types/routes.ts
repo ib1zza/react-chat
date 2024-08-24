@@ -4,5 +4,3 @@ export const enum AppRoute {
   Register = "/register",
   Chats = "/chats",
 }
-
-

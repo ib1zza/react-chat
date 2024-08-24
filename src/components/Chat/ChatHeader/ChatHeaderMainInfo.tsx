@@ -11,24 +11,28 @@ interface Props {
   onUserClick: () => void;
 }
 
-const ChatHeaderMainInfo = ({ displayName, photoURL, exitChat, onUserClick }: Props) => {
-    return (
-      <div className={s.chat__info}>
-        <button onClick={exitChat}>
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </button>
-        <div className={s.username}>
-          <span>{displayName || "noname"}</span>
-        </div>
-        <Avatar
-          className={s.avatar}
-          src={photoURL}
-          onClick={onUserClick}
-          displayName={displayName || "noname"}
-        />
+const ChatHeaderMainInfo = ({
+  displayName,
+  photoURL,
+  exitChat,
+  onUserClick,
+}: Props) => {
+  return (
+    <div className={s.chat__info}>
+      <button onClick={exitChat}>
+        <FontAwesomeIcon icon={faChevronLeft} />
+      </button>
+      <div className={s.username}>
+        <span>{displayName || "noname"}</span>
       </div>
-    );
-  }
-
+      <Avatar
+        className={s.avatar}
+        src={photoURL}
+        onClick={onUserClick}
+        displayName={displayName || "noname"}
+      />
+    </div>
+  );
+};
 
 export default memo(ChatHeaderMainInfo);

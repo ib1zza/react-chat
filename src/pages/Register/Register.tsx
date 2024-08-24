@@ -31,7 +31,7 @@ const Register = () => {
 
     try {
       await createUserEmailPass(email, password, displayName, file).then(() =>
-        navigate(AppRoute.Home)
+        navigate(AppRoute.Home),
       );
     } catch (e: any) {
       setError(true);

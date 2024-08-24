@@ -29,7 +29,7 @@ const Login = () => {
 
     try {
       await loginByEmailPass(email, password).then(() =>
-        navigate(AppRoute.Home, { replace: false })
+        navigate(AppRoute.Home, { replace: false }),
       );
     } catch (error) {
       setError(true);

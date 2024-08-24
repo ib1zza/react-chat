@@ -21,14 +21,12 @@ export async function uploadImage({
       console.log("Image upload is " + progress + "% done");
     },
     (error) => {
-      if (onError)
-      onError(error);
+      if (onError) onError(error);
     },
     () => {
       getDownloadURL(uploadImage.snapshot.ref).then((url) => {
-        if (onSuccess)
-        onSuccess(url);
+        if (onSuccess) onSuccess(url);
       });
-    }
+    },
   );
 }

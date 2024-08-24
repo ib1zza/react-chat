@@ -19,8 +19,8 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { RotatingLines } from "react-loader-spinner";
 import { useTranslation } from "react-i18next";
 import Avatar from "components/Shared/Avatar/Avatar";
-import {useAppDispatch} from "src/store/hooks";
-import {selectChat} from "src/store/slices/chatSlice/chatSlice";
+import { useAppDispatch } from "src/store/hooks";
+import { selectChat } from "src/store/slices/chatSlice/chatSlice";
 
 const Search: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -29,14 +29,14 @@ const Search: React.FC = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchedUsers, setSearchedUsers] = React.useState<UserInfo[]>([]);
   const [error, setError] = React.useState(false);
-  const dispatch  = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
   const searchUser = async () => {
     setLoading(true);
     const q = query(
       collection(db, "users"),
-      where("displayName", "==", searchQuery)
+      where("displayName", "==", searchQuery),
     );
     try {
       const querySnapshot = await getDocs(q);
@@ -73,13 +73,13 @@ const Search: React.FC = () => {
       const res = await getDoc(doc(db, "chats", combinedId));
 
       if (!res.exists()) {
-        console.log('creating chat: ', combinedId);
+        console.log("creating chat: ", combinedId);
 
         await setDoc(doc(db, "chats", combinedId), {
           messages: [],
         });
       } else {
-        console.log('entering chat: ', combinedId);
+        console.log("entering chat: ", combinedId);
       }
       const userChats = await getDoc(doc(db, "userChats", currentUser.uid));
 
@@ -107,7 +107,9 @@ const Search: React.FC = () => {
         });
       }
 
-      const selectedUserChats = await getDoc(doc(db, "userChats", selectedUser.uid));
+      const selectedUserChats = await getDoc(
+        doc(db, "userChats", selectedUser.uid),
+      );
 
       if (!selectedUserChats.exists()) {
         await setDoc(doc(db, "userChats", selectedUser.uid), {
@@ -132,10 +134,6 @@ const Search: React.FC = () => {
           },
         });
       }
-
-
-
-
 
       dispatch(selectChat(selectedUser));
     } catch (error) {
@@ -185,7 +183,11 @@ const Search: React.FC = () => {
               className={s.chat__user + " " + s.top}
               onClick={() => handleSelect(el)}
             >
-              <Avatar src={el.photoURL} className={s.chat__user__avatar} displayName={el.displayName} />
+              <Avatar
+                src={el.photoURL}
+                className={s.chat__user__avatar}
+                displayName={el.displayName}
+              />
               <div className={s.chat__user__info}>
                 <span>{el.displayName}</span>
               </div>

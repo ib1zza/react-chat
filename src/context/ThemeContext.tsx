@@ -29,7 +29,7 @@ export const useTheme = () => {
 
 const ThemeProvider: React.FC<Props> = ({ children, ...props }) => {
   const [theme, setTheme] = useState<Theme>(
-    storage.getItem("react-chat/theme") || Theme.LIGHT
+    storage.getItem("react-chat/theme") || Theme.LIGHT,
   );
   console.log("themeprovider rerender", theme);
 

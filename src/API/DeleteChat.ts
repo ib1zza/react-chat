@@ -5,7 +5,7 @@ import { db } from "src/firebase";
 export const deleteChat = async (
   chatId: string,
   userId: string,
-  friendId: string
+  friendId: string,
 ) => {
   return await updateDocument("chats", chatId, {
     messages: deleteField(),
