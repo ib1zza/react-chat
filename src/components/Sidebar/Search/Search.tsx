@@ -40,7 +40,7 @@ const Search: React.FC = () => {
     );
     try {
       const querySnapshot = await getDocs(q);
-      let newArray: UserInfo[] = [];
+      const newArray: UserInfo[] = [];
       querySnapshot.forEach((doc) => {
         if (doc.data() !== null) {
           newArray.push(doc.data() as UserInfo);

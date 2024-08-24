@@ -11,8 +11,7 @@ interface Props {
   onUserClick: () => void;
 }
 
-const ChatHeaderMainInfo = memo(
-  ({ displayName, photoURL, exitChat, onUserClick }: Props) => {
+const ChatHeaderMainInfo = ({ displayName, photoURL, exitChat, onUserClick }: Props) => {
     return (
       <div className={s.chat__info}>
         <button onClick={exitChat}>
@@ -30,6 +29,6 @@ const ChatHeaderMainInfo = memo(
       </div>
     );
   }
-);
 
-export default ChatHeaderMainInfo;
+
+export default memo(ChatHeaderMainInfo);

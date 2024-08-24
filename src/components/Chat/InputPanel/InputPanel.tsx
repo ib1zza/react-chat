@@ -27,8 +27,8 @@ const InputPanel = () => {
   };
 
   const handleSend = async () => {
-    let inputData = input;
-    let fileData = file;
+    const inputData = input;
+    const fileData = file;
     setInput("");
     setFile(null);
     setLoading(true);

@@ -24,8 +24,8 @@ const Modal: React.FC<Props> = ({ isOpen, onClose, children, noClose }) => {
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose && onClose();
+      if (e.key === "Escape" && !!onClose) {
+        onClose();
       }
     },
     [onClose]

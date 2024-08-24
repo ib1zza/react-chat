@@ -43,7 +43,7 @@ interface Props {
 }
 
 const Chats: React.FC<Props> = ({ isOpen }) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const { chatId } = useParams();
   const [selectedUserID, setSelectedUserID] = useState("");
   const { user } = useAuth();

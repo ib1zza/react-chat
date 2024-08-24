@@ -11,34 +11,33 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
     displayName?: string | null;
 }
 
-const Avatar: React.FC<Props> = memo(
-    ({displayName, src, className, ...props}) => {
-        const options = {
-            threshold: 0.2,
-            triggerOnce: true,
-        };
-        const {ref, inView} = useInView(options);
+const Avatar: React.FC<Props> = ({displayName, src, className, ...props}) => {
+    const options = {
+        threshold: 0.2,
+        triggerOnce: true,
+    };
+    const {ref, inView} = useInView(options);
 
-        return (
-            <div
-                ref={ref}
-                className={
-                    clsx(s.avatar, !src && s.template, className)
-                }
-                {...props}
-            >
-                {inView && src ? (
-                    <img src={src} alt={displayName || "avatar"}/>
+    return (
+        <div
+            ref={ref}
+            className={
+                clsx(s.avatar, !src && s.template, className)
+            }
+            {...props}
+        >
+            {inView && src ? (
+                <img src={src} alt={displayName || "avatar"}/>
+            ) : (
+                <>{displayName ? (
+                    <span>{displayName.charAt(0).toUpperCase()}</span>
                 ) : (
-                    <>{displayName ? (
-                        <span>{displayName.charAt(0).toUpperCase()}</span>
-                    ) : (
-                        <FontAwesomeIcon icon={faUser}/>
-                    )}</>
-                )}
-            </div>
-        );
-    }
-);
+                    <FontAwesomeIcon icon={faUser}/>
+                )}</>
+            )}
+        </div>
+    );
+}
 
-export default Avatar;
+
+export default memo(Avatar);
