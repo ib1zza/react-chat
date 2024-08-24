@@ -1,19 +1,19 @@
 // Media query mixins
 
 @mixin mobile {
-  @media (max-width: 480px) {
+  @media (width <= 480px) {
     @content;
   }
 }
 
 @mixin tablet {
-  @media (max-width: 768px) {
+  @media (width <= 768px) {
     @content;
   }
 }
 
 @mixin desktop {
-  @media (max-width: 1024px) {
+  @media (width <= 1024px) {
     @content;
   }
 }
@@ -22,13 +22,9 @@
 
 .chat {
   flex: 2;
-
-
   transition: width 0.3s ease;
-
   display: flex;
   flex-direction: column;
-
 
   // Chat info section
 
@@ -100,20 +96,20 @@
       }
 
       .message__content {
-        border-radius: 0 10px 10px 10px;
+        border-radius: 0 10px 10px;
         min-width: 130px;
         max-width: 80%;
         display: flex;
         flex-direction: column-reverse;
         overflow: hidden;
-        border: 1px solid rgba(211, 211, 211, 0.22);
+        border: 1px solid rgb(211 211 211 / 22%);
         background-color: var(#{--message-friend-bg-default});
         color: var(#{--text-main-default});
 
         p {
           width: 100%;
           height: 100%;
-          padding: 10px 10px;
+          padding: 10px;
           text-align: left;
           font-size: 18px;
         }
@@ -158,27 +154,22 @@
     width: 100%;
     gap: 20px;
 
-
     & > .text {
       font-size: 20px;
-
       outline: none;
       border: none;
       resize: none;
       background-color: transparent;
-
-
       color: var(#{--text-main-default});
+
       @include mobile {
         width: calc(100% - 110px);
       }
 
-      flex-basis: 100%;
+      flex: 1 1 100%;
       padding: 18px;
       height: 100%;
       max-height: 100px;
-      flex-shrink: 1;
-      flex-grow: 1;
 
       &::placeholder {
         color: lightgray;
