@@ -22,6 +22,7 @@ const InputPanel = () => {
 
   const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key == "Enter") {
+      e.preventDefault();
       handleSend();
     }
   };
@@ -65,6 +66,7 @@ const InputPanel = () => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleEnter}
+        autoFocus
       />
       <div className={s.send}>
         <input

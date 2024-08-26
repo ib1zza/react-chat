@@ -2,7 +2,7 @@ import React from "react";
 import s from "../../Chat.module.scss";
 
 import { IMessage } from "../Messages";
-import { formatRelative } from "date-fns";
+import { format, formatRelative } from "date-fns";
 import { useInView } from "react-intersection-observer";
 interface Props {
   message: IMessage;
@@ -20,7 +20,7 @@ const Message: React.FC<Props> = ({ message, isOwner }) => {
       <div className={s.message__content} ref={ref}>
         {message.date && (
           <div className={s.message__date}>
-            {formatRelative(message.date.seconds * 1000, Date.now())}
+            {format(new Date(message.date.seconds * 1000), "HH:mm")}
           </div>
         )}
         <p>{message.text}</p>

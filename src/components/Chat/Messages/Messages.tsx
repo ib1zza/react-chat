@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import s from "../Chat.module.scss";
 import Message from "./Message/Message";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -6,6 +6,7 @@ import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
 import { useAppSelector } from "src/store/hooks";
 import { selectChatData } from "src/store/slices/chatSlice/chatSlice";
+import { format } from "date-fns";
 
 export interface IMessage {
   id: string;
@@ -43,14 +44,38 @@ const Messages = () => {
 
   if (!data?.user || !user?.uid) return null;
 
+  const messagesByDate = useMemo(() => {
+    const result = messages.reduce((acc, message) => {
+      const dateString = format(
+        new Date(message.date.seconds * 1000),
+        "d LLL yyyy",
+      );
+      if (!acc[dateString]) {
+        acc[dateString] = [];
+      }
+      acc[dateString].push(message);
+      return acc;
+    }, {} as any);
+    return result;
+  }, [messages]);
+
+  console.log(messages, messagesByDate);
+
   return (
     <div className={s.messages}>
-      {messages.map((message) => (
-        <Message
-          key={message.id}
-          message={message}
-          isOwner={message.senderId === user.uid}
-        />
+      {Object.keys(messagesByDate).map((dateString) => (
+        <div key={dateString}>
+          <div className={s.dateHeader__container}>
+            <div className={s.dateHeader__date}>{dateString}</div>
+          </div>
+          {messagesByDate[dateString].map((message: IMessage) => (
+            <Message
+              key={message.id}
+              message={message}
+              isOwner={message.senderId === user.uid}
+            />
+          ))}
+        </div>
       ))}
       <div ref={endRef} />
     </div>
