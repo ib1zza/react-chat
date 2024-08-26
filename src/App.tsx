@@ -14,7 +14,7 @@ const App: React.FC = () => {
   return (
     <div>
       {/*TODO: delete*/}
-      <button onClick={handleTheme}>change theme</button>
+      {/*<button onClick={handleTheme}>change theme</button>*/}
       {!loading && <AppRouter isAuth={!!userInfo?.isAuth} loading={loading} />}
     </div>
   );

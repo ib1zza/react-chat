@@ -22,6 +22,7 @@ export const createUserEmailPass = async (
     return Promise.reject("Заполните все поля");
   }
 
+  console.log(file, typeof file);
   try {
     const response = await createUserWithEmailAndPassword(
       auth,

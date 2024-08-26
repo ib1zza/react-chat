@@ -1,50 +1,77 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "../Register/Register.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { AppRoute } from "src/types/routes";
-import { useAuth } from "src/context/AuthContext";
 import { loginByEmailPass, loginByGoogle } from "src/API/Createuser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useTranslation } from "react-i18next";
 import { langs } from "src/i18n";
 import i18n from "i18next";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FirebaseError } from "src/types";
+
+interface LoginValues {
+  email: string;
+  password: string;
+}
+
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [error, setError] = React.useState(false);
-  const { user } = useAuth();
-  if (user) {
-    console.log("navigate");
-    navigate(AppRoute.Home, { replace: false });
-  }
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isValid },
+    setError,
+    clearErrors,
+  } = useForm<LoginValues>({
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+  });
 
-    // @ts-ignore
-    const email = e.target[0].value;
-    // @ts-ignore
-    const password = e.target[1].value;
-    setError(false);
+  const handleLoginByEmail: SubmitHandler<LoginValues> = async (data) => {
+    const email = data.email;
+    const password = data.password;
+    clearErrors();
 
-    try {
-      await loginByEmailPass(email, password).then(() =>
-        navigate(AppRoute.Home, { replace: false }),
-      );
-    } catch (error) {
-      setError(true);
-    }
+    await loginByEmailPass(email, password)
+      .then(() => navigate(AppRoute.Home, { replace: false }))
+      .catch((e: FirebaseError) => {
+        switch (e.code) {
+          case "auth/wrong-password":
+            setError("root", {
+              type: "server",
+              message: "incorrect password",
+            });
+            break;
+
+          case "auth/user-not-found":
+            setError("root", {
+              type: "server",
+              message: "user not register",
+            });
+            break;
+
+          case "auth/network-request-failed":
+            setError("root", {
+              type: "server",
+              message: "nework error",
+            });
+            break;
+        }
+      });
   };
 
   const handleGoogle = async () => {
-    setError(false);
-
-    try {
-      loginByGoogle().then(() => navigate(AppRoute.Home, { replace: false }));
-    } catch (error) {
-      setError(true);
-      console.log(error);
-    }
+    await loginByGoogle()
+      .then(() => navigate(AppRoute.Home, { replace: false }))
+      .catch((e) => {
+        setError("root", {
+          type: "server",
+          message: "google auth failed",
+        });
+      });
   };
 
   return (
@@ -54,21 +81,42 @@ const Login = () => {
           <h1 className={s.form__logo}>React-Chat</h1>
           <h1 className={s.form__title}>{t("log in")}</h1>
         </div>
-        <form onSubmit={handleSubmit}>
-          <input type="email" placeholder="Email" required />
+        <form className={s.form} onSubmit={handleSubmit(handleLoginByEmail)}>
+          <input
+            type="email"
+            placeholder="Email"
+            {...register("email", {
+              required: true,
+              pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+            })}
+          />
+          {errors.email && (
+            <p className={s.error__message}>{t("incorrect email")}</p>
+          )}
           <input
             type="password"
             placeholder={t("password") as string}
-            required
+            {...register("password", {
+              required: true,
+              minLength: 6,
+            })}
           />
-          {error && <p className={s.error__message}>Wrong email or password</p>}
+          {errors.password && (
+            <p className={s.error__message}>{t("incorrect password")}</p>
+          )}
 
-          <button type="submit">{t("sign in")}</button>
+          <button className={s.submit} type="submit" disabled={!isValid}>
+            {t("sign in")}
+          </button>
+
+          {errors.root && (
+            <p className={s.error__message}>{t("server error")}</p>
+          )}
         </form>
         <button className={s.googleLogin} onClick={handleGoogle}>
           <span>{t("sign in google")}</span> <FontAwesomeIcon icon={faGoogle} />
         </button>
-        <p>
+        <p className={s.noAcc}>
           {t("dont have an acc?")}{" "}
           <Link to={AppRoute.Register}>{t("register")}</Link>
         </p>
@@ -89,5 +137,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

@@ -3,44 +3,69 @@ import s from "./Register.module.scss";
 import Add from "../../assets/img/addAvatar.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AppRoute } from "src/types/routes";
-import { createUserEmailPass } from "src/API/Createuser";
+import { createUserEmailPass, loginByGoogle } from "src/API/Createuser";
 import { useTranslation } from "react-i18next";
 import { langs } from "src/i18n";
 import i18n from "i18next";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Simulate } from "react-dom/test-utils";
+import error = Simulate.error;
+import { FirebaseError } from "src/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+
+interface RegisterValues {
+  displayName: string;
+  email: string;
+  password: string;
+  file: FileList;
+}
 
 const Register = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [error, setError] = useState(false);
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    // @ts-ignore
-    const displayName = e.target[0].value.toLowerCase().trim();
-    // @ts-ignore
-    const email = e.target[1].value;
-    // @ts-ignore
-    const password = e.target[2].value;
-    // @ts-ignore
-    const file = e.target[3].files[0];
 
-    if (!checkUsername(displayName)) {
-      setError(true);
-      return;
-    }
-    setError(false);
+  const {
+    register,
+    setError,
+    clearErrors,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<RegisterValues>({
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+  });
 
-    try {
-      await createUserEmailPass(email, password, displayName, file).then(() =>
-        navigate(AppRoute.Home),
-      );
-    } catch (e: any) {
-      setError(true);
-    }
+  const handleSubmit1: SubmitHandler<RegisterValues> = async (data) => {
+    const displayName = data.displayName.toLowerCase().trim();
+    const email = data.email;
+    const password = data.password;
+    const file = data.file[0];
+
+    await createUserEmailPass(email, password, displayName, file)
+      .then(() => navigate(AppRoute.Home))
+      .catch((e: FirebaseError) => {
+        setError("root", {
+          type: "server",
+        });
+      });
   };
 
   const checkUsername = (username: string) => {
     return /^[a-z0-9]+$/.test(username) && username.length >= 3;
   };
+
+  const handleGoogle = async () => {
+    await loginByGoogle()
+      .then(() => navigate(AppRoute.Home, { replace: false }))
+      .catch((e) => {
+        setError("root", {
+          type: "server",
+          message: "google auth failed",
+        });
+      });
+  };
+
   return (
     <div className={s.form__container}>
       <div className={s.form__wrapper}>
@@ -48,28 +73,60 @@ const Register = () => {
           <h1 className={s.form__logo}>React-Chat</h1>
           <h1 className={s.form__title}>{t("register")}</h1>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form className={s.form} onSubmit={handleSubmit(handleSubmit1)}>
+          <div className={s.nicknameInputContainer}>
+            <span>@</span>
+            <input
+              type="text"
+              placeholder={t("nickname") as string}
+              {...register("displayName", {
+                required: true,
+                minLength: 3,
+                maxLength: 15,
+                validate: checkUsername,
+              })}
+            />
+          </div>
+          {errors.displayName && (
+            <p className={s.error__message}>{t("incorrect nickname")}</p>
+          )}
           <input
-            type="text"
-            placeholder={t("nickname") as string}
-            onChange={(e) => checkUsername(e.target.value)}
-            required
+            type="email"
+            placeholder="Email"
+            {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
           />
-          <input type="email" placeholder="Email" required />
+          {errors.email && (
+            <p className={s.error__message}>{t("incorrect email")}</p>
+          )}
           <input
             type="password"
             placeholder={t("password") as string}
-            required
+            {...register("password", { required: true, minLength: 6 })}
           />
-          <input type="file" className={s.file} id="file" />
+          {errors.password && (
+            <p className={s.error__message}>{t("incorrect password")}</p>
+          )}
+          <input
+            type="file"
+            className={s.file}
+            id="file"
+            {...register("file")}
+          />
           <label htmlFor="file">
             <img src={Add} alt="" />
             <span>{t("addAvatar")}</span>
           </label>
-          <button type="submit">{t("signUp")}</button>
-          {error && <p className={s.error__message}>Something went wrong.</p>}
+          <button className={s.submit} disabled={!isValid} type="submit">
+            {t("signUp")}
+          </button>
+          {errors.root && (
+            <p className={s.error__message}>{t("server error")}</p>
+          )}
         </form>
-        <p>
+        <button className={s.googleLogin} onClick={handleGoogle}>
+          <span>{t("sign up google")}</span> <FontAwesomeIcon icon={faGoogle} />
+        </button>
+        <p className={s.noAcc}>
           {t("already have an acc?")}{" "}
           <Link to={AppRoute.Login}>{t("log in")}</Link>
         </p>

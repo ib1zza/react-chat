@@ -6,3 +6,12 @@ export interface IUserInfo {
     text?: string;
   };
 }
+
+export type FirebaseError = {
+  code:
+    | "auth/wrong-password"
+    | "auth/user-not-found"
+    | "auth/network-request-failed";
+  name: "FirebaseError";
+  customData: Record<string, any>;
+};

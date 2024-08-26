@@ -11,20 +11,25 @@ $formBgColorHEX: #CECEF0;
   background-color: $bgColor;
   align-items: center;
   justify-content: center;
+
 }
 
 .form__wrapper {
+  width: 100%;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 20px 60px;
+  padding: 20px 20px;
+  margin: 0 15px;
   background: $formBgColor;
 
   .googleLogin {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 10px;
     border-radius: 10px;
     padding: 10px;
     width: 100%;
@@ -36,23 +41,55 @@ $formBgColorHEX: #CECEF0;
   border-radius: 10px;
   box-shadow: 0 0 10px rgb(0 0 0 / 50%);
 
-  form {
+  .form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    width: 100%;
 
     .error__message {
       color: #f14040;
       font-size: 14px;
       text-align: center;
-      margin-bottom: 5px;
     }
+
+    .nicknameInputContainer {
+      width: 100%;
+      display: flex;
+      position: relative;
+
+      span {
+        position: absolute;
+        left: 7px;
+        top: calc(50% - 5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        transform: translateY(-50%);
+        color: #5e6fa1;
+        font-weight: bold;
+      }
+      input {
+        padding-left: 25px;
+        width: 100%;
+        color: #5e6fa1;
+        font-weight: bold;
+
+        &::placeholder {
+          color: black;
+          opacity: .6;
+          font-weight: normal;
+        }
+      }
+    }
+
 
     input {
       padding: 15px;
       border: none;
       border-bottom: 1px solid $bgColor;
-      margin-bottom: 1px;
+      margin-bottom: 6px;
       background-color: transparent;
 
       &::placeholder {
@@ -62,7 +99,8 @@ $formBgColorHEX: #CECEF0;
 
       &:focus {
         border-bottom: 2px solid $bgColor;
-        margin-bottom: 0px;
+        margin-bottom: 5px;
+
 
         &::placeholder {
           opacity: .3;
@@ -70,7 +108,7 @@ $formBgColorHEX: #CECEF0;
       }
     }
 
-    button {
+    .submit {
       background-color: #7b96ec;
       color: white;
       padding: 10px;
@@ -79,10 +117,11 @@ $formBgColorHEX: #CECEF0;
       cursor: pointer;
       text-align: center;
       transition: all .3s ease;
+      margin-top: 15px;
 
       &:disabled {
         opacity: .5;
-        cursor: not-allowed;
+        cursor: default;
       }
       &:hover {
         transition: all .3s ease;
@@ -92,6 +131,7 @@ $formBgColorHEX: #CECEF0;
     }
 
     label {
+      margin-top: 5px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -109,7 +149,7 @@ $formBgColorHEX: #CECEF0;
     }
   }
 
-  p {
+  .noAcc {
     color: #1e1d2e;;
     font-size: 14px;
     margin-top: 10px;
