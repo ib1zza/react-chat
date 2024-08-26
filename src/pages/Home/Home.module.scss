@@ -6,9 +6,6 @@ body {
 
 .home {
   background-color: transparent;
-
-  //padding-top: 20px;
-  //padding-bottom: 80px;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -19,21 +16,16 @@ body {
     position: relative;
     border-radius: 10px;
     width: 1000px;
-
-    //height: calc(100%);
     display: flex;
     overflow: hidden;
-
-    //border: 1px solid #f0efff;
     box-shadow: 0 0 10px 0 rgb(0 0 0 / 75%);
   }
 
-  @media screen and (width <= 480px) {
+  @media screen and (width <= 1000px) {
     .container {
       border-radius: 0;
-
-      //height: calc(100vh);
       align-self: flex-start;
+      box-shadow: none;
     }
   }
 }

@@ -1,8 +1,8 @@
 $body-bg-light: #a7bcff;
 $body-bg-dark: #111219;
-$main-bg-light: #3e3c61;
+$main-bg-light: #8181b7;
 $main-bg-dark: #1b1b31;
-$darker-bg-light: #2f2d52;
+$darker-bg-light: #5d5b8d;
 $darker-bg-dark: #12111f;
 $chat-bg-light: #cecef0;
 $chat-bg-dark: #1b1b31;
@@ -15,11 +15,15 @@ $accent-color-dark: #2f2d52;
 $text-main-light: #f0f0ff;
 $text-main-dark: #f0f0ff;
 $message-owner-bg-light: #c1b0f9;
-$message-owner-bg-dark: #41367e;
+$message-owner-bg-dark: #514d9c;
 $message-friend-bg-light: #e5e5f2;
-$message-friend-bg-dark: #4e4e6a;
-$avatar-bg-light: #a7bcff;
+$message-friend-bg-dark: #12111f;
+$avatar-bg-light: #2f2d52;
 $avatar-bg-dark: #2f2d52;
+$popup-bg-light: #8181b7;
+$popup-bg-dark: #1b1b31;
+$message-text-color-light: #101010;
+$message-text-color-dark: #f0f0ff;
 
 :root {
   --body-bg-light: #{$body-bg-light};
@@ -55,4 +59,10 @@ $avatar-bg-dark: #2f2d52;
   --avatar-bg-light: #{$avatar-bg-light};
   --avatar-bg-dark: #{$avatar-bg-dark};
   --avatar-bg-default: var(#{--avatar-bg-dark});
+  --popup-bg-light: #{$popup-bg-light};
+  --popup-bg-dark: #{$popup-bg-dark};
+  --popup-bg-default: var(#{--popup-bg-dark});
+  --message-text-color-light: #{$message-text-color-light};
+  --message-text-color-dark: #{$message-text-color-dark};
+  --message-text-color-default: var(#{--message-text-color-dark});
 }

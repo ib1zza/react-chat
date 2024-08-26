@@ -14,6 +14,9 @@ export function changeCssRootVariables(theme: Theme) {
     "message-owner-bg",
     "message-friend-bg",
     "chatInput-bg",
+    "avatar-bg",
+    "popup-bg",
+    "message-text-color",
   ];
 
   components.forEach((component) => {

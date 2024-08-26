@@ -14,6 +14,9 @@ import { useAppDispatch } from "src/store/hooks";
 import { editUser, removeUser } from "src/store/slices/userSlice/userSlice";
 import { useTranslation } from "react-i18next";
 import { langs } from "src/i18n";
+import { Theme, useTheme } from "src/context/ThemeContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 interface Props {
   user: User;
   isPopupOpen: boolean;
@@ -102,10 +105,15 @@ const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {
       dispatch(removeUser());
     });
   };
+  const { toggleTheme, theme } = useTheme();
+
+  function handleTheme() {
+    toggleTheme();
+  }
 
   return (
     <>
-      <button onClick={() => signOut(auth)} className={s.logout}>
+      <button onClick={signOutHandler} className={s.logout}>
         {t("logout")}
       </button>
 
@@ -154,23 +162,45 @@ const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {
             </AnimatePresence>
           </div>
         </div>
-        <TextField
-          displayName={user.displayName || "where is ur name?"}
-          onUpdate={handleUpdateDisplayname}
-        />
-        {error && <p>{error}</p>}
-        <div className={s.langs}>
-          {langs.map((lang) => (
-            <button
-              key={lang}
-              className={
-                s.lang + " " + (i18n.resolvedLanguage == lang ? s.active : "")
-              }
-              onClick={() => i18n.changeLanguage(lang)}
-            >
-              {lang}
+
+        <div className={s.editUserForm}>
+          <div className={s.editName}>
+            <p className={s.title}>{t("editName")}</p>
+            <TextField
+              displayName={user.displayName || "your name"}
+              onUpdate={handleUpdateDisplayname}
+            />
+          </div>
+          {error && <p>{error}</p>}
+          <div className={s.langs}>
+            <p className={s.title}>{t("language")}</p>
+            <div className={s.langs__list}>
+              {langs.map((lang) => (
+                <button
+                  key={lang}
+                  className={
+                    s.button +
+                    " " +
+                    (i18n.resolvedLanguage == lang ? s.active : "")
+                  }
+                  onClick={() => i18n.changeLanguage(lang)}
+                >
+                  {lang}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className={s.theme}>
+            <p className={s.title}>{t("change theme")}</p>
+            <button className={s.button} onClick={handleTheme}>
+              {theme === Theme.LIGHT ? (
+                <FontAwesomeIcon icon={faSun} />
+              ) : (
+                <FontAwesomeIcon icon={faMoon} />
+              )}
             </button>
-          ))}
+          </div>
         </div>
       </div>
     </>

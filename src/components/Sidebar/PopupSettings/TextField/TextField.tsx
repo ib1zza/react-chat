@@ -28,6 +28,7 @@ const TextField = ({ displayName, onUpdate }: Props) => {
       {opened ? (
         <>
           <input
+            autoFocus
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -35,15 +36,19 @@ const TextField = ({ displayName, onUpdate }: Props) => {
             maxLength={20}
             required
           />
-          <FontAwesomeIcon icon={faCheck} onClick={validate} />
+          <button className={s.button} onClick={validate}>
+            <FontAwesomeIcon icon={faCheck} />
+          </button>
         </>
       ) : (
         <>
-          <h2>{displayName}</h2>{" "}
-          <FontAwesomeIcon
-            icon={faPenToSquare}
+          <h2>{displayName}</h2>
+          <button
+            className={s.button}
             onClick={() => setOpened((prevState) => !prevState)}
-          />
+          >
+            <FontAwesomeIcon icon={faPenToSquare} />
+          </button>
         </>
       )}
     </div>

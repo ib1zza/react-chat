@@ -32,7 +32,7 @@
   }
 
   .search {
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid rgba(211, 211, 211, 0.7);
     min-height: 60px;
 
     .results {
@@ -139,7 +139,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: #2f2d52;
+    background-color: var(--darker-bg-default);
   }
 
   &__avatar {
@@ -255,15 +255,14 @@
 }
 
 .logout {
-  position: absolute;
-  top: 0;
-  left: 10px;
+  //position: absolute;
+  //top: 0;
+  //left: 10px;
   cursor: pointer;
   padding: 10px 20px;
-  background-color: #ffa7c1;
+  background-color: #bd6c84;
   color: #2f2d52;
   border-radius: 10px;
-  margin-top: 10px;
 }
 
 // Error message styles
@@ -294,8 +293,8 @@
     border-radius: 10px;
     max-width: 600px;
     min-height: 100px;
-    background-color: var(#{--chat-bg-default});
-    padding: 20px;
+    background-color: var(--popup-bg-default);
+    padding: 15px;
     position: relative;
     transform: translateY(-100%) scale(0.2);
     transition: all 0.3s ease-in-out;
@@ -356,23 +355,7 @@
         }
       }
 
-      .profile__displayName {
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        font-size: 20px;
-        color: var(#{--text-main-default});
 
-        h2 {
-          text-align: center;
-          margin-right: 10px;
-        }
-
-        svg {
-          flex-shrink: 0;
-          cursor: pointer;
-        }
-      }
     }
   }
 
@@ -391,24 +374,78 @@
   }
 }
 
-.langs {
+.langs, .theme {
   display: flex;
   gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.langs .langs__list {
+  display: flex;
+  gap: 10px;
+}
+
+.editName {
+  display: flex;
+  flex-direction: column;
+
+  width: 250px;
+}
+
+.profile__displayName {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  color: var(#{--text-main-default});
+
+  input {
+    flex-grow: 1;
+    width: 100%;
+  }
 
   button {
+    flex-shrink: 0;
+  }
+  h2 {
+    margin-right: 10px;
+  }
+
+}
+
+.editUserForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 250px;
+
+  .title {
+    font-size: 16px;
+    color: var(--text-main-default);
+    opacity: .8;
+  }
+
+  .button {
     cursor: pointer;
-    margin-top: 10px;
     padding: 8px 20px;
     border-radius: 10px;
-    background-color: var(#{--chatInput-bg-default});
+    background-color: var(--chatInfo-bg-default);
     color: var(#{--text-main-default});
+    border: 2px solid transparent;
+
+    font-size: 16px;
 
     &:hover {
       opacity: 0.8;
     }
 
     &.active {
-      border-bottom: 2px solid red;
+      border: 2px solid var(--accent-color-default);
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }
