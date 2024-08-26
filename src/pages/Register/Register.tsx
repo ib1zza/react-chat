@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "./Register.module.scss";
 import Add from "../../assets/img/addAvatar.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,37 +13,42 @@ import error = Simulate.error;
 import { FirebaseError } from "src/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import clsx from "clsx";
 
 interface RegisterValues {
   displayName: string;
   email: string;
   password: string;
-  file: FileList;
+  file: File;
 }
 
 const Register = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [preview, setPreview] = useState("");
 
   const {
     register,
     setError,
     clearErrors,
     handleSubmit,
+    getValues,
     formState: { errors, isValid },
+    getFieldState,
+    setValue,
   } = useForm<RegisterValues>({
-    mode: "onBlur",
-    reValidateMode: "onBlur",
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
   const handleSubmit1: SubmitHandler<RegisterValues> = async (data) => {
     const displayName = data.displayName.toLowerCase().trim();
     const email = data.email;
     const password = data.password;
-    const file = data.file[0];
+    const file = !!preview && data.file;
 
     await createUserEmailPass(email, password, displayName, file)
-      .then(() => navigate(AppRoute.Home))
+      .then(() => navigate(AppRoute.Home, { replace: true }))
       .catch((e: FirebaseError) => {
         setError("root", {
           type: "server",
@@ -66,6 +71,15 @@ const Register = () => {
       });
   };
 
+  const handleUploadedFile = (event: any) => {
+    const file = event.target.files[0];
+    setValue("file", file);
+    const urlImage = URL.createObjectURL(file);
+
+    setPreview(urlImage);
+  };
+
+  console.log(getValues("file"));
   return (
     <div className={s.form__container}>
       <div className={s.form__wrapper}>
@@ -106,15 +120,21 @@ const Register = () => {
           {errors.password && (
             <p className={s.error__message}>{t("incorrect password")}</p>
           )}
-          <input
-            type="file"
-            className={s.file}
-            id="file"
-            {...register("file")}
-          />
-          <label htmlFor="file">
-            <img src={Add} alt="" />
-            <span>{t("addAvatar")}</span>
+
+          <label htmlFor="file" className={s.fileLabel}>
+            <img
+              src={preview || Add}
+              alt=""
+              className={clsx("", [preview && s.userImage])}
+            />
+            <span>{preview ? t("changeAvatar") : t("addAvatar")}</span>
+            <input
+              type="file"
+              className={s.file}
+              id="file"
+              {...register("file")}
+              onChange={handleUploadedFile}
+            />
           </label>
           <button className={s.submit} disabled={!isValid} type="submit">
             {t("signUp")}

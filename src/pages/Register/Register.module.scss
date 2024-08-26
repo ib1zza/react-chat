@@ -130,7 +130,7 @@ $formBgColorHEX: #CECEF0;
       }
     }
 
-    label {
+    .fileLabel {
       margin-top: 5px;
       display: flex;
       align-items: center;
@@ -140,7 +140,13 @@ $formBgColorHEX: #CECEF0;
       cursor: pointer;
 
       img {
-        width: 32px;
+        width: 42px;
+        height: 42px;
+        object-fit: cover;
+
+        &.userImage {
+          border-radius: 50%;
+        }
       }
     }
 
