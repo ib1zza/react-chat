@@ -50,8 +50,10 @@ const Login = () => {
   return (
     <div className={s.form__container}>
       <div className={s.form__wrapper}>
-        <h1 className={s.form__logo}>React-Chat</h1>
-        <h1 className={s.form__title}>{t("log in")}</h1>
+        <div className={s.form__titleContainer}>
+          <h1 className={s.form__logo}>React-Chat</h1>
+          <h1 className={s.form__title}>{t("log in")}</h1>
+        </div>
         <form onSubmit={handleSubmit}>
           <input type="email" placeholder="Email" required />
           <input
