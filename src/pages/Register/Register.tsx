@@ -39,11 +39,6 @@ const Register = () => {
   } = useForm<RegisterValues>({
     mode: "onChange",
     reValidateMode: "onChange",
-    defaultValues: {
-      displayName: "asd",
-      email: "hellotestagain@gmail.com",
-      password: "123456",
-    },
   });
 
   const handleSubmit1: SubmitHandler<RegisterValues> = async (data) => {
