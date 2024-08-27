@@ -1,6 +1,4 @@
 import userSlice, {
-  authUser,
-  unAuthUser,
   removeUser,
   addUser,
   editUser,
@@ -20,18 +18,6 @@ describe("userSlice tests", () => {
     displayName: "test",
     photoURL: "test",
   };
-
-  it("authUser", () => {
-    const user = testUser as User;
-    const state = userSlice(initialState, authUser(user));
-    expect(state.authUser).toEqual(user);
-  });
-
-  it("unAuthUser", () => {
-    const init = { ...initialState, authUser: testUser as User };
-    const state = userSlice(init, unAuthUser());
-    expect(state.authUser).toEqual(null);
-  });
 
   it("addUser without photo ", () => {
     const expected = { ...testUser, isAuth: true, loading: false };
