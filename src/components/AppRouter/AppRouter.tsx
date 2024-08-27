@@ -26,7 +26,7 @@ const protectedRoutes = [
   },
   {
     path: "*",
-    element: <Navigate to={AppRoute.Chats + "/:chatId"} />,
+    element: <Navigate to={AppRoute.Home} />,
   },
 ];
 

@@ -6,21 +6,18 @@ import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import {
   addUser,
   removeUser,
-  authUser,
-  unAuthUser,
   getUserData,
+  setLoading,
 } from "src/store/slices/userSlice/userSlice";
 import { useNavigate } from "react-router-dom";
 import { AppRoute } from "src/types/routes";
 
 interface AuthContext {
-  user: User | null;
   userInfo: UserInfo | null;
   loading: boolean;
 }
 
 const AuthContext = React.createContext<AuthContext>({
-  user: auth.currentUser,
   userInfo: null,
   loading: false,
 });
@@ -44,28 +41,28 @@ export interface UserInfo {
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const { authUser: user, displayUser: storedUser } =
-    useAppSelector(getUserData);
+  const { displayUser: storedUser } = useAppSelector(getUserData);
 
   console.log("auth provider changed");
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      console.log("auth user ", user?.uid);
-      if (user?.uid && user?.email && user?.displayName) {
-        const { displayName, email, photoURL, uid } = user;
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user?.uid && user?.email) {
+        if (!user.displayName) {
+          console.log("no displayName");
+          return;
+        }
+        console.log("auth user ", user?.toJSON());
+        const { displayName, email, photoURL, uid } = user.toJSON() as any;
         dispatch(
           addUser({
-            displayName,
+            displayName: displayName || "",
             email,
             photoURL: photoURL || "",
             uid,
           }),
         );
-        dispatch(authUser(user));
       } else {
-        console.log("unAuthUser");
-        dispatch(unAuthUser());
-        dispatch(removeUser());
+        dispatch(setLoading(false));
       }
     });
 
@@ -77,7 +74,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
         userInfo: storedUser,
         loading: storedUser.loading,
       }}

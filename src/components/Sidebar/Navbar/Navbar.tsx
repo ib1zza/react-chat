@@ -20,7 +20,7 @@ const PopupSettings = lazy(
 
 const Navbar: React.FC<Props> = ({ isOpen }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { user, userInfo } = useAuth();
+  const { userInfo } = useAuth();
   const { toggleTheme, theme } = useTheme();
 
   function handleTheme() {
@@ -53,7 +53,9 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
 
       <Modal isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
         <Suspense>
-          {user && <PopupSettings user={user} isPopupOpen={isPopupOpen} />}
+          {userInfo && (
+            <PopupSettings user={userInfo} isPopupOpen={isPopupOpen} />
+          )}
         </Suspense>
       </Modal>
     </>

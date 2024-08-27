@@ -23,7 +23,7 @@ const Messages = () => {
   const data = useAppSelector(selectChatData);
   const endRef = useRef<HTMLDivElement>(null);
 
-  const { user } = useAuth();
+  const { userInfo: user } = useAuth();
   useEffect(() => {
     if (!data?.chatId) return;
     const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {

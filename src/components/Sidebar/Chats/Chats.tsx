@@ -46,7 +46,7 @@ const Chats: React.FC<Props> = ({ isOpen }) => {
   const navigate = useNavigate();
   const { chatId } = useParams();
   const [selectedUserID, setSelectedUserID] = useState("");
-  const { user } = useAuth();
+  const { userInfo: user } = useAuth();
   const dispatch = useAppDispatch();
   const [chats, setChats] = React.useState<ChatsObject>({});
   console.log("chatId from params: ", chatId);

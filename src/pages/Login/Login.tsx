@@ -10,6 +10,8 @@ import { langs } from "src/i18n";
 import i18n from "i18next";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { FirebaseError } from "src/types";
+import { useAppSelector } from "src/store/hooks";
+import { getUserData } from "src/store/slices/userSlice/userSlice";
 
 interface LoginValues {
   email: string;
@@ -17,6 +19,7 @@ interface LoginValues {
 }
 
 const Login = () => {
+  const { displayUser } = useAppSelector(getUserData);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const {

@@ -5,12 +5,21 @@ import {
   signInWithPopup,
   updateProfile,
   User,
+  updateCurrentUser,
+  signOut,
 } from "firebase/auth";
 import { auth, db, storage } from "src/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { updateDocument } from "src/API/updateDoc";
 import { AppRoute } from "src/types/routes";
+
+async function registerWithPhoto(
+  email: string,
+  password: string,
+  displayName: string,
+  file: any,
+) {}
 
 export const createUserEmailPass = async (
   email: string,
@@ -30,46 +39,47 @@ export const createUserEmailPass = async (
       password,
     );
 
+    console.log("start to update profile");
+
     if (file) {
       const storageRef = ref(storage, displayName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-      const uploadImage = uploadBytesResumable(storageRef, file);
-
-      uploadImage.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Image upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
-        },
-        (error) => {
-          return Promise.reject(error);
-        },
-        () => {
-          getDownloadURL(uploadImage.snapshot.ref).then(async (downloadURL) => {
-            await updateProfile(response.user, {
-              displayName,
-              photoURL: downloadURL,
-            });
-            console.log("File available at", downloadURL);
-            await setDoc(doc(db, "users", response.user.uid), {
-              uid: response.user.uid,
-              displayName,
-              email,
-              photoURL: downloadURL,
-            });
-            await setDoc(doc(db, "userChats", response.user.uid), {});
-          });
-        },
-      );
+      await new Promise((resolve, reject) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // You can track the upload progress here
+            console.log(
+              `Uploaded ${
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+              }%`,
+            );
+          },
+          (error) => {
+            reject(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then(
+              async (downloadURL) => {
+                await updateProfile(response.user, {
+                  displayName,
+                  photoURL: downloadURL,
+                });
+                console.log("File available at", downloadURL);
+                await setDoc(doc(db, "users", response.user.uid), {
+                  uid: response.user.uid,
+                  displayName,
+                  email,
+                  photoURL: downloadURL,
+                });
+                await setDoc(doc(db, "userChats", response.user.uid), {});
+                resolve(undefined);
+              },
+            );
+          },
+        );
+      });
     } else {
       await updateProfile(response.user, {
         displayName,
@@ -82,36 +92,30 @@ export const createUserEmailPass = async (
       });
 
       await setDoc(doc(db, "userChats", response.user.uid), {});
+
+      console.log("updated profile");
     }
   } catch (error) {
     return Promise.reject(error);
   }
+
+  console.log("started to log in");
+  await signOut(auth);
+  await loginByEmailPass(email, password);
 };
 
 export const loginByGoogle = async () => {
   const provider = new GoogleAuthProvider();
 
-  const userCredential = await signInWithPopup(auth, provider).then(
-    (result) => {
-      if (!result.user.displayName) return result;
-      if (result.user.displayName !== result.user.displayName.toLowerCase()) {
-        console.log("updating doc");
-        updateDocument("users", result.user.uid, {
-          displayName: result.user.displayName.toLowerCase(),
-        });
-        updateProfile(result.user, {
-          displayName: result.user.displayName.toLowerCase(),
-        });
-      }
-      return result;
-    },
-  );
+  const userCredential = await signInWithPopup(auth, provider);
 
   if (!userCredential.user.uid) return;
+
   const id = userCredential.user.uid;
   const res = await getDoc(doc(db, "users", id));
 
   if (!res.exists()) {
+    // user registration
     await setDoc(doc(db, "users", id), {
       uid: id,
       displayName: userCredential.user.displayName?.toLowerCase() || "user",
@@ -119,12 +123,36 @@ export const loginByGoogle = async () => {
       photoURL: userCredential.user.photoURL,
     });
     await setDoc(doc(db, "userChats", id), {});
+
+    const displayName = userCredential.user.displayName || "user";
+
+    if (displayName !== displayName.toLowerCase()) {
+      console.log("updating profile");
+      await updateProfile(userCredential.user, {
+        displayName: displayName.toLowerCase(),
+      });
+    }
+  } else {
+    // user login
+    const displayName = userCredential.user.displayName || "user";
+
+    if (displayName !== displayName.toLowerCase()) {
+      console.log("updating doc");
+      await updateDocument("users", userCredential.user.uid, {
+        displayName: displayName.toLowerCase(),
+      });
+      await updateProfile(userCredential.user, {
+        displayName: displayName.toLowerCase(),
+      });
+    }
   }
 };
 
 export const loginByEmailPass = async (email: string, password: string) => {
   return await signInWithEmailAndPassword(auth, email, password).then(
     (value) => {
+      updateCurrentUser(auth, value.user);
+      value.user.reload();
       console.log(value);
       console.log(value.user.displayName);
       // TODO: remove after all users will be lowercase

@@ -25,7 +25,7 @@ import { selectChat } from "src/store/slices/chatSlice/chatSlice";
 const Search: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const { user: currentUser } = useAuth();
+  const { userInfo: currentUser } = useAuth();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchedUsers, setSearchedUsers] = React.useState<UserInfo[]>([]);
   const [error, setError] = React.useState(false);

@@ -17,8 +17,9 @@ import { langs } from "src/i18n";
 import { Theme, useTheme } from "src/context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { UserInfo } from "src/context/AuthContext";
 interface Props {
-  user: User;
+  user: UserInfo;
   isPopupOpen: boolean;
 }
 const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {
@@ -37,7 +38,7 @@ const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {
     }
 
     await updateDocument("users", user.uid, { displayName: name });
-    await updateProfile(user, {
+    await updateProfile(auth.currentUser as User, {
       displayName: name,
     }).then(() => dispatch(editUser({ displayName: name })));
   };
@@ -79,7 +80,7 @@ const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {
       () => {
         getDownloadURL(uploadImage.snapshot.ref).then(async (downloadURL) => {
           await updateDocument("users", user.uid, { photoURL: downloadURL });
-          await updateProfile(user, {
+          await updateProfile(auth.currentUser as User, {
             photoURL: downloadURL,
           }).then(() => {
             setLoading(false);

@@ -18,7 +18,7 @@ const InputPanel = () => {
   const [file, setFile] = React.useState<File | null>(null);
   const [loading, setLoading] = React.useState(false);
   const data = useAppSelector(selectChatData);
-  const { user } = useAuth();
+  const { userInfo: user } = useAuth();
 
   const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key == "Enter") {

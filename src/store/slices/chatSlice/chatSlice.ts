@@ -14,7 +14,7 @@ export const initialState: IChatSchema = {
 
 export const selectChat =
   (user: IUserInfo) => (dispatch: AppDispatch, getState: () => RootState) => {
-    const currentUserId = getState().user.authUser?.uid;
+    const currentUserId = getState().user.displayUser?.uid;
     if (!currentUserId) return;
 
     dispatch(

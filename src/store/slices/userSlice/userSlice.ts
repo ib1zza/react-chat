@@ -12,7 +12,6 @@ type DisplayUserKeys = Partial<DisplayUser>;
 
 export interface IUserSchema {
   displayUser: DisplayUser & { isAuth: boolean; loading: boolean };
-  authUser: User | null;
 }
 
 export const initialState: IUserSchema = {
@@ -24,7 +23,6 @@ export const initialState: IUserSchema = {
     loading: true,
     photoURL: "",
   },
-  authUser: null,
 };
 
 const userSlice = createSlice({
@@ -35,12 +33,6 @@ const userSlice = createSlice({
     getDisplayUser: (state) => state.displayUser,
   },
   reducers: {
-    authUser: (state, action: PayloadAction<User>) => {
-      state.authUser = action.payload;
-    },
-    unAuthUser: (state) => {
-      state.authUser = null;
-    },
     addUser: (state, action: PayloadAction<DisplayUser>) => {
       state.displayUser.photoURL = action.payload.photoURL;
       state.displayUser.displayName = action.payload.displayName;
@@ -67,12 +59,14 @@ const userSlice = createSlice({
       state.displayUser.isAuth = false;
       state.displayUser.loading = false;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.displayUser.loading = action.payload;
+    },
   },
 });
 
 export const { getUserData, getDisplayUser } = userSlice.selectors;
 
-export const { removeUser, addUser, editUser, unAuthUser, authUser } =
-  userSlice.actions;
+export const { removeUser, addUser, editUser, setLoading } = userSlice.actions;
 
 export default userSlice.reducer;
