@@ -3,10 +3,6 @@ import s from "../Sidebar.module.scss";
 import { useAuth } from "src/context/AuthContext";
 
 import Avatar from "components/Shared/Avatar/Avatar";
-import { AnimatePresence } from "framer-motion";
-import { Theme, useTheme } from "src/context/ThemeContext";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "components/Shared/Modal/Modal";
 import clsx from "clsx";
 
@@ -21,24 +17,19 @@ const PopupSettings = lazy(
 const Navbar: React.FC<Props> = ({ isOpen }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { userInfo } = useAuth();
-  const { toggleTheme, theme } = useTheme();
-
-  function handleTheme() {
-    toggleTheme();
-  }
 
   if (!userInfo) return null;
   return (
     <>
       <div className={clsx(s.navbar, !isOpen && s.closed)}>
         <span className={s.logo}>{"RChat"}</span>
-        <button className={s.button__theme} onClick={handleTheme}>
-          {theme === Theme.LIGHT ? (
-            <FontAwesomeIcon icon={faSun} />
-          ) : (
-            <FontAwesomeIcon icon={faMoon} />
-          )}
-        </button>
+        {/*<button className={s.button__theme} onClick={handleTheme}>*/}
+        {/*  {theme === Theme.LIGHT ? (*/}
+        {/*    <FontAwesomeIcon icon={faSun} />*/}
+        {/*  ) : (*/}
+        {/*    <FontAwesomeIcon icon={faMoon} />*/}
+        {/*  )}*/}
+        {/*</button>*/}
 
         <div className={s.user} onClick={() => setIsPopupOpen(true)}>
           <Avatar
@@ -50,7 +41,6 @@ const Navbar: React.FC<Props> = ({ isOpen }) => {
           {isOpen && <span>{userInfo.displayName}</span>}
         </div>
       </div>
-
       <Modal isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
         <Suspense>
           {userInfo && (

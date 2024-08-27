@@ -16,6 +16,7 @@ const App: React.FC = () => {
       {/*TODO: delete*/}
       {/*<button onClick={handleTheme}>change theme</button>*/}
       {!loading && <AppRouter isAuth={!!userInfo?.isAuth} loading={loading} />}
+      <div id="modal-container" />
     </div>
   );
 };
