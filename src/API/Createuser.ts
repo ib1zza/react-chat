@@ -7,12 +7,16 @@ import {
   User,
   updateCurrentUser,
   signOut,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
 import { auth, db, storage } from "src/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { updateDocument } from "src/API/updateDoc";
 import { AppRoute } from "src/types/routes";
+import { updateEmail } from "@firebase/auth";
+import firebase from "firebase/compat";
 
 async function registerWithPhoto(
   email: string,
@@ -168,4 +172,25 @@ export const loginByEmailPass = async (email: string, password: string) => {
       }
     },
   );
+};
+
+export const updateUserEmail = async (
+  newEmail: string,
+  userProvidedPassword: string,
+): Promise<void> => {
+  try {
+    const currentUser = auth.currentUser;
+
+    if (currentUser?.email) {
+      const credential = EmailAuthProvider.credential(
+        currentUser.email,
+        userProvidedPassword,
+      );
+      await reauthenticateWithCredential(currentUser, credential);
+      await updateEmail(currentUser, newEmail);
+    }
+  } catch (error) {
+    console.error("Error updating email:", error);
+    throw error;
+  }
 };

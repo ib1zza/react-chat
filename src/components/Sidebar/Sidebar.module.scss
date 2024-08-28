@@ -403,6 +403,11 @@
   input {
     flex-grow: 1;
     width: 100%;
+
+    &::placeholder {
+      color: var(--text-main-default);
+      opacity: .4;
+    }
   }
 
   button {
@@ -412,6 +417,41 @@
     margin-right: 10px;
   }
 
+}
+
+.profile__email {
+  font-size: 16px;
+  color: var(#{--text-main-default});
+
+
+  .profile__email__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .profile__password__input, .profile__email__input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    input {
+      flex-grow: 1;
+      width: 100%;
+      height: 40px;
+
+      &::placeholder {
+        color: var(--text-main-default);
+        opacity: .4;
+      }
+    }
+  }
+
+  button {
+    flex-shrink: 0;
+  }
+  h2 {
+    margin-right: 10px;
+  }
 }
 
 .editUserForm {

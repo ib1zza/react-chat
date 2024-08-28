@@ -6,9 +6,10 @@ import { faCheck, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 interface Props {
   displayName: string;
   onUpdate: (name: string) => void;
+  isPopupOpen: boolean;
 }
 
-const TextField = ({ displayName, onUpdate }: Props) => {
+const TextField = ({ displayName, onUpdate, isPopupOpen }: Props) => {
   const [name, setName] = useState(displayName);
   const [opened, setOpened] = useState(false);
 
@@ -23,6 +24,13 @@ const TextField = ({ displayName, onUpdate }: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (!isPopupOpen) {
+      setName(displayName);
+      setOpened(false);
+    }
+  }, [isPopupOpen]);
+
   return (
     <div className={s.profile__displayName}>
       {opened ? (
@@ -30,6 +38,7 @@ const TextField = ({ displayName, onUpdate }: Props) => {
           <input
             autoFocus
             type="text"
+            placeholder={"@nickname"}
             value={name}
             onChange={(e) => setName(e.target.value)}
             minLength={3}
