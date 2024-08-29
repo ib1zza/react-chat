@@ -16,89 +16,12 @@ import { useTranslation } from "react-i18next";
 import { langs } from "src/i18n";
 import { Theme, useTheme } from "src/context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faMoon,
-  faPenToSquare,
-  faSun,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { UserInfo } from "src/context/AuthContext";
-import { updateUserEmail } from "src/API/Createuser";
+import EmailUpdater from "components/Sidebar/PopupSettings/EmailUpdater/EmailUpdater";
 interface Props {
   user: UserInfo;
   isPopupOpen: boolean;
-}
-
-function EmailUpdater({
-  prevEmail,
-  isPopupOpen,
-}: {
-  prevEmail: string;
-  isPopupOpen: boolean;
-}) {
-  const { t } = useTranslation();
-  const [opened, setOpened] = useState(false);
-  const [email, setEmail] = useState(prevEmail);
-  const [password, setPassword] = useState("");
-
-  const handleUpdateEmail = async () => {
-    updateUserEmail(email, password).then(console.log);
-  };
-
-  useEffect(() => {
-    if (!isPopupOpen) {
-      setEmail(prevEmail);
-      setPassword("");
-      setOpened(false);
-    }
-  }, [isPopupOpen]);
-
-  // TODO: add validation and proper error handling using react-hook-form
-  return (
-    <div className={s.profile__email}>
-      <p className={s.title}>{opened ? t("editingEmail") : t("editEmail")}</p>
-      {opened ? (
-        <>
-          <div className={s.profile__email__input}>
-            <input
-              autoFocus
-              type="email"
-              placeholder={"Email"}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              minLength={3}
-              required
-            />
-            <button className={s.button} onClick={handleUpdateEmail}>
-              <FontAwesomeIcon icon={faCheck} />
-            </button>
-          </div>
-
-          <p className={s.title}>{t("editingEmailNeedPassword")}</p>
-          <div className={s.profile__password__input}>
-            <input
-              type="password"
-              placeholder="Password"
-              minLength={3}
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-        </>
-      ) : (
-        <div className={s.profile__email__heading}>
-          <h2>{email}</h2>
-          <button
-            className={s.button}
-            onClick={() => setOpened((prevState) => !prevState)}
-          >
-            <FontAwesomeIcon icon={faPenToSquare} />
-          </button>
-        </div>
-      )}
-    </div>
-  );
 }
 
 const PopupSettings: React.FC<Props> = ({ user, isPopupOpen }) => {

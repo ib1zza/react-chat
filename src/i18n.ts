@@ -48,6 +48,8 @@ i18n
           "server error": "Server error. Please try again later.",
           "incorrect nickname":
             "Nickname must be at least 3 characters long and contain only lowercase latin letters.",
+          save: "Save",
+          cancel: "Cancel",
         },
       },
       ru: {
@@ -76,10 +78,12 @@ i18n
           editingEmailNeedPassword: "Введите пароль",
           "change theme": "Изменить тему",
           "incorrect email": "Неправильная почта.",
-          "incorrect password": "Пароль содержать не менее 6 символов.",
+          "incorrect password": "Пароль должен содержать не менее 6 символов.",
           "server error": "Ошибка сервера. Пожалуйста, попробуйте позже.",
           "incorrect nickname":
             "Имя должно содержать не менее 3 символов и включать только строчные латинские буквы и цифры.",
+          save: "Сохранить",
+          cancel: "Отмена",
         },
       },
     },

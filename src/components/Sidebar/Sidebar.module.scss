@@ -428,11 +428,26 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
+
+    h2 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: calc(100% - 70px);
+    }
   }
   .profile__password__input, .profile__email__input {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
+
+    .error__message {
+      color: #00d3d3;
+      text-align: center;
+      margin-bottom: 5px;
+    }
 
     input {
       flex-grow: 1;
@@ -446,11 +461,17 @@
     }
   }
 
-  button {
-    flex-shrink: 0;
+  .buttons {
+    display: flex;
+    gap: 10px;
   }
-  h2 {
-    margin-right: 10px;
+
+  .button__save {
+    width: 100%;
+
+    span {
+      margin-right: 5px;
+    }
   }
 }
 
