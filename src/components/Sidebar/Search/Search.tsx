@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import s from "../Sidebar.module.scss";
 import {
-  collection,
   doc,
   getDoc,
-  getDocs,
-  query,
   serverTimestamp,
   setDoc,
   updateDoc,
-  where,
 } from "firebase/firestore";
 import { db } from "src/firebase";
 import { useAuth } from "src/context/AuthContext";
@@ -21,6 +17,8 @@ import { useTranslation } from "react-i18next";
 import Avatar from "components/Shared/Avatar/Avatar";
 import { useAppDispatch } from "src/store/hooks";
 import { selectChat } from "src/store/slices/chatSlice/chatSlice";
+import { searchUsers } from "src/API/SearchUsers";
+import { createChat } from "src/API/createChat";
 
 const Search: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -34,24 +32,15 @@ const Search: React.FC = () => {
 
   const searchUser = async () => {
     setLoading(true);
-    const q = query(
-      collection(db, "users"),
-      where("displayName", "==", searchQuery),
-    );
     try {
-      const querySnapshot = await getDocs(q);
-      const newArray: UserInfo[] = [];
-      querySnapshot.forEach((doc) => {
-        if (doc.data() !== null) {
-          newArray.push(doc.data() as UserInfo);
-        }
-      });
-      console.log("searched users: ", newArray);
-      setSearchedUsers(newArray);
+      const res = await searchUsers(searchQuery);
+
+      setSearchedUsers(res);
     } catch (error) {
       console.log(error);
       setError(true);
     }
+
     setLoading(false);
   };
 
@@ -64,86 +53,87 @@ const Search: React.FC = () => {
   const handleSelect = async (selectedUser: UserInfo) => {
     if (!currentUser || !searchedUsers) return;
 
-    const combinedId =
-      currentUser.uid > selectedUser.uid
-        ? currentUser.uid + selectedUser.uid
-        : selectedUser.uid + currentUser.uid;
-
     try {
-      const res = await getDoc(doc(db, "chats", combinedId));
-
-      if (!res.exists()) {
-        console.log("creating chat: ", combinedId);
-
-        await setDoc(doc(db, "chats", combinedId), {
-          messages: [],
-        });
-      } else {
-        console.log("entering chat: ", combinedId);
-      }
-      const userChats = await getDoc(doc(db, "userChats", currentUser.uid));
-
-      if (!userChats.exists()) {
-        await setDoc(doc(db, "userChats", currentUser.uid), {
-          [combinedId]: {
-            userInfo: {
-              uid: selectedUser.uid,
-              displayName: selectedUser.displayName,
-              photoURL: selectedUser.photoURL || "",
-            },
-            date: serverTimestamp(),
-          },
-        });
-      } else {
-        await updateDoc(doc(db, "userChats", currentUser.uid), {
-          [combinedId]: {
-            userInfo: {
-              uid: selectedUser.uid,
-              displayName: selectedUser.displayName,
-              photoURL: selectedUser.photoURL || "",
-            },
-            date: serverTimestamp(),
-          },
-        });
-      }
-
-      const selectedUserChats = await getDoc(
-        doc(db, "userChats", selectedUser.uid),
-      );
-
-      if (!selectedUserChats.exists()) {
-        await setDoc(doc(db, "userChats", selectedUser.uid), {
-          [combinedId]: {
-            userInfo: {
-              uid: currentUser.uid,
-              displayName: currentUser.displayName,
-              photoURL: currentUser.photoURL || "",
-            },
-            date: serverTimestamp(),
-          },
-        });
-      } else {
-        await updateDoc(doc(db, "userChats", selectedUser.uid), {
-          [combinedId]: {
-            userInfo: {
-              uid: currentUser.uid,
-              displayName: currentUser.displayName,
-              photoURL: currentUser.photoURL || "",
-            },
-            date: serverTimestamp(),
-          },
-        });
-      }
-
+      const res = await createChat(currentUser, selectedUser);
       dispatch(selectChat(selectedUser));
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
       setError(true);
     }
+    // try {
+    //   const res = await getDoc(doc(db, "chats", combinedId));
+    //
+    //   if (!res.exists()) {
+    //     console.log("creating chat: ", combinedId);
+    //
+    //     await setDoc(doc(db, "chats", combinedId), {
+    //       messages: [],
+    //     });
+    //   } else {
+    //     console.log("entering chat: ", combinedId);
+    //   }
+    //   const userChats = await getDoc(doc(db, "userChats", currentUser.uid));
+    //
+    //   if (!userChats.exists()) {
+    //     await setDoc(doc(db, "userChats", currentUser.uid), {
+    //       [combinedId]: {
+    //         userInfo: {
+    //           uid: selectedUser.uid,
+    //           displayName: selectedUser.displayName,
+    //           photoURL: selectedUser.photoURL || "",
+    //         },
+    //         date: serverTimestamp(),
+    //       },
+    //     });
+    //   } else {
+    //     await updateDoc(doc(db, "userChats", currentUser.uid), {
+    //       [combinedId]: {
+    //         userInfo: {
+    //           uid: selectedUser.uid,
+    //           displayName: selectedUser.displayName,
+    //           photoURL: selectedUser.photoURL || "",
+    //         },
+    //         date: serverTimestamp(),
+    //       },
+    //     });
+    //   }
+    //
+    //   const selectedUserChats = await getDoc(
+    //     doc(db, "userChats", selectedUser.uid),
+    //   );
+    //
+    //   if (!selectedUserChats.exists()) {
+    //     await setDoc(doc(db, "userChats", selectedUser.uid), {
+    //       [combinedId]: {
+    //         userInfo: {
+    //           uid: currentUser.uid,
+    //           displayName: currentUser.displayName,
+    //           photoURL: currentUser.photoURL || "",
+    //         },
+    //         date: serverTimestamp(),
+    //       },
+    //     });
+    //   } else {
+    //     await updateDoc(doc(db, "userChats", selectedUser.uid), {
+    //       [combinedId]: {
+    //         userInfo: {
+    //           uid: currentUser.uid,
+    //           displayName: currentUser.displayName,
+    //           photoURL: currentUser.photoURL || "",
+    //         },
+    //         date: serverTimestamp(),
+    //       },
+    //     });
+    //   }
+    //
+    //   dispatch(selectChat(selectedUser));
+    // } catch (error) {
+    //   console.log(error);
+    //   setError(true);
+    // }
 
     setSearchedUsers([]);
     setSearchQuery("");
-    dispatch(selectChat(selectedUser));
   };
   return (
     <div className={s.search}>
