@@ -3,20 +3,18 @@ import s from "components/Chat/Chat.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "components/Shared/Avatar/Avatar";
+import { IUserInfo } from "src/types";
+import { UserInfo } from "firebase/auth";
 
 interface Props {
-  displayName: string | null;
-  photoURL: string | null;
   exitChat: () => void;
   onUserClick: () => void;
+  userInfo: IUserInfo | UserInfo;
 }
 
-const ChatHeaderMainInfo = ({
-  displayName,
-  photoURL,
-  exitChat,
-  onUserClick,
-}: Props) => {
+const ChatHeaderMainInfo = ({ userInfo, exitChat, onUserClick }: Props) => {
+  const { photoURL, displayName } = userInfo;
+
   return (
     <div className={s.chat__info}>
       <button onClick={exitChat}>

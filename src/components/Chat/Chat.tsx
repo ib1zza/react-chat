@@ -16,6 +16,7 @@ interface Props {
 const Chat: React.FC<Props> = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (data.chatId === "null") return;
     console.log("navigate to ", data.chatId);
@@ -24,7 +25,6 @@ const Chat: React.FC<Props> = ({ data }) => {
 
   const exitChatHandler = () => {
     dispatch(exitChat());
-    // dispatch({ type: ChatAction.EXIT_CHAT });
     navigate(AppRoute.Home, { replace: true });
   };
 

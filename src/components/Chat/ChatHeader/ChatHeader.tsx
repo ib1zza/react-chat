@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import s from "../Chat.module.scss";
 import Avatar from "components/Shared/Avatar/Avatar";
 import Modal from "components/Shared/Modal/Modal";
@@ -8,6 +8,8 @@ import { deleteChat } from "src/API/DeleteChat";
 import ChatHeaderMainInfo from "components/Chat/ChatHeader/ChatHeaderMainInfo";
 import { getDisplayUser } from "src/store/slices/userSlice/userSlice";
 import { IUserInfo } from "src/types";
+import { searchUser } from "src/API/getUserById";
+import { UserInfo } from "firebase/auth";
 
 interface Props {
   user: IUserInfo;
@@ -19,6 +21,11 @@ const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
   const [modal, setModal] = useState(false);
   const { t } = useTranslation();
   const { uid } = useAppSelector(getDisplayUser);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    searchUser(user.uid).then((user) => setUserInfo(user));
+  }, [user.uid]);
 
   const handleDelete = async () => {
     try {
@@ -32,13 +39,13 @@ const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
     setModal(true);
   }, []);
 
+  console.log(user);
   return (
     <>
       <ChatHeaderMainInfo
         exitChat={exitChat}
         onUserClick={onUserClick}
-        displayName={user.displayName}
-        photoURL={user.photoURL}
+        userInfo={userInfo || user}
       />
 
       <Modal isOpen={modal} onClose={() => setModal(false)}>
@@ -51,6 +58,10 @@ const ChatHeader: React.FC<Props> = ({ user, chatId, exitChat }) => {
         </div>
         <div className={s.modal__header}>
           <span>{user.displayName}</span>
+        </div>
+
+        <div className={s.modal__email}>
+          <span>{userInfo?.email || "loading..."}</span>
         </div>
 
         <button className={s.detele__chat} onClick={handleDelete}>
