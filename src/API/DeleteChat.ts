@@ -5,17 +5,20 @@ import { db } from "src/firebase";
 export const deleteChat = async (
   chatId: string,
   userId: string,
-  friendId: string,
+  friendId: string
 ) => {
-  return await updateDocument("chats", chatId, {
-    messages: deleteField(),
-  }).then(() => {
-    deleteDoc(doc(db, "chats", chatId));
-    updateDocument("userChats", friendId, {
+  try {
+    await updateDocument("chats", chatId, {
+      messages: deleteField(),
+    });
+    await deleteDoc(doc(db, "chats", chatId));
+    await updateDocument("userChats", friendId, {
       [chatId]: deleteField(),
     });
-    updateDocument("userChats", userId, {
+    await updateDocument("userChats", userId, {
       [chatId]: deleteField(),
     });
-  });
+  } catch (error) {
+    console.log(error);
+  }
 };

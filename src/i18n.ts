@@ -41,7 +41,7 @@ i18n
           editName: "Your nickname",
           editEmail: "Your email",
           editingEmail: "Editing email",
-          "editing email need password": "Enter your password",
+          editingEmailNeedPassword: "Enter your password",
           "change theme": "Change theme",
           "incorrect email": "Incorrect email.",
           "incorrect password": "Password must be at least 6 characters long.",
