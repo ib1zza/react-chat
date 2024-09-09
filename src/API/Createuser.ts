@@ -19,7 +19,7 @@ export const createUserEmailPass = async (
   email: string,
   password: string,
   displayName: string,
-  file?: any
+  file?: any,
 ): Promise<string | undefined> => {
   if (!displayName || !email || !password) {
     return Promise.reject("Заполните все поля");
@@ -30,7 +30,7 @@ export const createUserEmailPass = async (
     const response = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
 
     console.log("start to update profile");
@@ -47,7 +47,7 @@ export const createUserEmailPass = async (
             console.log(
               `Uploaded ${
                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              }%`
+              }%`,
             );
           },
           (error) => {
@@ -69,9 +69,9 @@ export const createUserEmailPass = async (
                 });
                 await setDoc(doc(db, "userChats", response.user.uid), {});
                 resolve(undefined);
-              }
+              },
             );
-          }
+          },
         );
       });
     } else {
@@ -160,13 +160,13 @@ export const loginByEmailPass = async (email: string, password: string) => {
           displayName: value.user.displayName.toLowerCase(),
         });
       }
-    }
+    },
   );
 };
 
 export const updateUserEmail = async (
   newEmail: string,
-  userProvidedPassword: string
+  userProvidedPassword: string,
 ): Promise<void> => {
   try {
     const currentUser = auth.currentUser;
@@ -174,7 +174,7 @@ export const updateUserEmail = async (
     if (currentUser?.email) {
       const credential = EmailAuthProvider.credential(
         currentUser.email,
-        userProvidedPassword
+        userProvidedPassword,
       );
       await reauthenticateWithCredential(currentUser, credential);
       await updateEmail(currentUser, newEmail);

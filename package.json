@@ -9,10 +9,10 @@
     "preview": "vite preview",
     "host": "vite --host",
     "test:unit": "jest --config ./config/jest/jest.config.ts",
-    "lint:ts:fix": "eslint --fix ./src/**/*.{js,jsx,ts,tsx}",
+    "lint:ts:fix": "eslint --fix ./src/**/*.{ts,tsx}",
     "lint:scss:fix": "stylelint --fix ./src/**/*.{scss,css}",
-    "format:ts": "prettier --write ./src/**/*.{js,jsx,ts,tsx}",
-    "format:scss": "prettier --write ./src/**/*.{scss,css}"
+    "format:ts": "prettier --write ./src/**/*.{ts,tsx}",
+    "format:scss": "prettier --write ./src/**/*.scss"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
